@@ -12,6 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 MODULES = [
     "data", "data.schema", "data.queries", "data.overlay", "data.dataset",
     "data.augment", "data.build", "data.visualize", "data.overlap", "data.census", "data.sanity",
+    "data.splits",
     "data.loaders", "data.loaders.common", "data.loaders.pgdp_format",
     "data.loaders.geometry3k", "data.loaders.pgdp5k", "data.loaders.pgps9k",
     "data.synthetic", "data.synthetic.generator", "data.synthetic.render",

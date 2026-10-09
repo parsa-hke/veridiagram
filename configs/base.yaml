@@ -23,8 +23,10 @@ paths:
 data:
   train_sources: [geometry3k]          # + synthetic via data.synthetic_train_size
   val_sources: [geometry3k]
-  test_sets: [geometry3k_test, pgdp5k_test, synth_extrap]
-  unlabelled_source: pgps9k            # Part B only
+  test_sets: [geometry3k_test, pgdp5k_heldout, synth_extrap]
+  unlabelled_source: pgps9k_pool       # Part B only; figures not in any val/test split
+  split_seed: 0                        # figure-level re-split of Geometry3K (plan §0.2 #9)
+  split_fractions: [0.7, 0.1, 0.2]     # train / val / test, stratified by has-circle
   synthetic_train_size: 0              # 0 | 1000 | 10000 | 50000 (Part A)
   max_diagrams: null                   # null = all; smoke sets 50
   max_queries_per_diagram: 60          # random cap, all positives kept (plan §5.1)
@@ -36,7 +38,7 @@ relations:
   tier1: [parallel, perpendicular, equal_length, on_circle, tangent, none]
   tier2: [collinear, midpoint, equal_angle, perp_bisector]
   use_tier2: true                      # Phase 2.6 decision (2026-10-10), see plan §0.2 #3
-  tier2_included: [collinear]          # midpoint, equal_angle, perp_bisector < 200 in Geometry3K train
+  tier2_included: [collinear]          # midpoint 83, equal_angle 87, perp_bisector 8 < 200 in the training split
   tier2_min_positives: 200
 
 tolerances:                            # Phase 3.4: chosen from margin histograms, then fixed

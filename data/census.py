@@ -2,8 +2,10 @@
 
 Writes reports/tables/relation_census.csv. Columns per source/split give raw counts (every image)
 and, where data/processed/figure_clusters.csv exists, counts over unique figures (duplicate images
-counted once), because Geometry3K reuses figures across problems. The Tier 2 rule is applied to
-the training source named in §0.2 #9 (Geometry3K train), unique figures.
+counted once), because Geometry3K reuses figures across problems. When data.splits has run, the
+curated figure-level sets (geometry3k_figures, pgdp5k_heldout, pgps9k_pool) are added; they hold one
+diagram per figure already. The Tier 2 rule is applied to the training data of §0.2 #9
+(revised): geometry3k_figures train, else raw Geometry3K train counted per unique figure.
 
     python -m data.census
 """
@@ -18,6 +20,7 @@ from data.schema import RELATION_TYPES, read_jsonl
 from experiments.run import REPO_ROOT, load_config
 
 SOURCES = ("geometry3k", "pgdp5k", "pgps9k")
+CURATED = ("geometry3k_figures", "pgdp5k_heldout", "pgps9k_pool")
 
 
 def census(proc, sources=SOURCES) -> tuple[list[str], dict[str, Counter]]:
@@ -29,6 +32,8 @@ def census(proc, sources=SOURCES) -> tuple[list[str], dict[str, Counter]]:
     cols: dict[str, Counter] = defaultdict(Counter)
     seen: dict[str, set] = defaultdict(set)
     for src in sources:
+        if not (proc / f"{src}.jsonl").exists():
+            continue
         diagrams = list(read_jsonl(proc / f"{src}.jsonl"))
         multi_split = len({d.split for d in diagrams}) > 1
         for d in diagrams:
@@ -36,11 +41,13 @@ def census(proc, sources=SOURCES) -> tuple[list[str], dict[str, Counter]]:
             c["_diagrams"] = 1
             for col in (f"{src}_{d.split}", f"{src}_total")[: 2 if multi_split else 1]:
                 cols[col].update(c)
-                fig = cluster.get(d.id)
+                fig = cluster.get(d.id) if src in SOURCES else None
                 if fig is not None and fig not in seen[col]:
                     seen[col].add(fig)
                     cols[f"{col}_unique"].update(c)
-    order = [k for src in sources for k in sorted(cols) if k.startswith(src)]
+    order = [k for src in sources for k in sorted(cols) if k.rsplit("_", 1)[0].removesuffix("_total") == src
+             or k.removesuffix("_unique").rsplit("_", 1)[0] == src]
+    order = list(dict.fromkeys(order))
     return order, cols
 
 
@@ -50,11 +57,11 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     cfg = load_config(args.config)
     proc = REPO_ROOT / cfg["paths"]["processed"]
-    order, cols = census(proc)
+    order, cols = census(proc, SOURCES + CURATED)
     tier1 = [t for t in cfg["relations"]["tier1"] if t != "none"]
     tier2 = cfg["relations"]["tier2"]
     thresh = cfg["relations"]["tier2_min_positives"]
-    rule_col = "geometry3k_train_unique" if "geometry3k_train_unique" in cols else "geometry3k_train"
+    rule_col = next(c for c in ("geometry3k_figures_train", "geometry3k_train_unique", "geometry3k_train") if c in cols)
 
     out = REPO_ROOT / cfg["paths"]["tables"] / "relation_census.csv"
     out.parent.mkdir(parents=True, exist_ok=True)

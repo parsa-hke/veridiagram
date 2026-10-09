@@ -37,7 +37,7 @@ Tests: `.venv/bin/python -m pytest`.
 Download and layout: [data/README.md](data/README.md). After the raw files are in `data/raw/`:
 
 ```bash
-.venv/bin/python -m data.build && .venv/bin/python -m data.overlap && .venv/bin/python -m data.census && .venv/bin/python -m data.sanity
+.venv/bin/python -m data.build && .venv/bin/python -m data.overlap && .venv/bin/python -m data.splits && .venv/bin/python -m data.census && .venv/bin/python -m data.sanity
 ```
 
 ## Running on Google Colab

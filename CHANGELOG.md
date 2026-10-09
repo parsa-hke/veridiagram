@@ -148,3 +148,29 @@ Found
 Open (needs a decision before Phase 5.7 splits; §0.2 #9 unchanged for now)
 - Leak-free splits by figure cluster, and which coordinates to use for Geometry3K figures that
   PGDP5K re-annotated (1807 of 1851 figures).
+
+## 2026-10-10 — Leak-free figure-level splits (plan §0.2 #9 revised)
+
+Done
+- Plan §0.2 #9 edited first (old text kept in the row), then implemented; tasks 5.7 and 7.11 updated.
+- `python -m data.splits` (`data/splits.py`): one diagram per figure (duplicate cluster), seeded
+  (split_seed 0) 70/10/20 re-split of Geometry3K figures stratified by has-circle: train 1296,
+  val 185, test 370 (was 2101/300/601 problems). 1807 figures use PGDP5K's pixel annotation, 44 keep
+  Geometry3K's. Held-out source: 660 PGDP5K test figures with no Geometry3K copy. Part B pool: 3253
+  PGPS9K figures in no val/test set (1216 are training figures, flagged `in_train`).
+  Outputs: `data/processed/{geometry3k_figures,pgdp5k_heldout,pgps9k_pool}.jsonl`,
+  `data/processed/splits/*.txt`, `figures.csv`. Disjointness enforced in code and tests: evaluation
+  sets share no figure with anything; train <-> pool is the only allowed overlap.
+- Config: `data.split_seed`, `data.split_fractions`; test set `pgdp5k_test` renamed `pgdp5k_heldout`;
+  unlabelled source `pgps9k_pool`.
+- Census now includes the curated sets and applies the Tier 2 rule to the new training split.
+- Tests: 84 passed in 4.9 s.
+
+Found
+- Tier 2 re-checked on the new training split: collinear 2137 (include); midpoint 83, equal_angle 87,
+  perp_bisector 8 (exclude). Decision unchanged. My earlier expectation that PGDP5K annotations would
+  lift midpoint/equal_angle over 200 was wrong: that came from all of PGDP5K train, which includes
+  ~2000 non-Geometry3K textbook figures.
+- Collinear drops from 4528 to 2137 because PGDP5K only annotates the longest segment of a line;
+  equal_length rises 219 -> 315 and parallel 135 -> 161 (marks are annotated more completely).
+- tangent: 0 asserted positives in the training split.

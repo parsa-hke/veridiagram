@@ -160,11 +160,23 @@ See the `data/schema.py` docstring. Asserted relations per source:
 parallel, equal_length and equal_angle are closed under transitivity within a diagram. Equal text
 values (two sides both labelled 5) are not turned into relations.
 
+## Splits (plan §0.2 #9, revised 2026-10-10)
+
+The unit is a figure (cluster of duplicate images). Geometry3K's 3002 problems give 1851 figures,
+re-split 70/10/20 with seed 0, stratified by has-circle: train 1296, val 185, test 370. 1807 of
+them use PGDP5K's pixel annotation (`meta.annotation = "pgdp5k"`), 44 keep Geometry3K's; the
+diagram id is the lowest Geometry3K problem id of the figure and `meta.geometry3k_ids` lists all.
+Held-out source test: 660 PGDP5K test figures with no Geometry3K copy. Part B pool: 3253 PGPS9K
+figures that are in no val/test set (1216 of them are training figures, `meta.in_train`).
+Evaluation sets share no figure with anything else.
+
 ## Scripts
 
 ```bash
 python -m data.build      # raw -> data/processed/<source>.jsonl, prints per-source counts
 python -m data.overlap    # duplicates -> data/processed/{overlap,figure_clusters}.csv, reports/tables/source_overlap.csv
+python -m data.splits     # figure-level splits (plan §0.2 #9) -> data/processed/{geometry3k_figures,pgdp5k_heldout,pgps9k_pool}.jsonl,
+                          #   data/processed/splits/{train,val,test,pgdp5k_heldout,pgps9k_pool}.txt, figures.csv
 python -m data.census     # reports/tables/relation_census.csv
 python -m data.sanity     # reports/figures/{image_sizes,g3k_vs_pgdp5k_coords}.png, reports/tables/coordinate_sanity.csv
 ```
