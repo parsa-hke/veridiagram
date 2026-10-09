@@ -18,7 +18,7 @@ Can a fine-tuned vision transformer read the formal geometric relations present 
 |---|----------|--------|
 | 1 | Primitive detection | Out of scope. Points, segments and circles come from dataset annotations. |
 | 2 | Task formulation | Pairwise (n-ary) query: the queried primitives are overlaid on the image in a distinct colour; the ViT classifies the relation. |
-| 3 | Relation vocabulary | Tier 1 (must): `parallel`, `perpendicular`, `equal_length`, `on_circle`, `tangent`, `none`. Tier 2 (only if ≥200 positives in the data): `collinear`, `midpoint`, `equal_angle`, `perp_bisector`. |
+| 3 | Relation vocabulary | Tier 1 (must): `parallel`, `perpendicular`, `equal_length`, `on_circle`, `tangent`, `none`. Tier 2 (only if ≥200 positives in the data): `collinear`, `midpoint`, `equal_angle`, `perp_bisector`. **Decided 2026-10-10 (task 2.6, `reports/tables/relation_census.csv`, asserted positives in Geometry3K train counted once per unique figure): include `collinear` (4,528); exclude `midpoint` (50), `equal_angle` (53), `perp_bisector` (5).** Revisit if decision 9 moves training to PGDP5K annotations (PGDP5K train: midpoint 336, equal_angle 1,114, perp_bisector 65). Note: `tangent` has 1 asserted positive across all real data; it relies on verifier labels and synthetic data. |
 | 4 | Ground truth | Two label sets per query: `asserted` (human annotation) and `geometric` (coordinate verifier within tolerance). Train and headline on `geometric`; report `asserted` alongside. Not-to-scale diagrams are flagged and reported as a category. |
 | 5 | Verifier tolerances | Chosen from the empirical distributions in Phase 3, then fixed. |
 | 6 | Backbone | DINOv3 ViT-L/16 (verify checkpoint name on the Hugging Face hub; expected `facebook/dinov3-vitl16-pretrain-lvd1689m`). Fallback: `facebook/dinov2-large`. |
@@ -133,9 +133,9 @@ Rules:
 
 ## Phase 2 — Data acquisition and unified schema
 
-- [ ] 2.1 Download Geometry3K (Lu et al., 2021, Inter-GPS repo), PGDP5K (Zhang et al., 2022) and PGPS9K (Zhang et al., 2023). Record URLs, licences and citation in `data/README.md`.
-- [ ] 2.2 Inspect each dataset's annotation files by hand (open 5 examples each). Document the actual field names: how points are named, how coordinates are stored (pixel vs normalised), how lines/segments/circles are represented, how relations are stored (logic forms, text, both).
-- [ ] 2.3 Define `data/schema.py`:
+- [x] 2.1 Download Geometry3K (Lu et al., 2021, Inter-GPS repo), PGDP5K (Zhang et al., 2022) and PGPS9K (Zhang et al., 2023). Record URLs, licences and citation in `data/README.md`.
+- [x] 2.2 Inspect each dataset's annotation files by hand (open 5 examples each). Document the actual field names: how points are named, how coordinates are stored (pixel vs normalised), how lines/segments/circles are represented, how relations are stored (logic forms, text, both).
+- [x] 2.3 Define `data/schema.py`:
   ```
   Diagram:
     id, source ('geometry3k'|'pgdp5k'|'pgps9k'|'synthetic'), image_path,
@@ -150,10 +150,10 @@ Rules:
     flags: {not_to_scale: bool, ...}
   Relation: {type, args: [primitive refs], source: 'asserted'|'geometric', margin: float}
   ```
-- [ ] 2.4 Write one loader per dataset converting raw → `Diagram`. Each loader has a test that round-trips 3 diagrams and renders them with points and segments drawn over the image for visual confirmation (save to `reports/figures/loader_check_<source>.png`).
-- [ ] 2.5 `data/build.py`: write `data/processed/<source>.jsonl`. Print per-source counts: diagrams, points, segments, circles, asserted relations by type.
-- [ ] 2.6 **Relation census.** Table `reports/tables/relation_census.csv`: positives per relation type per source. Decide Tier 2 inclusion from this table and record the decision in §0.2 and CHANGELOG. **GATE: census table exists; Tier 2 decided.**
-- [ ] 2.7 Coordinate sanity: for each source, plot image size distribution and verify that annotated points fall inside the image (count violations; investigate if > 1%).
+- [x] 2.4 Write one loader per dataset converting raw → `Diagram`. Each loader has a test that round-trips 3 diagrams and renders them with points and segments drawn over the image for visual confirmation (save to `reports/figures/loader_check_<source>.png`).
+- [x] 2.5 `data/build.py`: write `data/processed/<source>.jsonl`. Print per-source counts: diagrams, points, segments, circles, asserted relations by type.
+- [x] 2.6 **Relation census.** Table `reports/tables/relation_census.csv`: positives per relation type per source. Decide Tier 2 inclusion from this table and record the decision in §0.2 and CHANGELOG. **GATE: census table exists; Tier 2 decided.**
+- [x] 2.7 Coordinate sanity: for each source, plot image size distribution and verify that annotated points fall inside the image (count violations; investigate if > 1%).
 
 ---
 

@@ -11,8 +11,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 # Explicit list from §0.4, so a missing file fails here rather than being silently skipped.
 MODULES = [
     "data", "data.schema", "data.queries", "data.overlay", "data.dataset",
-    "data.augment", "data.build",
-    "data.loaders", "data.loaders.geometry3k", "data.loaders.pgdp5k", "data.loaders.pgps9k",
+    "data.augment", "data.build", "data.visualize", "data.overlap", "data.census", "data.sanity",
+    "data.loaders", "data.loaders.common", "data.loaders.pgdp_format",
+    "data.loaders.geometry3k", "data.loaders.pgdp5k", "data.loaders.pgps9k",
     "data.synthetic", "data.synthetic.generator", "data.synthetic.render",
     "verifier", "verifier.primitives", "verifier.checks", "verifier.tolerance",
     "verifier.audit", "verifier.consistency",

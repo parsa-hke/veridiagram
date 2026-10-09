@@ -35,7 +35,8 @@ data:
 relations:
   tier1: [parallel, perpendicular, equal_length, on_circle, tangent, none]
   tier2: [collinear, midpoint, equal_angle, perp_bisector]
-  use_tier2: false                     # Phase 2.6: enable only if >=200 positives
+  use_tier2: true                      # Phase 2.6 decision (2026-10-10), see plan §0.2 #3
+  tier2_included: [collinear]          # midpoint, equal_angle, perp_bisector < 200 in Geometry3K train
   tier2_min_positives: 200
 
 tolerances:                            # Phase 3.4: chosen from margin histograms, then fixed

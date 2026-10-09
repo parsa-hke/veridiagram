@@ -85,3 +85,66 @@ Found / open
 - Remaining pip warnings on Colab (dask-cudf, cudf, google-adk/opentelemetry) concern packages this
   project never imports. To be re-checked on the next Colab install.
 - DINOv3 access requested on HF (manual approval pending).
+
+## 2026-10-10 — Phase 2: data acquisition and unified schema
+
+Done
+- 2.1 Downloaded Geometry3K (Inter-GPS GitHub zips), PGDP5K and PGPS9K (Hugging Face copies, no
+  password needed) into `data/raw/` (gitignored). URLs, licences (MIT on repo/dataset cards),
+  verified citations in `data/README.md`. sha256:
+  geometry3k train e12ee4d2ad85117a4d4279ce46917ac5f2a3aaa2266d4413118b6087a151a95b,
+  val 67b1b0a9b424cb5e6634d20a6494a554c529156a6cfd0492c636e047e13f314a,
+  test a0d5dece634686303eb6cabca0a7306136ca8ade5f562a4af4c6561ecaf6c9b3,
+  logic_forms 264cd7316056d7ee57171b57397e3555c97e40d648a4e901db7baec59423665d,
+  symbols 90966955e3d8a81b6d171ad820ffbb8223e3a6a3aa8f54307c94ef4ea6ef65bb;
+  PGDP5K.zip 2fe9c0c361f231591e3727360a69fa7a639a67ee8b1c13da549c12af0b80f60f;
+  PGPS9K.zip a74b2b819ed4dff91e870b17a33b7860de5f118b254c1f48e8be0fe10ab9bc21.
+- 2.2 Raw formats documented field by field in `data/README.md` from hand inspection.
+- 2.3 `data/schema.py`: Diagram / Relation / Circle with tagged primitive refs (`["seg", A, B]`, ...)
+  because point names can be multi-character. Added fields beyond the plan sketch: `split`,
+  `circles[i].center_xy`, `meta`.
+- 2.4 Loaders `data/loaders/{geometry3k,pgdp5k,pgps9k}.py` plus a shared PGDP-format parser
+  (`pgdp_format.py`) and helpers (`common.py`). `tests/test_loaders.py` round-trips 3 diagrams per
+  source and renders `reports/figures/loader_check_<source>.png` (checked by eye).
+- 2.5 `python -m data.build` writes `data/processed/<source>.jsonl` in 12 s: 3002 / 5000 / 4000 diagrams.
+- 2.6 **Gate passed.** `python -m data.census` -> `reports/tables/relation_census.csv`. Tier 2 decided
+  on Geometry3K train, unique figures: collinear 4528 include; midpoint 50, equal_angle 53,
+  perp_bisector 5 exclude. Recorded in plan §0.2 #3 and `configs/base.yaml` (`tier2_included`).
+- 2.7 `python -m data.sanity`: points outside the image: Geometry3K 15 of 16718 (0.09%, 11 diagrams),
+  PGDP5K 0, PGPS9K 0; below the 1% investigation threshold. Image sizes similar across sources
+  (median ~370x275 px, so the 448 px input upsamples most images).
+- Extra: `python -m data.overlap` finds duplicate images within and across sources (dHash candidates,
+  confirmed by pixel difference, ink IoU and point-name agreement; the low-resolution check alone
+  matched different simple triangles, so the rule was calibrated on the borderline cases by eye).
+- Tests: 79 passed in 4.9 s.
+
+Found
+- **Geometry3K coordinates are not pixels**: each diagram's `point_positions` are translated by an
+  unknown offset (e.g. +123/+124 px). Recovered from the red dots in `img_diagram_point.png`:
+  2985/3001 full match, 16 partial (flagged). Before recovery 63 diagrams had negative coordinates.
+- **Geometry3K positions are noisy**: against PGDP5K's pixel re-annotation of the same images
+  (7620 points, 1641 image pairs) the median error is 2.4 px, p95 8.9 px, p99 89 px; 4.5% of
+  points are >10 px off and 194 image pairs (12%) have at least one such point. 309 of the 341
+  large errors are real position errors (nothing in PGDP5K within 10 px), 25 are name mismatches.
+  Geometric labels computed from Geometry3K coordinates will inherit these errors.
+- 261 Geometry3K diagrams reference points with no position (relations using them are dropped and
+  the diagram is flagged `missing_points`); this removes 79 of 193 explicit angle equalities.
+- **Geometry3K is split by problem, not figure**: 3002 problems, 1851 distinct figures. 302 of 601
+  test images (50%) have an exact duplicate in train; 327 (54%) share a figure cluster with
+  train or val. Only 274 test images (258 figures) are free of train/val copies.
+- **Cross-source overlap**: 1809 PGDP5K images are Geometry3K images (paper: 1813); 273 PGDP5K test
+  images duplicate a Geometry3K train image. PGPS9K contains 515 Geometry3K test images and 558
+  PGDP5K test images, so Part B self-training on PGPS9K would train on test figures unless
+  filtered. 660 PGDP5K test figures have no Geometry3K copy. Tables: `reports/tables/source_overlap.csv`,
+  clusters: `data/processed/figure_clusters.csv`.
+- PGDP-format parser validated against the PGDP5K authors' derived logic forms: parallel 520/520,
+  equal-length pairs 2863/2863, perpendicular 2452/2467, equal angles 1420 common.
+- Geometry3K under-annotates marks: equal_angle 120 relations vs 1493 in PGDP5K, which covers the
+  same figures plus more. `MeasureOf = MeasureOf` forms are mostly angle naming (2084 of 2331).
+- **tangent**: 1 asserted positive across all three sources (PGDP5K/PGPS9K have no tangent
+  annotation at all). Tier 1 tangent will rest on verifier labels and synthetic data.
+- PGDP5K readme.txt swaps the val/test sizes (actual: val 500, test 1000).
+
+Open (needs a decision before Phase 5.7 splits; §0.2 #9 unchanged for now)
+- Leak-free splits by figure cluster, and which coordinates to use for Geometry3K figures that
+  PGDP5K re-annotated (1807 of 1851 figures).

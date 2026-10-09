@@ -1,0 +1,11 @@
+relation,tier,geometry3k_test,geometry3k_test_unique,geometry3k_total,geometry3k_total_unique,geometry3k_train,geometry3k_train_unique,geometry3k_val,geometry3k_val_unique,pgdp5k_test,pgdp5k_test_unique,pgdp5k_total,pgdp5k_total_unique,pgdp5k_train,pgdp5k_train_unique,pgdp5k_val,pgdp5k_val_unique,pgps9k_all,pgps9k_all_unique,tier2_rule_geometry3k_train_unique>=200
+_diagrams,,601,532,3002,1851,2101,1438,300,280,1000,1000,5000,4998,3500,3498,500,500,4000,3999,
+parallel,1,115,96,418,180,275,135,28,27,86,86,520,520,362,362,72,72,522,522,
+perpendicular,1,287,251,1480,830,1043,657,150,139,480,480,2458,2457,1716,1715,262,262,1882,1881,
+equal_length,1,161,153,521,333,315,219,45,44,486,486,2883,2883,2005,2005,392,392,1406,1406,
+on_circle,1,551,459,2637,1789,1817,1361,269,247,978,978,4687,4683,3290,3286,419,419,3917,3917,
+tangent,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,
+collinear,2,1918,1381,11410,5365,8660,4528,832,796,1949,1949,9068,9066,6177,6175,942,942,6352,6352,include
+midpoint,2,38,32,127,71,77,50,12,12,119,119,522,522,336,336,67,67,415,415,exclude
+equal_angle,2,31,30,120,81,74,53,15,14,256,256,1493,1493,1114,1114,123,123,448,448,exclude
+perp_bisector,2,6,6,15,12,7,5,2,2,21,21,106,106,65,65,20,20,55,55,exclude

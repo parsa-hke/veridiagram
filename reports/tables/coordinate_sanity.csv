@@ -1,0 +1,4 @@
+source,diagrams,points,points_outside,pct_points_outside,diagrams_with_outside_point,pct_diagrams,circle_centres,centres_outside,examples
+geometry3k,3002,16718,15,0.09,11,0.37,760,0,geometry3k:244 geometry3k:284 geometry3k:355 geometry3k:999 geometry3k:1428
+pgdp5k,5000,28043,0,0.0,0,0.0,1430,0,
+pgps9k,4000,20747,0,0.0,0,0.0,1203,0,

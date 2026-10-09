@@ -32,6 +32,14 @@ Each run writes `runs/<name>_s<seed>/{config.yaml,metrics.json}` and appends one
 
 Tests: `.venv/bin/python -m pytest`.
 
+## Data
+
+Download and layout: [data/README.md](data/README.md). After the raw files are in `data/raw/`:
+
+```bash
+.venv/bin/python -m data.build && .venv/bin/python -m data.overlap && .venv/bin/python -m data.census && .venv/bin/python -m data.sanity
+```
+
 ## Running on Google Colab
 
 Heavy runs (fine-tunes, scaling, self-training) run on Colab Pro. Open
