@@ -49,14 +49,14 @@ the overlay PNG cache on the VM's local disk.
 
 ## Hardware
 
-Recorded 2026-10-10 with `python -m experiments.run --device-info`:
+Recorded 2026-10-10 with `python -m experiments.run --device-info`.
 
-| Item | Value |
-|------|-------|
-| Machine | Apple M5, macOS 27.0.1 (arm64) |
-| Device | `mps` (Metal Performance Shaders, integrated GPU) |
-| VRAM | No dedicated VRAM: 24.0 GB unified memory, MPS recommended max 17.8 GB |
-| CUDA | Not available (`torch.version.cuda = None`) |
-| Python / torch | 3.11.17 / 2.14.1 |
+| Item | Local (development, smoke) | Google Colab Pro (heavy runs) |
+|------|------|------|
+| Machine | Apple M5, macOS 27.0.1 (arm64) | Linux x86_64, glibc 2.39 |
+| Device | `mps` (Metal, integrated GPU) | `cuda`, NVIDIA L4 (A100 for full fine-tunes) |
+| VRAM | none dedicated: 24.0 GB unified, MPS max 17.8 GB | 22.0 GB (L4) |
+| CUDA / cuDNN / driver | not available | CUDA 13.0 / cuDNN 9.24 / 580.82.07 |
+| Python / torch | 3.11.17 / 2.14.1 | 3.13.15 / 2.14.1+cu130 |
 
 Runtimes per step will be added in Phase 10.

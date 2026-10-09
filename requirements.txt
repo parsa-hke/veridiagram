@@ -1,10 +1,11 @@
-# Pinned for Python 3.11 (resolved 2026-10-10 on macOS arm64).
+# Pinned 2026-10-10. Verified locally on Python 3.11 (macOS arm64); also targets Colab (Python 3.13, Linux x86_64).
+# numpy<2.3 and pandas==2.2.3 match Colab's preinstalled google-colab and numba requirements.
 torch==2.14.1
 torchvision==0.29.1
 transformers==5.19.0
 timm==1.0.30
-numpy==2.4.6
-pandas==3.0.6
+numpy==2.2.6
+pandas==2.2.3
 matplotlib==3.11.2
 pyyaml==6.0.3
 scikit-learn==1.9.1

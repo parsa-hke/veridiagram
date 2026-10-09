@@ -68,3 +68,20 @@ Found (pre-checks for Phase 2 and 6, from public pages; not yet confirmed by dow
 - **Overlap risk for §0.2 #9:** the PGDP5K paper says 1,813 of its 5,000 images come from Geometry3K.
   Using PGDP5K test as a "held-out source" needs de-duplication against Geometry3K (all splits),
   otherwise the held-out result is contaminated. To resolve in Phase 2 before splits are written.
+
+## 2026-10-10 — Colab setup verified (L4)
+
+Done
+- Launcher cells 1–6 ran on Colab Pro, L4 runtime: Drive mounted, private repo cloned at `a2ae872`
+  via GH_TOKEN, HF_TOKEN read, `--device-info` OK. Recorded in README hardware table: NVIDIA L4
+  22.0 GB, CUDA 13.0, cuDNN 9.24, driver 580.82.07, Python 3.13.15, torch 2.14.1+cu130.
+- Repinned numpy 2.4.6 → 2.2.6 and pandas 3.0.6 → 2.2.3: the old pins overwrote Colab's
+  preinstalled versions and broke google-colab (needs pandas==2.2.3) and numba (needs numpy<2.3).
+  The project code depends on neither newer version. Local venv reinstalled, `uv pip check` clean,
+  60 tests pass.
+
+Found / open
+- Python differs: 3.11 locally vs 3.13 on Colab. Torch is identical (2.14.1).
+- Remaining pip warnings on Colab (dask-cudf, cudf, google-adk/opentelemetry) concern packages this
+  project never imports. To be re-checked on the next Colab install.
+- DINOv3 access requested on HF (manual approval pending).
