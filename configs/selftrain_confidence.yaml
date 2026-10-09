@@ -1,0 +1,5 @@
+inherit: base.yaml
+name: selftrain_confidence
+mode: selftrain
+selftrain:
+  filter: confidence

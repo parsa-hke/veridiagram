@@ -1,0 +1,5 @@
+inherit: base.yaml
+name: selftrain_consistency
+mode: selftrain
+selftrain:
+  filter: consistency

@@ -1,0 +1,5 @@
+inherit: base.yaml
+name: scaling_10k
+mode: scaling
+data:
+  synthetic_train_size: 10000

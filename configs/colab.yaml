@@ -1,0 +1,13 @@
+# Colab overlay: use with --overlay configs/colab.yaml on top of any config.
+# Persistent state lives on Google Drive (mounted at /content/drive by the launcher notebook);
+# the overlay PNG cache stays on the VM's local disk because Drive is slow for many small files.
+# The CUDA device is picked up automatically (device: auto).
+paths:
+  raw: /content/drive/MyDrive/geo-relations/data/raw
+  processed: /content/drive/MyDrive/geo-relations/data/processed
+  splits: /content/drive/MyDrive/geo-relations/data/processed/splits
+  cache: /content/cache
+  runs: /content/drive/MyDrive/geo-relations/runs
+  log_csv: /content/drive/MyDrive/geo-relations/runs/log.csv
+data:
+  num_workers: 8

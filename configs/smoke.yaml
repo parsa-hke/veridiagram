@@ -1,0 +1,14 @@
+# Smoke mode: 50 diagrams, 1 epoch. Overlaid on top of any config with --smoke,
+# or used directly. Must pass before any full run.
+inherit: base.yaml
+name: smoke
+data:
+  max_diagrams: 50
+  num_workers: 0
+probe:
+  epochs: 1
+finetune:
+  epochs: 1
+  warmup_epochs: 0
+eval:
+  bootstrap_resamples: 50

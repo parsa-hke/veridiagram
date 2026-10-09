@@ -1,0 +1,3 @@
+inherit: base.yaml
+name: finetune
+mode: finetune
