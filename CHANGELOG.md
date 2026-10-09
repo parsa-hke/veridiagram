@@ -51,3 +51,20 @@ Found / open
 - Pinned wheels have not been checked against Colab's Python version (likely 3.12+); the install cell
   will show it.
 - Phase 6 trainers must resume from the last epoch checkpoint (Colab disconnects).
+
+## 2026-10-10 — Repo published; Phase 2 pre-checks
+
+Done
+- Initial commit `3c7eefd` pushed to private repo https://github.com/parsa-hke/veridiagram (default branch `main`).
+
+Found (pre-checks for Phase 2 and 6, from public pages; not yet confirmed by downloading)
+- Backbone: `facebook/dinov3-vitl16-pretrain-lvd1689m` exists on the HF hub, `transformers`
+  library, access **gated (manual approval)**. Fallback `facebook/dinov2-large` is not gated.
+- Geometry3K: Inter-GPS repo (lupantech/InterGPS), Google Drive folder linked from its README; repo MIT.
+- PGPS9K: HF dataset `PeijieWang/PGPS9K` (~133 MB, MIT); the PGPS README says the zip uses a password,
+  which is given in that README.
+- PGDP5K: official page http://www.nlpr.ia.ac.cn/databases/CASIA-PGDP5K/ ; HF copy `PeijieWang/PGDP5K`
+  (~85 MB, MIT); code at mingliangzhang2018/PGDP.
+- **Overlap risk for §0.2 #9:** the PGDP5K paper says 1,813 of its 5,000 images come from Geometry3K.
+  Using PGDP5K test as a "held-out source" needs de-duplication against Geometry3K (all splits),
+  otherwise the held-out result is contaminated. To resolve in Phase 2 before splits are written.
