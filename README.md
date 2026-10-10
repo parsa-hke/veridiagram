@@ -50,6 +50,13 @@ Download and layout: [data/README.md](data/README.md). After the raw files are i
 .venv/bin/python -m verifier.gold score  # after labelling: FP/FN rates -> reports/tables/verifier_audit.csv
 ```
 
+## Queries and dataset
+
+```bash
+.venv/bin/python -m data.queries                                   # query indexes for every unit (base config)
+.venv/bin/python -m data.dataset --config configs/smoke.yaml --examples   # Phase 5 gate + reports/figures/dataset_examples.png
+```
+
 ## Synthetic data
 
 ```bash

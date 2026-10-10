@@ -29,8 +29,9 @@ data:
   split_fractions: [0.7, 0.1, 0.2]     # train / val / test, stratified by has-circle
   synthetic_train_size: 0              # 0 | 1000 | 10000 | 50000 (Part A)
   max_diagrams: null                   # null = all; smoke sets 50
-  max_queries_per_diagram: 60          # random cap, all positives kept (plan §5.1)
-  train_none_ratio: 3.0                # max `none` per positive, per relation (plan §5.4)
+  max_queries_per_diagram: 60          # random cap; training keeps all positives, eval samples uniformly (plan §5.1)
+  train_none_ratio: 3.0                # training: max all-negative queries per positive query, per query kind (plan §5.4)
+  index_seed: 0                        # query sampling is fixed across training seeds
   num_workers: 4
   cache_overlays: true
 
@@ -56,7 +57,7 @@ not_to_scale:                          # Phase 3.6: an asserted relation off by 
   rel_length: 0.15                     # equal_length / on_circle / tangent
 
 overlay:
-  color: [255, 0, 0]
+  color: [0, 200, 0]                   # green: red/orange/cyan occur in 13-15% of real diagrams, green in 0% (Phase 5.3 check)
   width_px: 3
   halo_alpha: 0.35
   halo_width_px: 7
@@ -66,6 +67,8 @@ input:
   long_side: 448                       # aspect preserved, padded
   pad_to_multiple: 16                  # = backbone patch size
   pad_value: 255                       # white, matches diagram background
+  mean: [0.485, 0.456, 0.406]          # ImageNet statistics used by DINOv2/DINOv3; checked in Phase 6.1
+  std: [0.229, 0.224, 0.225]
 
 model:
   backbone: facebook/dinov3-vitl16-pretrain-lvd1689m   # verify on the hub in Phase 6.1
@@ -86,9 +89,11 @@ augment:
   vflip: true
   scale: [0.8, 1.2]
   line_thickness_jitter: true
-  line_thickness_kernel: [1, 3]
+  line_thickness_prob: 0.3             # 3x3 min filter: thickens dark lines (morphological dilation)
   gaussian_noise_std: [0.0, 0.03]
+  noise_prob: 0.5
   jpeg_quality: [50, 95]
+  jpeg_prob: 0.5
   contrast: [0.9, 1.1]
 
 probe:

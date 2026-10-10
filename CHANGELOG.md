@@ -325,3 +325,46 @@ Found
   the bytes). Noisy images are now stored as JPEG quality 95: 2.1 GB total.
 - Remaining look: about 1 in 3 training diagrams has no injected relation (random only), and
   extrapolation diagrams have some unconnected points (20 points, <= 16 segments). Left as is.
+
+## 2026-10-11 — Phase 5: queries, overlays, dataset (gate 5.8 passed)
+
+Done
+- 5.1/5.2/5.4 `data/queries.py` index (`python -m data.queries`): per query a stable id, multi-label
+  `geo` (verifier) and `asr` (annotation) vectors over [parallel, perpendicular, equal_length,
+  on_circle, tangent, collinear] (none = all zeros), an applicability mask (e.g. on_circle is masked
+  for a segment pair, not a negative) and margins. Cap 60 per diagram: training keeps all positives,
+  evaluation samples uniformly (natural ratio in expectation). Training only: all-negative queries
+  <= 3x positive queries per query kind. Units: train (+ first `synthetic_train_size` synth_train
+  diagrams), val, geometry3k_test, pgdp5k_heldout, synth_extrap.
+- 5.3 `data/overlay.py`: core line + semi-transparent halo for segments and circles, filled marker
+  for points; collinear queries highlight line AB and point P. Returns the touched-pixel mask; unit
+  test confirms nothing else changes.
+- 5.5 `data/augment.py`: rotation +-180° (canvas expanded), flips, isotropic scale (ink-box crop,
+  then s x 448 capped at 448), line thickening (3x3 min filter), contrast, Gaussian noise, JPEG.
+  No shear or perspective. Test: a highlighted straight line stays straight.
+- 5.6 `data/dataset.py`: flatten -> resize long side 448 -> overlay -> (train) augment -> pad to a
+  multiple of 16 -> normalise (ImageNet mean/std, to be confirmed against the DINOv3 processor in
+  6.1); overlays cached as PNG keyed by (settings hash, set, diagram, query id); collate pads a batch
+  with normalised white. Returns (image, label_geometric, label_asserted, meta with mask).
+- 5.7 units disjoint by diagram id (`check_disjoint`, tests).
+- 5.8 **Gate passed**: `python -m data.dataset --config configs/smoke.yaml` builds every unit on 50
+  diagrams (train: 50 real + 50 synthetic) and loads one batch per unit: images (16, 3, H, W) with
+  H, W <= 448 and multiples of 16, labels and masks (16, 6). Example inputs:
+  `reports/figures/dataset_examples.png` (`--examples`).
+- Full indexes (7 s): train 37,846 queries from 1,296 diagrams; val 6,227; geometry3k_test 11,319;
+  pgdp5k_heldout 25,272; synth_extrap 60,000; train + 10k synthetic 221,519.
+- Tests: 120 passed.
+
+Found
+- **Highlight colour changed from red to green (0, 200, 0)**: in 600 sampled real diagrams red,
+  orange and cyan pixels occur in 13.8%, 15.0% and 12.7% of images (right-angle marks, ticks,
+  labels are often pink/red), saturated green in 0%. A red highlight would be confusable with
+  drawn marks.
+- The overlay is drawn after resizing to 448 (plan order: overlay, augment, resize). Drawing first
+  would make the 3 px highlight thinner or thicker depending on the source resolution (images
+  range ~150-1600 px); augmentation still happens after the overlay.
+- Ink-box detection for scale augmentation must ignore scan noise: threshold 200, not 245 (the
+  noisy synthetic background counted as ink).
+- Training tangent positives: 476 from real data alone, 5,360 with 10k synthetic diagrams (11x).
+- synth_extrap gives 60k evaluation queries (1,000 diagrams x 60); evaluating ViT-L on all of them
+  is costly, so Phase 7 may subsample it.

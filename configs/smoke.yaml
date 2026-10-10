@@ -3,8 +3,9 @@
 inherit: base.yaml
 name: smoke
 data:
-  max_diagrams: 50
+  max_diagrams: 50                     # per index unit (each split / source)
   num_workers: 0
+  synthetic_train_size: 1000           # exercise the synthetic path (capped to 50 diagrams)
 probe:
   epochs: 1
 finetune:
