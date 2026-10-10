@@ -29,7 +29,10 @@ def test_base_has_plan_values():
     assert cfg["input"]["long_side"] == 448
     assert cfg["finetune"]["llrd"] == 0.8
     assert cfg["relations"]["tier1"][-1] == "none"
-    assert all(v is None for v in cfg["tolerances"].values())  # empty until Phase 3
+    tol = cfg["tolerances"]  # calibrated in Phase 3.4
+    assert 0.5 < tol["parallel_deg"] < 5 and 0.5 < tol["perpendicular_deg"] < 5
+    assert 0 < tol["equal_length_rel"] <= 0.1 and tol["tangent_rel"] == tol["on_circle_rel"]
+    assert cfg["not_to_scale"] == {"angle_deg": 10.0, "rel_length": 0.15}
 
 
 def test_inherit_and_smoke_overlay():

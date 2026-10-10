@@ -17,7 +17,7 @@ MODULES = [
     "data.loaders.geometry3k", "data.loaders.pgdp5k", "data.loaders.pgps9k",
     "data.synthetic", "data.synthetic.generator", "data.synthetic.render",
     "verifier", "verifier.primitives", "verifier.checks", "verifier.tolerance",
-    "verifier.audit", "verifier.consistency",
+    "verifier.audit", "verifier.consistency", "verifier.label", "verifier.gold",
     "models", "models.backbone", "models.head", "models.probe", "models.finetune",
     "experiments", "experiments.run", "experiments.evaluate", "experiments.scaling",
     "experiments.selftrain",

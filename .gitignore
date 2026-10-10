@@ -22,3 +22,8 @@ wandb/
 .ipynb_checkpoints/
 .vscode/
 .idea/
+
+# Generated labelling page (embeds dataset images; rebuild with python -m verifier.gold sample)
+verifier/gold/label*.html
+# Machine-specific preview config
+.claude/launch.json

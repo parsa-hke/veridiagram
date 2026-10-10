@@ -1,0 +1,5 @@
+gold_id,raw_label,adjudicated_label,reason,confirmed_by,date
+h025,yes,no,"equal_length: AB = 113 px vs DF = 148 px (24% apart); labeller confirmed a slip after seeing the measurement",labeller,2026-10-10
+h039,yes,no,"tangent: highlighted VX is a radius (X is the centre; its line passes 2 px from the centre); labeller confirmed a slip",labeller,2026-10-10
+h068,yes,no,"tangent: highlighted AD is a radius (D is the centre); re-check of g020; labeller confirmed a slip",labeller,2026-10-10
+g020,yes,no,"same query as h068 (round-1 copy); labeller confirmed the h068 label was a slip",labeller,2026-10-10

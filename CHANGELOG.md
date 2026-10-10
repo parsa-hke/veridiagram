@@ -174,3 +174,115 @@ Found
 - Collinear drops from 4528 to 2137 because PGDP5K only annotates the longest segment of a line;
   equal_length rises 219 -> 315 and parallel 135 -> 161 (marks are annotated more completely).
 - tangent: 0 asserted positives in the training split.
+
+## 2026-10-10 — Phase 3: verifier (3.1–3.4, 3.6–3.8 done; 3.5 awaiting hand labels)
+
+Done
+- 3.1 `verifier/primitives.py` (float64 vector helpers). 3.2 `verifier/checks.py`: one check per
+  relation returning (is_true, margin), plus `evaluate()` on schema references. 3.3
+  `tests/test_checks.py`: exact positive, exact negative and just-inside/just-outside boundary
+  cases for every check.
+- `data/queries.py`: candidate enumeration (the enumeration half of 5.1). Parallel, perpendicular,
+  tangent and collinear are line properties, so asserted relations are matched through carrier
+  lines (an asserted pair of lines makes every pair of their sub-segments asserted).
+- 3.4 `python -m verifier.tolerance` on the training split (1296 figures). Rule: valley of the
+  smoothed log-margin density between the asserted mode and the non-asserted bulk (centre of the
+  gap when the valley is flat); knee of the asserted CDF when there is no valley. Result, written to
+  `configs/base.yaml` and plan §0.2 #5: parallel 2.56°, perpendicular 2.03°, equal_length 2.32%
+  (knee), on_circle 7.94%, tangent 7.94% (= on_circle; no asserted tangents), collinear 1.19% of
+  diagram scale. Within tolerance: 94% / 98% / 81% / 99.9% / 99.9% of asserted relations.
+  Figures `reports/figures/tolerance_*.png`, table `reports/tables/tolerance_calibration.csv`.
+- 3.6/3.7 `python -m verifier.label`: geometric labels with margins for every candidate query of all
+  six sets (2.8M query-relations in 32 s) into `Diagram.geometric` and
+  `data/processed/queries/<set>.csv.gz`; not-to-scale flags (>10° / >15%), `reports/tables/not_to_scale.csv`.
+- 3.8 `python -m verifier.audit` -> `reports/tables/audit_<source>.csv` and example figures
+  `reports/figures/audit_<source>_{asserted_not_geometric,geometric_not_asserted}.png`.
+- 3.5 tooling: `python -m verifier.gold sample` draws 100 queries (relation x source stratified,
+  half verifier-positive, ~2/3 near the tolerance) and builds a blind labelling page
+  (`verifier/gold/label.html`, gitignored); `python -m verifier.gold score` computes FP/FN with
+  Wilson intervals, re-running the checks with the current tolerances.
+- Geometry3K loader: collinear groups that share two points are merged (one line stated with
+  different endpoints had produced duplicate groups: 7860 -> 4058 lines).
+- Tests: 103 passed.
+
+Found
+- Equal length has no density valley: unmarked equal lengths are common in textbook figures, so
+  the non-asserted density rises smoothly from 1e-3. The first valley pass returned 0.94% (an
+  artefact beside the asserted median); replaced by the knee rule (2.32%).
+- on_circle has an empty gap from ~4% to ~12%; the valley centre (7.94%) is loose relative to
+  asserted precision (99% within 3.2%). Kept as the plan's rule; the gold set will test it
+  (tangent borrows it).
+- **Not-to-scale is mostly a Geometry3K coordinate artefact**: 3.6% of Geometry3K diagrams are
+  flagged with its own coordinates (36 points "off" their circle), 0.6% of the same figures with
+  PGDP5K coordinates; PGDP5K 0.6%, PGPS9K 0.3%. Equal-length marks dominate the remaining flags.
+- **Audit (Result 1), curated Geometry3K figures, per carrier pair**: asserted relations confirmed
+  by the drawing: perpendicular 98.4%, parallel 93.4%, equal_length 77.3%, on_circle 99.9%,
+  collinear 99.8%. True-but-unmarked share of geometric positives: parallel 89%, perpendicular 54%,
+  equal_length 95%, tangent 100% (297 tangencies, none annotated). Geometry3K with its own
+  coordinates confirms less (parallel 86%, perpendicular 88%, equal_length 61%).
+- Unmarked geometric positives inspected by eye are real (rectangle sides, apothems, an inscribed
+  circle's tangent, symmetric lengths). Collinear also fires for points in separate sub-figures
+  that share a horizontal line (true on the infinite line, as defined).
+
+## 2026-10-10 — Gold set round 1: gate failed; verifier fixed, tolerances revised
+
+Done
+- Round 1 labelled by hand (100 items: 57 yes, 39 no, 4 unsure). `python -m verifier.gold score`:
+  FP 7.7% (3/39), FN 21% (12/57) -> **gate failed** (ceiling 3%).
+- Diagnosed all 15 disagreements by eye (renders of the queried primitives):
+  - verifier bugs: a short chord passed as tangent (|d-r|/r = 1 - cos(θ/2) is small for short
+    chords); a tangent at a segment endpoint failed because the foot fell just past the end.
+    Fixed in `verifier/checks.py` (chord exclusion: both endpoints within tol*r of the circle;
+    foot slack = max(2% of length, tol*r)); tests added.
+  - tolerance vs the eye: humans accepted perpendicular/parallel up to ~2.9° (first "no" at 4.7°)
+    and equal lengths up to 9.1% (first "no" at 33%, unsure at 3.2% and 5.6%).
+  - likely label slips (radius highlighted but tangent lines visible; point on the other circle;
+    two horizontal bases called non-parallel) and one ambiguous question (tangent wording allowed
+    "segment ends on the circle"). Not changed by me; sent to a blind re-check instead.
+- **Plan §0.2 #5 edited first**, then tolerances revised into the range consistent with every
+  round-1 label: parallel = perpendicular = 3.7°, equal_length 10%; on_circle 7.94%, tangent
+  7.94%, collinear 1.19% unchanged. `verifier.tolerance` now writes the config only with
+  `--write-config`. Labels and audit regenerated.
+- Revised verifier on round 1 (in-sample, not a gate): FP 5.1% (2/39), FN 8.8% (5/57).
+- Round 2 prepared (`python -m verifier.gold sample --round 2`): 60 new queries (10 per relation,
+  1/3 near tolerance, each with a sampling weight) + blind re-check of the 7 round-1 items the
+  revised verifier still disagrees with, mixed with 7 random agreements; 74 items, neutral ids.
+  **Pre-registered gate** (plan §3.5): population-weighted FP and FN on the 60 new items, both <= 3%.
+- Tests: 104 passed.
+
+Found
+- The histogram valleys are stricter than human perception (angles ~2° vs ~3-4° by eye; lengths
+  2.3% vs ~10%). The eye also says "yes" to 6.5-7.2° perpendiculars inconsistently (7.17° "no").
+- Audit after revision (curated Geometry3K figures): asserted perpendicular confirmed 99.6%,
+  parallel 96.4%, equal_length 93.5%; tangencies true-but-unmarked: 315.
+
+## 2026-10-10 — Gold round 2: gate 3.5 passed (adjudicated); Phase 3 complete
+
+Done
+- Round 2 labelled (74 items: 60 new held-out queries + 14 blind re-checks). Scored with
+  `python -m verifier.gold score` -> `reports/tables/verifier_audit.csv`, `verifier_recheck.csv`.
+- Two more rule fixes found by the gold rounds (applied to every query; no label edited):
+  - nested segments on one line (AM inside AB) are no longer queries: highlighted together they
+    look like one segment (h033 was such a pair; 1 item per round is now "invalid");
+  - coincident lines are not parallel; "one line" uses the collinear tolerance
+    (collinear_rel x diagram scale).
+- Adjudication: the labeller re-inspected the two items that drove the weighted FN (h025: sides
+  113 vs 148 px labelled equal; h039: a radius labelled tangent) and the radius item from round 1
+  (g020/h068), and confirmed all as slips. Recorded in `verifier/gold/adjudication.csv`; raw label
+  files untouched; raw and adjudicated rates both reported.
+- Plan 3.5 ticked with both results. Tests: 105 passed.
+
+Found
+- **Gate 3.5, round 2 (pre-registered population-weighted rates)**: raw FP 0.1%, FN 43.9% -> FAIL;
+  adjudicated FP 0.0%, FN 0.0% -> PASS. Unweighted stress rates (adjudicated): FP 3.8% (1/26,
+  a parallel at 3.68° vs the 3.7° tolerance), FN 0% (0/33).
+- Importance weighting with 60 items is fragile: one error in a large stratum (44k candidate pairs)
+  moved the weighted FN from 0% to 44%. Worth stating next to the gate in the report.
+- Blind re-check: of 7 round-1 disagreements the labeller changed 2 (both toward the verifier); of
+  7 agreements, 0. Persistent disagreements: two perpendiculars at 6.5° and 7.2° called "yes" (the
+  labeller also called 4.7° and 7.2° "no": perception noise), two bases 4 px apart on what looks
+  like one baseline called "not parallel", and a rectangle side ending on a circle called tangent.
+- Final audit (curated Geometry3K figures): asserted relations confirmed by the drawing:
+  perpendicular 99.6%, parallel 96.4%, equal_length 93.5%, on_circle 99.9%, collinear 99.8%.
+  Unmarked share of geometric positives: parallel 89%, perpendicular 56%, equal_length 96.5%,
+  tangent 100% (315).

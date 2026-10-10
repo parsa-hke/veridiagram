@@ -41,17 +41,19 @@ relations:
   tier2_included: [collinear]          # midpoint 83, equal_angle 87, perp_bisector 8 < 200 in the training split
   tier2_min_positives: 200
 
-tolerances:                            # Phase 3.4: chosen from margin histograms, then fixed
-  angle_deg: null                      # parallel / perpendicular
-  rel_length: null                     # equal_length
-  rel_radius: null                     # on_circle / tangent
-  collinear: null                      # Tier 2
-  midpoint: null                       # Tier 2
-  equal_angle_deg: null                # Tier 2
+tolerances:                            # Phase 3.4 histograms, revised after gold round 1 (plan §0.2 #5)
+  parallel_deg: 3.7                    # |sin θ| <= sin(parallel_deg); histogram valley was 2.56
+  perpendicular_deg: 3.7               # |cos θ| <= sin(perpendicular_deg); valley was 2.03; also perp_bisector
+  equal_length_rel: 0.10               # | |s1|-|s2| | / max; histogram knee was 0.0232
+  on_circle_rel: 0.0794                # | |p-c|-r | / r (histogram valley, unchanged)
+  tangent_rel: 0.0794                  # | d(line,c)-r | / r; no asserted tangents: = on_circle_rel
+  collinear_rel: 0.0119                # d(p, line ab) / diagram_scale (Tier 2, included; unchanged)
+  midpoint_rel: null                   # Tier 2, excluded (§0.2 #3)
+  equal_angle_deg: null                # Tier 2, excluded (§0.2 #3)
 
-not_to_scale:                          # Phase 3.6 (plan proposes 10 deg and 0.15)
-  angle_deg: null
-  rel_length: null
+not_to_scale:                          # Phase 3.6: an asserted relation off by more than this
+  angle_deg: 10.0                      # parallel / perpendicular
+  rel_length: 0.15                     # equal_length / on_circle / tangent
 
 overlay:
   color: [255, 0, 0]

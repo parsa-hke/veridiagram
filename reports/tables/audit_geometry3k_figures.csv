@@ -1,0 +1,7 @@
+relation,candidates,asserted_and_geometric,asserted_not_geometric,geometric_not_asserted,neither,pct_asserted_confirmed,pct_geometric_unmarked
+collinear,27866,2941,7,283,24635,99.8,8.8
+equal_length,66385,403,28,11171,54783,93.5,96.5
+on_circle,2796,1917,1,0,878,99.9,0.0
+parallel,14345,190,7,1534,12614,96.4,89.0
+perpendicular,14345,975,4,1244,12122,99.6,56.1
+tangent,1661,0,0,315,1346,0.0,100.0

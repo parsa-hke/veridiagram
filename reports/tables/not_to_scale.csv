@@ -1,0 +1,7 @@
+set,diagrams,not_to_scale,pct,by_parallel,by_perpendicular,by_equal_length,by_on_circle,by_tangent
+geometry3k,3002,108,3.6,24,51,41,36,0
+pgdp5k,5000,28,0.6,5,1,57,0,0
+pgps9k,4000,12,0.3,1,1,13,0,0
+geometry3k_figures,1851,11,0.6,0,0,18,0,0
+pgdp5k_heldout,660,4,0.6,0,1,9,0,0
+pgps9k_pool,3253,9,0.3,1,1,8,0,0

@@ -1,0 +1,15 @@
+round1_id,round2_id,relation,verifier,round1_label,round2_label,group,label_changed,now_agrees
+g016,h001,parallel,yes,yes,yes,agreement,0,1
+g076,h006,tangent,no,no,no,agreement,0,1
+g067,h007,collinear,yes,yes,yes,agreement,0,1
+g058,h013,parallel,yes,no,no,disagreement,0,0
+g014,h019,on_circle,no,no,no,agreement,0,1
+g040,h021,collinear,yes,no,yes,disagreement,1,1
+g057,h035,equal_length,yes,yes,yes,agreement,0,1
+g041,h049,tangent,no,yes,yes,disagreement,0,0
+g023,h052,on_circle,no,yes,no,disagreement,1,1
+g098,h054,on_circle,no,no,no,agreement,0,1
+g096,h065,tangent,no,no,no,agreement,0,1
+g020,h068,tangent,no,yes,yes,disagreement,0,0
+g038,h070,perpendicular,no,yes,yes,disagreement,0,0
+g091,h073,perpendicular,no,yes,yes,disagreement,0,0

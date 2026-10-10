@@ -47,3 +47,37 @@ def save_grid(diagrams: list[Diagram], raw_dir: str | Path, out_path: str | Path
     fig.savefig(out_path, dpi=110)
     plt.close(fig)
     return out_path
+
+
+HIGHLIGHT = "#e8161b"
+
+
+def draw_query(ax, d: Diagram, refs: list, raw_dir: str | Path, title: str | None = None) -> None:
+    """Image with the queried primitives highlighted (segments, points, circles, angle rays)."""
+    with Image.open(Path(raw_dir) / d.image_path) as im:
+        ax.imshow(im.convert("RGB"))
+    for ref in refs:
+        kind = ref[0]
+        if kind == "seg":
+            (x1, y1), (x2, y2) = d.points[ref[1]], d.points[ref[2]]
+            ax.plot([x1, x2], [y1, y2], color=HIGHLIGHT, lw=2.2, alpha=0.75, solid_capstyle="round")
+        elif kind == "pt":
+            x, y = d.points[ref[1]]
+            ax.plot(x, y, "o", ms=7, mfc="none", mec=HIGHLIGHT, mew=2)
+        elif kind == "circle":
+            c = d.circles[ref[1]]
+            if c.center_xy and c.radius:
+                ax.add_patch(plt.Circle(c.center_xy, c.radius, fill=False, color=HIGHLIGHT, lw=2, alpha=0.75))
+        elif kind == "angle":
+            a, v, b = (d.points[n] for n in ref[1:])
+            ax.plot([a[0], v[0], b[0]], [a[1], v[1], b[1]], color=HIGHLIGHT, lw=2.2, alpha=0.75)
+    names = {n for ref in refs if ref[0] != "circle" for n in ref[1:]}
+    for n in names:
+        x, y = d.points[n]
+        ax.annotate(n, (x, y), xytext=(5, -5), textcoords="offset points", color=HIGHLIGHT, fontsize=8, weight="bold")
+    ax.set_xlim(0, d.width)
+    ax.set_ylim(d.height, 0)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    if title:
+        ax.set_title(title, fontsize=7)

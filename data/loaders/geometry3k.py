@@ -165,7 +165,7 @@ def load_one(d: Path, split: str, recover_offset: bool = True) -> Diagram:
             flags["circle_without_radius"] = flags.get("circle_without_radius", 0) + 1
 
     # ---- lines and segments
-    lines = [order_along(sorted({a, b} | ps), points) for (a, b), ps in on_line.items()]
+    lines = [order_along(sorted(g), points) for g in _merge_groups([{a, b} | ps for (a, b), ps in on_line.items()])]
     extra, bad_instances = [], 0
     for s in lf.get("line_instances", []):
         if not s.strip():
@@ -189,6 +189,23 @@ def load_one(d: Path, split: str, recover_offset: bool = True) -> Diagram:
         meta={"native_id": int(d.name), "raw_point_positions": {k: list(v) for k, v in raw_pts.items()},
               "comment": data.get("comment", ""), "textbook_source": data.get("source", "")},
     )
+
+
+def _merge_groups(groups: list[set[str]]) -> list[set[str]]:
+    """Merge collinear groups that share two or more points (one line stated with different endpoints)."""
+    groups = [set(g) for g in groups]
+    merged = True
+    while merged:
+        merged = False
+        for i in range(len(groups)):
+            for j in range(i + 1, len(groups)):
+                if len(groups[i] & groups[j]) >= 2:
+                    groups[i] |= groups.pop(j)
+                    merged = True
+                    break
+            if merged:
+                break
+    return groups
 
 
 def _split_instance(s: str, names: set[str]) -> tuple[str, str] | None:

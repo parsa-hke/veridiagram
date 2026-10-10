@@ -40,6 +40,16 @@ Download and layout: [data/README.md](data/README.md). After the raw files are i
 .venv/bin/python -m data.build && .venv/bin/python -m data.overlap && .venv/bin/python -m data.splits && .venv/bin/python -m data.census && .venv/bin/python -m data.sanity
 ```
 
+## Verifier
+
+```bash
+.venv/bin/python -m verifier.tolerance   # margin histograms + calibration table (--write-config to overwrite configs/base.yaml)
+.venv/bin/python -m verifier.label       # geometric labels + not-to-scale flags for every set
+.venv/bin/python -m verifier.audit       # asserted vs geometric tables and example figures (Result 1)
+.venv/bin/python -m verifier.gold sample # 100 gold queries + labelling page verifier/gold/label.html
+.venv/bin/python -m verifier.gold score  # after labelling: FP/FN rates -> reports/tables/verifier_audit.csv
+```
+
 ## Running on Google Colab
 
 Heavy runs (fine-tunes, scaling, self-training) run on Colab Pro. Open

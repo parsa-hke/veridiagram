@@ -1,0 +1,6 @@
+relation,n_asserted,n_not_asserted,valley_threshold,youden_threshold,method,margin_threshold,tolerance,unit,asserted_within,not_asserted_within
+parallel,161,10004,0.04467,0.1527,valley,0.04467,2.56,deg,0.938,0.108
+perpendicular,687,9478,0.03548,0.08132,valley,0.03548,2.03,deg,0.984,0.083
+equal_length,315,56225,,0.07108,knee (no valley),0.0232,0.0232,relative,0.813,0.077
+on_circle,1337,600,0.07943,0.06788,valley,0.07943,0.0794,relative,0.999,0.000
+collinear,2127,17746,0.01189,0.01055,valley,0.01189,0.0119,relative,0.999,0.012
