@@ -432,4 +432,22 @@ Done
   in its own cell; full-run cell guarded by `RUN_FULL = False`.
 - `python -m experiments.gate smoke` (`experiments/gate.py`): checks both smoke runs for status ok,
   primary backbone (DINOv3, not the fallback), < 10 min, predictions for every unit and best.pt;
-  prints PASS/FAIL. Tests: 138 passed.
+  prints PASS/FAIL. Tests: 137 passed.
+
+## 2026-10-11 — Gate 6.6 passed on Colab (L4); Phase 6 complete
+
+Done
+- Second Colab session at `201cfcf`: data unpacked from the Drive tarball (data revision 4fa8896,
+  3.2 GB raw, 295 MB processed); `python -m models.backbone` loaded the gated checkpoint with no
+  fallback: DINOv3ViTModel, hidden 1024, 24 layers, patch 16, 4 register tokens, 303.1M
+  parameters, 560 patch tokens for a 448x320 input as expected, image-processor mean/std equal to
+  the config (ImageNet). "facebook/dinov3-vitl16-pretrain-lvd1689m: OK".
+- `python -m experiments.gate smoke`: PASS. Probe smoke ok, DINOv3, 97 s; fine-tune smoke ok,
+  DINOv3, 97 s; predictions for every evaluation unit; best.pt written to Drive.
+
+Found
+- With HF_HOME on the local disk the safetensors load works (the first session's SafetensorError
+  came from the Drive-mounted cache).
+- Both smoke runs took 97 s on the L4. Checked the gate is not reading one file twice: run locally
+  it reports the Mac's own runs (157 s and 724 s) and fails them for using the DINOv2 fallback.
+- Smoke-scale numbers (256 queries per unit, 16 optimiser steps) are not results.

@@ -208,7 +208,7 @@ Rules:
 - [x] 6.3 `models/probe.py`: extract frozen features once for all splits (cache to disk), train the head only with AdamW, LR 1e-3, 50 epochs, early stopping on val macro-F1. *(Done: `models/probe.py`; features cached per backbone/overlay settings/index and verified by query ids.)*
 - [x] 6.4 `models/finetune.py`: full fine-tune. AdamW, head LR 1e-3, backbone LR 2e-5 with layer-wise decay 0.8 from the last block downward, weight decay 0.05, cosine schedule with 1-epoch warm-up, 30 epochs, batch 16 (gradient accumulation if needed), mixed precision, EMA of weights (0.999), checkpoint best val macro-F1. Log loss, per-class F1, LR every epoch. *(Done: `models/finetune.py`; EMA with warm-up; best.pt = EMA weights by val macro-F1; last.pt for resume; history.jsonl per epoch incl. peak LRs.)*
 - [x] 6.5 Seeds: every run takes `seed` from config; three seeds (0, 1, 2) for every reported number. *(Done: seed from config drives torch/numpy/random, data order, augmentation and head init; `--set seed=k`.)*
-- [ ] 6.6 **GATE: smoke run of probe and fine-tune completes end to end in under 10 minutes and writes `runs/smoke_*/metrics.json`.**
+- [x] 6.6 **GATE: smoke run of probe and fine-tune completes end to end in under 10 minutes and writes `runs/smoke_*/metrics.json`.** *(PASSED 2026-10-11 on Colab, NVIDIA L4: `python -m experiments.gate smoke` — probe and fine-tune smoke both ok, both loaded facebook/dinov3-vitl16-pretrain-lvd1689m (access check: DINOv3ViTModel, 1024-d, 24 layers, patch 16, 4 register tokens, 303.1M params, normalisation matches), 97 s each, predictions for every unit, best.pt written.)*
 
 ---
 
