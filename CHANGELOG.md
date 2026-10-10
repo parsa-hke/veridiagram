@@ -368,3 +368,50 @@ Found
 - Training tangent positives: 476 from real data alone, 5,360 with 10k synthetic diagrams (11x).
 - synth_extrap gives 60k evaluation queries (1,000 diagrams x 60); evaluating ViT-L on all of them
   is costly, so Phase 7 may subsample it.
+
+## 2026-10-11 — Phase 6: model code (6.1-6.5 done; gate 6.6 to be timed on Colab)
+
+Done
+- 6.1 `models/backbone.py`: DINOv3 ViT-L/16 via transformers 5.19 (`DINOv3ViTModel`; tokens = CLS + 4
+  registers + patches; RoPE, any multiple of 16), fallback DINOv2-L/14; outputs CLS, patch tokens
+  (registers dropped) and pooled = CLS ++ mean patch; gradient checkpointing on; `layer_depth` for
+  LLRD (embeddings 0, block i -> i+1, final norm on top); the checkpoint's image-processor mean/std
+  are checked against `input.mean/std`; which backbone loaded (and why a fallback) goes to metrics.
+- 6.2 `models/head.py`: LayerNorm -> Linear (sigmoid at inference); masked BCE over applicable
+  relations; positive weights = negatives/positives per relation in the training split (cap 50).
+- 6.3 `models/probe.py`: frozen features cached at <cache>/features/<backbone>/<overlay hash>/<index>.npz
+  (verified by query ids), head trained with AdamW, early stopping on val macro-F1.
+- 6.4 `models/finetune.py`: AdamW, head LR 1e-3, backbone 2e-5 x 0.8^k from the last block down,
+  wd 0.05 (none on biases/norms/tokens), cosine with linear warm-up per step, grad accumulation,
+  clipping 1.0, bf16 autocast, EMA 0.999 with warm-up, best.pt = EMA weights by val macro-F1,
+  last.pt for resume (tested), history.jsonl with loss, val per-class F1, end and peak LRs.
+- 6.5 seeds from config drive torch/numpy/random, data order, augmentation and head init.
+- `models/common.py` (autocast, EMA, schedule, prediction, evaluation of every unit against both
+  label sets, predictions saved to <run_dir>/predictions/<unit>.npz); `analysis/metrics.py`
+  (per-relation P/R/F1, macro-F1 over relations with positives; ECE/bootstrap in Phase 8).
+- `data/download.py` (download + sha256 check + safe extraction) and `data/prepare.py` (one command:
+  download -> build -> overlap -> splits -> census -> synthetic -> labels -> query indexes).
+- `GEO_OVERLAYS` environment variable: overlays applied by `load_config`, so every CLI follows the
+  Colab paths. `configs/colab.yaml` now keeps data and caches on the VM's local disk (Drive is too
+  slow for 50k small images); the launcher unpacks one data tarball from Drive per session.
+- Colab launcher rebuilt: data cell (prepare once, tarball on Drive keyed by the data-code git hash)
+  and the Phase 6 smoke gate.
+- Smoke config: `data.max_queries_per_unit: 256`, `finetune.save_last: false`.
+- Tests: tiny random DINOv3/DINOv2 (no download) for shapes, LLRD, loss masking, metrics, EMA,
+  schedule, probe and fine-tune end to end with resume. 134 passed.
+
+Found
+- DINOv3 is gated; this Mac has no Hugging Face login (401), so local runs used the DINOv2-L
+  fallback (recorded in metrics). DINOv2-L's processor mean/std match the config.
+- Local smoke on the M5 (MPS), DINOv2-L fallback: probe 157 s; fine-tune 724 s (16 optimiser steps
+  in 498 s, ~25-30 s each; evaluation ~55 s per 256 queries). Over the 10-minute gate, so the gate
+  is timed on a Colab GPU (plan §0.6 updated); the Mac keeps the probe smoke and the tiny tests.
+- A Phase 1 test used "fine-tune smoke raises NotImplementedError" as its failure case; with a real
+  trainer it started a 9.5-minute training run. Replaced by an injected failure.
+- The feature-cache log line used a path relative to the repo, which crashes when the cache is
+  outside it (Colab /content/cache). Fixed.
+- Added `python -m models.backbone`: loads the primary backbone (DINOv3) with no fallback, runs a
+  forward pass and prints architecture (class, hidden size, layers, patch, register tokens,
+  parameters), token counts and normalisation; exits non-zero if the gated checkpoint is not
+  accessible. The Colab launcher runs it before the smoke runs, so the gate cannot silently pass on
+  the DINOv2 fallback. Locally it fails as expected (no Hugging Face login, 401).

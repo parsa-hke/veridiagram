@@ -60,15 +60,23 @@ def deep_merge(base: dict, override: dict) -> dict:
     return out
 
 
-def load_config(path: str | Path) -> dict:
-    """Load a YAML config, resolving `inherit:` (path relative to the file) recursively."""
+def load_config(path: str | Path, env_overlays: bool = True) -> dict:
+    """Load a YAML config, resolving `inherit:` (path relative to the file) recursively.
+
+    If the environment variable GEO_OVERLAYS lists overlay files (comma-separated, relative to the
+    repo root), they are layered on top, so every CLI (data, verifier, experiments) picks up e.g.
+    the Colab paths from one `GEO_OVERLAYS=configs/colab.yaml`.
+    """
     path = Path(path).resolve()
     with open(path) as f:
         cfg = yaml.safe_load(f) or {}
     parent = cfg.pop("inherit", None)
-    if parent is None:
-        return cfg
-    return deep_merge(load_config(path.parent / parent), cfg)
+    if parent is not None:
+        cfg = deep_merge(load_config(path.parent / parent, env_overlays=False), cfg)
+    if env_overlays:
+        for ov in filter(None, (x.strip() for x in os.environ.get("GEO_OVERLAYS", "").split(","))):
+            cfg = apply_overlay(cfg, ov if Path(ov).is_absolute() else REPO_ROOT / ov)
+    return cfg
 
 
 def apply_overrides(cfg: dict, overrides: list[str]) -> dict:

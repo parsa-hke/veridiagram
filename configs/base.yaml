@@ -32,6 +32,7 @@ data:
   max_queries_per_diagram: 60          # random cap; training keeps all positives, eval samples uniformly (plan §5.1)
   train_none_ratio: 3.0                # training: max all-negative queries per positive query, per query kind (plan §5.4)
   index_seed: 0                        # query sampling is fixed across training seeds
+  max_queries_per_unit: null           # smoke only: evenly spaced subsample of each unit
   num_workers: 4
   cache_overlays: true
 
@@ -102,6 +103,7 @@ probe:
   epochs: 50
   batch_size: 256                      # on cached features
   early_stopping_patience: 10
+  extract_batch_size: 32               # frozen feature extraction
   select_metric: val_macro_f1
 
 finetune:
@@ -119,9 +121,12 @@ finetune:
   ema_decay: 0.999
   select_metric: val_macro_f1
   init_checkpoint: null                # Part B student starts from the 7.3 checkpoint
+  save_last: true                      # resumable checkpoint every epoch (Colab disconnects)
+  max_steps_per_epoch: null            # smoke only
 
 eval:
   checkpoint: null
+  batch_size: 32
   label_sets: [geometric, asserted]
   threshold: tune_on_val               # operating threshold per relation, tuned on val
   ece_bins: 15

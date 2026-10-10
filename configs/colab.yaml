@@ -1,11 +1,12 @@
-# Colab overlay: use with --overlay configs/colab.yaml on top of any config.
-# Persistent state lives on Google Drive (mounted at /content/drive by the launcher notebook);
-# the overlay PNG cache stays on the VM's local disk because Drive is slow for many small files.
+# Colab overlay: --overlay configs/colab.yaml on experiments.run, or GEO_OVERLAYS=configs/colab.yaml for
+# every CLI (data.*, verifier.*, experiments.*). Data and caches live on the VM's local disk (reading
+# 50k small images over the Drive mount would starve the GPU); the launcher unpacks them from one
+# tarball on Drive at the start of a session. Run outputs (metrics, checkpoints, log.csv) go to Drive.
 # The CUDA device is picked up automatically (device: auto).
 paths:
-  raw: /content/drive/MyDrive/geo-relations/data/raw
-  processed: /content/drive/MyDrive/geo-relations/data/processed
-  splits: /content/drive/MyDrive/geo-relations/data/processed/splits
+  raw: /content/data/raw
+  processed: /content/data/processed
+  splits: /content/data/processed/splits
   cache: /content/cache
   runs: /content/drive/MyDrive/geo-relations/runs
   log_csv: /content/drive/MyDrive/geo-relations/runs/log.csv

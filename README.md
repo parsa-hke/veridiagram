@@ -32,6 +32,25 @@ Each run writes `runs/<name>_s<seed>/{config.yaml,metrics.json}` and appends one
 
 Tests: `.venv/bin/python -m pytest`.
 
+## One-command data setup
+
+```bash
+.venv/bin/python -m data.prepare --download     # download + verify archives, build, splits, synthetic pools, labels, query indexes
+```
+
+## Models (Phase 6)
+
+```bash
+.venv/bin/python -m experiments.run --config configs/probe.yaml --smoke      # frozen DINOv3 features + linear head
+.venv/bin/python -m experiments.run --config configs/finetune.yaml --smoke   # full fine-tune (LLRD, cosine, bf16, EMA)
+.venv/bin/python -m experiments.run --config configs/finetune.yaml --set seed=1
+```
+
+DINOv3 is gated: run `.venv/bin/hf auth login` once (or set `HF_TOKEN`); without access the
+DINOv2-L fallback is used and recorded in `metrics.json` (`backbone_loaded`). Each run writes
+`config.yaml`, `metrics.json`, `history.jsonl`, `predictions/<unit>.npz` and, for fine-tunes,
+`checkpoints/{best,last}.pt`; an interrupted fine-tune resumes from `last.pt`.
+
 ## Data
 
 Download and layout: [data/README.md](data/README.md). After the raw files are in `data/raw/`:

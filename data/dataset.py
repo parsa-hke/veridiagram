@@ -57,6 +57,10 @@ class QueryDataset(torch.utils.data.Dataset):
             build_index(cfg, unit)
         with open(path) as f:
             self.rows = [json.loads(line) for line in f]
+        cap = cfg["data"].get("max_queries_per_unit")
+        if cap and len(self.rows) > cap:                     # smoke: evenly spaced subsample
+            step = len(self.rows) / cap
+            self.rows = [self.rows[int(i * step)] for i in range(cap)]
         proc = REPO_ROOT / cfg["paths"]["processed"]
         need: dict[str, set] = {}
         for r in self.rows:
@@ -136,9 +140,11 @@ def make_collate(white: torch.Tensor):
     return collate
 
 
-def loader(ds: QueryDataset, batch_size: int, shuffle: bool, num_workers: int = 0) -> torch.utils.data.DataLoader:
+def loader(ds: QueryDataset, batch_size: int, shuffle: bool, num_workers: int = 0,
+           generator: torch.Generator | None = None) -> torch.utils.data.DataLoader:
     return torch.utils.data.DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers,
-                                       collate_fn=make_collate(ds.white()), persistent_workers=num_workers > 0)
+                                       collate_fn=make_collate(ds.white()), persistent_workers=num_workers > 0,
+                                       generator=generator)
 
 
 def check_disjoint(cfg: dict, units=tuple(UNITS)) -> None:

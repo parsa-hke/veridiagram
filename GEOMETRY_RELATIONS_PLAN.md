@@ -117,6 +117,8 @@ Rules:
 - **Google Colab Pro (CUDA):** probe feature extraction, every fine-tune, scaling and self-training runs. A100 for full fine-tunes; L4 acceptable for probes and smoke. Not T4 (no bf16) and not TPU.
 - Same code and configs on both; Colab adds `--overlay configs/colab.yaml` (paths on Google Drive) and is driven by `notebooks/colab_launcher.ipynb`, which clones the GitHub repo at `main`.
 - Colab sessions can disconnect, so the trainers in Phase 6 must checkpoint every epoch and resume from the last checkpoint in the run directory.
+- Measured 2026-10-11: a ViT-L fine-tune step (batch 16, 448 px) takes ~25 s on the M5's GPU (MPS), so the fine-tune smoke takes ~13 min locally; the probe smoke takes 2.6 min. Gate 6.6 (< 10 min) is therefore timed on a Colab GPU; the Mac runs the probe smoke and the tiny-model tests.
+- On Colab, data and caches sit on the VM's local disk (`configs/colab.yaml`, `GEO_OVERLAYS`), unpacked from one tarball on Drive built by `python -m data.prepare --download`; run outputs go to Drive.
 
 ---
 
@@ -201,11 +203,11 @@ Rules:
 
 ## Phase 6 — Model
 
-- [ ] 6.1 `models/backbone.py`: load DINOv3 ViT-L/16 (fallback DINOv2-L/14) from the hub. Expose: patch tokens, CLS token, pooled feature (CLS concatenated with mean of patch tokens). Support variable input size. Gradient checkpointing on.
-- [ ] 6.2 `models/head.py`: LayerNorm → Linear → sigmoid per relation (multi-label, BCE loss with per-class positive weights from the census).
-- [ ] 6.3 `models/probe.py`: extract frozen features once for all splits (cache to disk), train the head only with AdamW, LR 1e-3, 50 epochs, early stopping on val macro-F1.
-- [ ] 6.4 `models/finetune.py`: full fine-tune. AdamW, head LR 1e-3, backbone LR 2e-5 with layer-wise decay 0.8 from the last block downward, weight decay 0.05, cosine schedule with 1-epoch warm-up, 30 epochs, batch 16 (gradient accumulation if needed), mixed precision, EMA of weights (0.999), checkpoint best val macro-F1. Log loss, per-class F1, LR every epoch.
-- [ ] 6.5 Seeds: every run takes `seed` from config; three seeds (0, 1, 2) for every reported number.
+- [x] 6.1 `models/backbone.py`: load DINOv3 ViT-L/16 (fallback DINOv2-L/14) from the hub. Expose: patch tokens, CLS token, pooled feature (CLS concatenated with mean of patch tokens). Support variable input size. Gradient checkpointing on. *(Done 2026-10-11: `models/backbone.py`; pooled = CLS ++ mean patch (2048-d); register tokens dropped; fallback recorded in metrics; image-processor mean/std checked against the config (DINOv2-L: match).)*
+- [x] 6.2 `models/head.py`: LayerNorm → Linear → sigmoid per relation (multi-label, BCE loss with per-class positive weights from the census). *(Done: `models/head.py`; masked BCE over applicable relations; positive weights = negatives/positives in the training split, capped at 50.)*
+- [x] 6.3 `models/probe.py`: extract frozen features once for all splits (cache to disk), train the head only with AdamW, LR 1e-3, 50 epochs, early stopping on val macro-F1. *(Done: `models/probe.py`; features cached per backbone/overlay settings/index and verified by query ids.)*
+- [x] 6.4 `models/finetune.py`: full fine-tune. AdamW, head LR 1e-3, backbone LR 2e-5 with layer-wise decay 0.8 from the last block downward, weight decay 0.05, cosine schedule with 1-epoch warm-up, 30 epochs, batch 16 (gradient accumulation if needed), mixed precision, EMA of weights (0.999), checkpoint best val macro-F1. Log loss, per-class F1, LR every epoch. *(Done: `models/finetune.py`; EMA with warm-up; best.pt = EMA weights by val macro-F1; last.pt for resume; history.jsonl per epoch incl. peak LRs.)*
+- [x] 6.5 Seeds: every run takes `seed` from config; three seeds (0, 1, 2) for every reported number. *(Done: seed from config drives torch/numpy/random, data order, augmentation and head init; `--set seed=k`.)*
 - [ ] 6.6 **GATE: smoke run of probe and fine-tune completes end to end in under 10 minutes and writes `runs/smoke_*/metrics.json`.**
 
 ---

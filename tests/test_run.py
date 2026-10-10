@@ -79,13 +79,18 @@ def test_dry_run_writes_metrics_and_log(tmp_path):
     assert len(rows) == 1 and rows[0]["name"] == "smoke_probe_s0"
 
 
-def test_failed_run_is_logged(tmp_path):
+def test_failed_run_is_logged(tmp_path, monkeypatch):
     cfg = R.resolve_config(R.REPO_ROOT / "configs/finetune.yaml", smoke=True,
                            overrides=[f"paths.runs={tmp_path}", f"paths.log_csv={tmp_path / 'log.csv'}"])
-    with pytest.raises(NotImplementedError):
-        R.run(cfg)  # finetune is a stub until Phase 6
+
+    def boom(cfg, run_dir):
+        raise RuntimeError("simulated failure")
+
+    monkeypatch.setattr(R, "resolve_target", lambda mode: boom)
+    with pytest.raises(RuntimeError):
+        R.run(cfg)
     rows = list(csv.DictReader(open(tmp_path / "log.csv")))
-    assert rows[0]["status"] == "failed:NotImplementedError"
+    assert rows[0]["status"] == "failed:RuntimeError"
 
 
 def test_device_info_cli(capsys):
@@ -97,6 +102,14 @@ def test_colab_overlay_keeps_mode_and_name():
     cfg = R.resolve_config(R.REPO_ROOT / "configs/finetune.yaml", smoke=True,
                            overlays=[R.REPO_ROOT / "configs/colab.yaml"], overrides=["seed=1"])
     assert cfg["mode"] == "finetune" and cfg["name"] == "smoke_finetune"
-    assert cfg["paths"]["runs"].startswith("/content/drive/")
+    assert cfg["paths"]["runs"].startswith("/content/drive/") and cfg["paths"]["raw"] == "/content/data/raw"
     assert cfg["paths"]["figures"] == "reports/figures"  # untouched keys keep base values
     assert cfg["data"]["max_diagrams"] == 50 and cfg["seed"] == 1
+
+
+def test_env_overlays(monkeypatch):
+    monkeypatch.setenv("GEO_OVERLAYS", "configs/colab.yaml")
+    cfg = R.load_config(R.REPO_ROOT / "configs/smoke.yaml")
+    assert cfg["paths"]["processed"] == "/content/data/processed" and cfg["data"]["max_diagrams"] == 50
+    monkeypatch.delenv("GEO_OVERLAYS")
+    assert R.load_config(R.REPO_ROOT / "configs/smoke.yaml")["paths"]["processed"] == "data/processed"
