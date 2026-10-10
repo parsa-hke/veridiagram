@@ -415,3 +415,21 @@ Found
   parameters), token counts and normalisation; exits non-zero if the gated checkpoint is not
   accessible. The Colab launcher runs it before the smoke runs, so the gate cannot silently pass on
   the DINOv2 fallback. Locally it fails as expected (no Hugging Face login, 401).
+
+## 2026-10-11 — First Colab run (L4): data ready, fine-tune smoke failed to load weights
+
+Found (from the exported notebook)
+- Setup, data preparation (`data.prepare --download`: 3.2 GB raw, 295 MB processed, all indexes;
+  labelling took 359 s on Colab) and the probe smoke (ok, 106 s) worked on an L4.
+- The fine-tune smoke and the three full runs failed with "no backbone could be loaded": DINOv3
+  raised a SafetensorError, not a 401, so the token and gated access worked; reading the weights
+  failed. Cause: HF_HOME pointed at Google Drive; safetensors files are memory-mapped, which the
+  Drive mount does not support reliably (the DINOv2 fallback lives in the same cache).
+- "Run all" also started the full runs before the gate: a launcher flaw.
+
+Done
+- Launcher: HF_HOME on the VM's local disk (re-download per session, < 1 min); DINOv3 access check
+  in its own cell; full-run cell guarded by `RUN_FULL = False`.
+- `python -m experiments.gate smoke` (`experiments/gate.py`): checks both smoke runs for status ok,
+  primary backbone (DINOv3, not the fallback), < 10 min, predictions for every unit and best.pt;
+  prints PASS/FAIL. Tests: 138 passed.
