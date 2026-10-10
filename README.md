@@ -50,6 +50,14 @@ Download and layout: [data/README.md](data/README.md). After the raw files are i
 .venv/bin/python -m verifier.gold score  # after labelling: FP/FN rates -> reports/tables/verifier_audit.csv
 ```
 
+## Synthetic data
+
+```bash
+.venv/bin/python -m data.synthetic.build                                   # 50k train + 1k extrap + 2k unlabelled (~10 min, 8 workers)
+.venv/bin/python -m verifier.label --sets synth_train synth_extrap         # geometric labels
+.venv/bin/python -m data.synthetic.check                                   # injected vs random pass rates, example figure
+```
+
 ## Running on Google Colab
 
 Heavy runs (fine-tunes, scaling, self-training) run on Colab Pro. Open

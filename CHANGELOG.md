@@ -286,3 +286,42 @@ Found
   perpendicular 99.6%, parallel 96.4%, equal_length 93.5%, on_circle 99.9%, collinear 99.8%.
   Unmarked share of geometric positives: parallel 89%, perpendicular 56%, equal_length 96.5%,
   tangent 100% (315).
+
+## 2026-10-11 — Phase 4: synthetic diagram generator
+
+Done
+- 4.1 `data/synthetic/generator.py`: 0-2 circles, then construction steps; with probability
+  `inject_rate` (0.5) an exact construction (parallel; perpendicular at an endpoint or a foot;
+  equal length from a shared endpoint or elsewhere; point on a segment or its midpoint; point on a
+  circle; tangent at a circle point, sometimes with the tangency point and radius drawn), otherwise
+  a random point (min separation 30 px) or a random segment that passes >= 8 px from other points
+  and preferably starts at an isolated point. Weights in `synthetic.construction_weights` (tangent
+  x2: real data has ~no tangent positives). Then a slight rotation (<= 5°) and N(0, 1 px) jitter on
+  every coordinate; exact coordinates kept in `meta.exact_points`. Pure function of
+  (seed, pool, index).
+- 4.2 `data/synthetic/render.py`: black on white, letter labels placed in the widest free direction,
+  right-angle squares / tick marks (1-3 per class) / parallel arrows (1-2 per class) for the
+  injected relations; sampled line width, font family and slant, font size, label offset, dots,
+  mark size, scan noise (p 0.5) and JPEG artefacts (p 0.5). 28 ms per diagram.
+- 4.3 `python -m data.synthetic.build` (8 workers, ~4 min): synth_train 50,000 (1k / 10k / 50k are
+  nested prefixes, `data/processed/splits/synth_train_{1k,10k,50k}.txt`), synth_extrap 1,000
+  (12-20 points, 8-16 segments), synth_unlabelled 2,000 (public file has images only; annotation
+  sealed in `data/processed/sealed/synth_unlabelled.jsonl`, sha256
+  c093038836421a0dc0c0b156d4b85c26706bc3195f09192e8679cc214567cdd7). Images under
+  `data/raw/synthetic/` (gitignored, 2.1 GB).
+- 4.4 `python -m verifier.label --sets synth_train synth_extrap` (5.0M query-relations, 57 s) and
+  `python -m data.synthetic.check` -> `reports/tables/synthetic_verifier_check.csv`,
+  `reports/figures/synthetic_examples.png`.
+- Tests: `tests/test_synthetic.py` (counts, separation, determinism, exact constructions, injected
+  relations reachable as queries, render, seal). 113 passed.
+
+Found
+- Constructions are exact: before jitter every injected relation has margin <= 4e-15.
+- After jitter the verifier confirms 99.4-100% of injected relations (train and extrap, every
+  relation); random candidate queries are geometric positives 1.3-4.3% of the time, except
+  equal_length 11% (the 10% tolerance makes chance near-equal pairs common).
+- Synthetic train has 24,792 geometric tangent positives (real training split: 0 asserted).
+- First build was 7.2 GB: scan-noise images do not compress in PNG (388 KB vs 19 KB clean, 91% of
+  the bytes). Noisy images are now stored as JPEG quality 95: 2.1 GB total.
+- Remaining look: about 1 in 3 training diagrams has no injected relation (random only), and
+  extrapolation diagrams have some unconnected points (20 points, <= 16 segments). Left as is.

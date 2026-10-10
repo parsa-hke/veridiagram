@@ -1,0 +1,13 @@
+pool,relation,exact_max_margin,injected,injected_pass,random,random_pass
+synth_train,collinear,4.66e-16,24259,0.998,1311512,0.013
+synth_train,equal_length,4.14e-15,11907,0.995,864054,0.112
+synth_train,on_circle,1.95e-15,14072,1.000,300051,0.043
+synth_train,parallel,2.16e-15,14509,0.994,614087,0.031
+synth_train,perpendicular,1.83e-15,10770,0.996,617826,0.038
+synth_train,tangent,2.04e-15,7193,0.996,257289,0.036
+synth_extrap,collinear,1.90e-16,1435,1.000,161601,0.017
+synth_extrap,equal_length,3.66e-15,757,0.995,102192,0.104
+synth_extrap,on_circle,1.67e-15,895,0.999,14288,0.042
+synth_extrap,parallel,2.61e-15,1165,0.996,64763,0.037
+synth_extrap,perpendicular,1.36e-15,683,0.997,65245,0.043
+synth_extrap,tangent,1.36e-15,543,0.994,11169,0.036

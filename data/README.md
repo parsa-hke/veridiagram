@@ -170,6 +170,28 @@ Held-out source test: 660 PGDP5K test figures with no Geometry3K copy. Part B po
 figures that are in no val/test set (1216 of them are training figures, `meta.in_train`).
 Evaluation sets share no figure with anything else.
 
+## Synthetic pools (plan Phase 4)
+
+Generated, not downloaded: `python -m data.synthetic.build` writes images to
+`data/raw/synthetic/<pool>/<index>.png` (gitignored; every diagram is a pure function of
+`(synthetic.seed, pool, index)`, so the pools regenerate bit-for-bit, e.g. on Colab) and
+annotations to `data/processed/synth_<pool>.jsonl` (source `synthetic`, split = pool).
+
+| Pool | Size | Points / segments | Use |
+|---|---|---|---|
+| `train` | 50,000 (1k / 10k / 50k are nested prefixes: `splits/synth_train_{1k,10k,50k}.txt`) | 4-10 / 3-8 | Part A |
+| `extrap` | 1,000 | 12-20 / 8-16 (1.5-2x the training max) | extrapolation test |
+| `unlabelled` | 2,000 | 4-10 / 3-8 | images only; annotation sealed in `data/processed/sealed/` (sha256 in `SEAL.txt`) |
+
+Each diagram: 0-2 circles, then construction steps; with probability `inject_rate` a construction
+adds an exact relation (parallel, perpendicular at an endpoint or foot, equal length, point on a
+segment or its midpoint, point on a circle, tangent at a circle point; weights in
+`synthetic.construction_weights`, tangent doubled), otherwise a random point or segment. The
+constructions are the synthetic `asserted` set and are drawn as marks (right-angle squares, tick
+marks, parallel arrows). Then a slight rotation and N(0, 1 px) jitter on every coordinate: the
+verifier decides the `geometric` set. `meta` keeps the drawn segments, marks, construction counts,
+exact pre-jitter coordinates and render style.
+
 ## Scripts
 
 ```bash
@@ -178,5 +200,7 @@ python -m data.overlap    # duplicates -> data/processed/{overlap,figure_cluster
 python -m data.splits     # figure-level splits (plan §0.2 #9) -> data/processed/{geometry3k_figures,pgdp5k_heldout,pgps9k_pool}.jsonl,
                           #   data/processed/splits/{train,val,test,pgdp5k_heldout,pgps9k_pool}.txt, figures.csv
 python -m data.census     # reports/tables/relation_census.csv
+python -m data.synthetic.build   # synthetic pools (Phase 4)
+python -m data.synthetic.check   # verifier on synthetic data -> reports/tables/synthetic_verifier_check.csv
 python -m data.sanity     # reports/figures/{image_sizes,g3k_vs_pgdp5k_coords}.png, reports/tables/coordinate_sanity.csv
 ```

@@ -30,7 +30,8 @@ from experiments.run import REPO_ROOT, load_config
 from verifier.checks import evaluate
 from verifier.primitives import bbox_diagonal
 
-SETS = ("geometry3k", "pgdp5k", "pgps9k", "geometry3k_figures", "pgdp5k_heldout", "pgps9k_pool")
+SETS = ("geometry3k", "pgdp5k", "pgps9k", "geometry3k_figures", "pgdp5k_heldout", "pgps9k_pool",
+        "synth_train", "synth_extrap")
 NTS_ANGLE = ("parallel", "perpendicular")
 NTS_LENGTH = ("equal_length", "on_circle", "tangent")
 QUERY_FIELDS = ["diagram_id", "split", "kind", "refs", "carrier_key", "relation", "margin", "geometric", "asserted"]
