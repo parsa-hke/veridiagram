@@ -84,6 +84,12 @@ Download and layout: [data/README.md](data/README.md). After the raw files are i
 .venv/bin/python -m data.synthetic.check                                   # injected vs random pass rates, example figure
 ```
 
+## Running on the UOWD AI Lab GPUs (Phase 7)
+
+Step by step: [LAB_GUIDE.md](LAB_GUIDE.md). In short: `bash scripts/lab_setup.sh`, then
+`python -m experiments.benchmark` and `python -m experiments.queue configs/queue_phase7.yaml`
+(one run per GPU; restartable: finished runs are skipped, interrupted fine-tunes resume).
+
 ## Running on Google Colab
 
 Heavy runs (fine-tunes, scaling, self-training) run on Colab Pro. Open

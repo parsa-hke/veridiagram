@@ -11,8 +11,8 @@ import torch
 
 from experiments import run as R
 
-OVERLAYS = {"colab.yaml"}  # partial configs, only valid on top of another via --overlay
-CONFIGS = sorted(p for p in (R.REPO_ROOT / "configs").glob("*.yaml") if p.name not in OVERLAYS)
+OVERLAYS = {"colab.yaml", "lab.yaml"}  # partial configs, only valid on top of another via --overlay
+CONFIGS = sorted(p for p in (R.REPO_ROOT / "configs").glob("*.yaml") if p.name not in OVERLAYS and not p.name.startswith("queue_"))
 
 
 @pytest.mark.parametrize("path", CONFIGS, ids=lambda p: p.name)

@@ -1,0 +1,4 @@
+# UOWD AI Lab overlay (plan §0.6, LAB_GUIDE.md): GEO_OVERLAYS=configs/lab.yaml or --overlay.
+# Data, caches and runs stay inside the repository folder (all gitignored).
+data:
+  num_workers: 8

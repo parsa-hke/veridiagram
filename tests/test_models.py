@@ -104,9 +104,12 @@ def _tiny_cfg(tmp_path):
 @needs_data
 def test_finetune_end_to_end_and_resume(tmp_path):
     cfg = _tiny_cfg(tmp_path)
+    cfg["finetune"]["keep_last"] = True                                 # keep the resume state to test resuming
     torch.manual_seed(0)
     out = finetune.run(cfg, tmp_path / "ft", backbone=tiny_backbone("dinov3"))
     assert (tmp_path / "ft/checkpoints/best.pt").exists() and (tmp_path / "ft/checkpoints/last.pt").exists()
+    best = torch.load(tmp_path / "ft/checkpoints/best.pt", weights_only=False)["model"]
+    assert all(v.dtype == torch.bfloat16 for v in best.values() if v.is_floating_point())
     assert set(out["results"]) == {"val", "geometry3k_test", "pgdp5k_heldout", "synth_extrap"}
     hist = [json.loads(line) for line in open(tmp_path / "ft/history.jsonl")]
     assert [h["epoch"] for h in hist] == [1, 2] and all("val_f1" in h and "lr" in h for h in hist)
@@ -115,6 +118,9 @@ def test_finetune_end_to_end_and_resume(tmp_path):
     finetune.run(cfg, tmp_path / "ft", backbone=tiny_backbone("dinov3"))
     hist = [json.loads(line) for line in open(tmp_path / "ft/history.jsonl")]
     assert [h["epoch"] for h in hist] == [1, 2, 3]
+    cfg["finetune"].update(keep_last=False, epochs=1)
+    finetune.run(cfg, tmp_path / "ft2", backbone=tiny_backbone("dinov3"))
+    assert not (tmp_path / "ft2/checkpoints/last.pt").exists()            # deleted once finished (default)
 
 
 @needs_data

@@ -451,3 +451,33 @@ Found
 - Both smoke runs took 97 s on the L4. Checked the gate is not reading one file twice: run locally
   it reports the Mac's own runs (157 s and 724 s) and fails them for using the DINOv2 fallback.
 - Smoke-scale numbers (256 queries per unit, 16 optimiser steps) are not results.
+
+## 2026-10-12 — Lab readiness for Phase 7 (UOWD AI Lab GPUs)
+
+Done
+- Plan §0.6 revised first: Phase 7 runs on the UOWD AI Lab GPUs (Colab Pro's ~167 compute units,
+  about 14 A100-hours, are far below the plan's budget); Colab stays as a backup.
+- `LAB_GUIDE.md`: step-by-step runbook (home preparation, setup, data, access check, smoke gate,
+  benchmark, queue, monitoring, packing results, token clean-up, troubleshooting).
+- `scripts/lab_setup.sh`: uv + Python 3.11 + pins in .venv without admin rights; picks a PyTorch
+  CUDA build the driver supports (the default torch 2.14 wheel is CUDA 13.0, driver >= 580; older
+  drivers get cu128 / cu126); checks GPUs and bf16; runs the tests.
+- `python -m experiments.queue <queue.yaml>`: one run per GPU (CUDA_VISIBLE_DEVICES), file order,
+  skips runs that are "ok" in their own log.csv, `serial` groups (probe seeds share cached
+  features), per-run logs in runs/queue_logs/, `--status`, `--dry-run`, `--only`, `--set`. Verified
+  with a real two-job queue (DINOv2-S, smoke data): both ran, a restart skipped both.
+- `configs/queue_phase7.yaml`: 3 probes, 3 fine-tunes (real), 3 fine-tunes (+10k synthetic),
+  ablations DINOv2 / 224 px / no augmentation (1 seed), Part A 1k (1 seed) and 50k (3 seeds).
+  Not yet: 7.8 (no-overlay, needs a query-token model) and Part B (needs the 7.3 teacher).
+- `python -m experiments.benchmark`: measured train/eval images per second and peak memory at the
+  queue's resolutions, per-job hours, total GPU-hours, wall time on N GPUs, and wall time for
+  30/20/15/10 fine-tune epochs.
+- New configs: `finetune_synth10k.yaml` (7.3), `ablation_{dinov2,res224,noaug}.yaml`, `lab.yaml`.
+  `experiments/scaling.py` (Part A: a fine-tune with the synthetic prefix, size checked) and
+  `experiments/evaluate.py` (re-evaluate a best.pt on every unit) implemented.
+- Parallel-safety: overlay PNGs, feature caches and query indexes are written atomically
+  (temporary file + rename), since several runs share them.
+- Disk: best.pt saved in bfloat16 (~0.6 GB for ViT-L); last.pt (~5 GB) deleted when a run finishes
+  (`finetune.keep_last` to keep it).
+- float16 training (GPUs without bf16) now uses a gradient scaler.
+- Tests: 147 passed.

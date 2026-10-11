@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import zlib
 from pathlib import Path
 
@@ -100,9 +101,11 @@ class QueryDataset(torch.utils.data.Dataset):
         with Image.open(self.raw / d.image_path) as im:
             img, k = fit_long_side(flatten(im), self.L)
         img, _ = draw_overlay(img, d, r["refs"], self.cfg["overlay"], scale=k)
-        if path is not None:
+        if path is not None:                                  # atomic: parallel runs may share the cache
             path.parent.mkdir(parents=True, exist_ok=True)
-            img.save(path)
+            tmp = path.with_name(f".{path.stem}.{os.getpid()}.png")
+            img.save(tmp)
+            os.replace(tmp, path)
         return img
 
     def to_tensor(self, im: Image.Image) -> torch.Tensor:

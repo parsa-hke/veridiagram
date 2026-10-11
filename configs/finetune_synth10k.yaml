@@ -1,0 +1,6 @@
+# Plan 7.3: full fine-tune on Geometry3K-figure train + the first 10k synthetic diagrams.
+inherit: base.yaml
+name: finetune_synth10k
+mode: finetune
+data:
+  synthetic_train_size: 10000

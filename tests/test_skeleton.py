@@ -21,6 +21,7 @@ MODULES = [
     "verifier.audit", "verifier.consistency", "verifier.label", "verifier.gold",
     "models", "models.backbone", "models.head", "models.probe", "models.finetune", "models.common",
     "experiments", "experiments.run", "experiments.evaluate", "experiments.scaling", "experiments.gate",
+    "experiments.queue", "experiments.benchmark",
     "experiments.selftrain",
     "analysis", "analysis.metrics", "analysis.headline_table", "analysis.attention_maps",
     "analysis.error_analysis",

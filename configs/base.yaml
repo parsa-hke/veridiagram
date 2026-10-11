@@ -122,6 +122,8 @@ finetune:
   select_metric: val_macro_f1
   init_checkpoint: null                # Part B student starts from the 7.3 checkpoint
   save_last: true                      # resumable checkpoint every epoch (Colab disconnects)
+  keep_last: false                     # delete last.pt (~5 GB) once the run has finished
+  save_dtype: bfloat16                 # best.pt precision (~0.6 GB for ViT-L)
   max_steps_per_epoch: null            # smoke only
 
 eval:

@@ -277,11 +277,14 @@ def build_index(cfg: dict, unit: str) -> tuple["Path", dict]:
                 rows = downsample_none(rows, cfg["data"]["train_none_ratio"], rng)
             rows_out += rows
         n_diag += taken
+    import os
     path = index_path(cfg, unit)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as f:
+    tmp = path.with_name(f".{path.name}.{os.getpid()}")       # atomic: parallel runs may build the same index
+    with open(tmp, "w") as f:
         for r in rows_out:
             f.write(_json.dumps(r, separators=(",", ":")) + "\n")
+    os.replace(tmp, path)
     geo = np.array([r["geo"] for r in rows_out]) if rows_out else np.zeros((0, len(vocab)))
     summary = {"unit": unit, "diagrams": n_diag, "queries": len(rows_out),
                "none": int((geo.sum(1) == 0).sum()) if len(geo) else 0,

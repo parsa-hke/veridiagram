@@ -1,0 +1,6 @@
+# Plan 7.5: same fine-tune with the DINOv2-L/14 backbone.
+inherit: finetune.yaml
+name: ablation_dinov2
+model:
+  backbone: facebook/dinov2-large
+  backbone_fallback: null

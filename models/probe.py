@@ -12,6 +12,7 @@
 
 from __future__ import annotations
 
+import os
 import time
 from pathlib import Path
 
@@ -48,7 +49,9 @@ def extract(backbone, ds: QueryDataset, cfg: dict, device: torch.device) -> np.n
             feats.append(backbone(x.to(device))["pooled"].float().cpu().numpy())
     feats = np.concatenate(feats) if feats else np.zeros((0, backbone.out_dim), np.float32)
     path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez(path, feats=feats.astype(np.float16), qid=qids)
+    tmp = path.with_name(f".{path.stem}.{os.getpid()}.npz")      # atomic: parallel runs share the cache
+    np.savez(tmp, feats=feats.astype(np.float16), qid=qids)
+    os.replace(tmp, path)
     print(f"  features {ds.unit:16s} {feats.shape} in {time.time() - t0:.0f}s -> {path}", flush=True)
     return feats
 

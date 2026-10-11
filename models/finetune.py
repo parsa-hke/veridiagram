@@ -7,11 +7,14 @@ the last transformer block and the final norm, multiplied by `finetune.llrd` (0.
 down (block L-1-k gets 2e-5 * 0.8^k, the embeddings 2e-5 * 0.8^L); weight decay
 `finetune.weight_decay` (0.05) except on biases, norms and tokens. Cosine schedule with
 `warmup_epochs` of linear warm-up (per optimiser step). Batch `batch_size` with
-`grad_accum_steps` accumulation, gradient clipping at 1.0, bfloat16 autocast. EMA of the weights
+`grad_accum_steps` accumulation, gradient clipping at 1.0, bfloat16 autocast (float16 with a
+gradient scaler on GPUs without bf16). EMA of the weights
 (`ema_decay`, with warm-up) is evaluated on val after every epoch; the best EMA weights by val
-macro-F1 (geometric labels) are saved to <run_dir>/checkpoints/best.pt. With `finetune.save_last`,
+macro-F1 (geometric labels) are saved to <run_dir>/checkpoints/best.pt (in `save_dtype`, bfloat16 by
+default: ~0.6 GB for ViT-L). With `finetune.save_last`,
 <run_dir>/checkpoints/last.pt holds everything needed to resume (plan §0.6: Colab disconnects);
-a run started on a run dir that has it resumes from the next epoch. Per epoch, history.jsonl gets
+a run started on a run dir that has it resumes from the next epoch; it is deleted when the run
+finishes unless `finetune.keep_last`. Per epoch, history.jsonl gets
 the train loss, val macro-F1, per-class F1 and learning rates (end of epoch and peak).
 """
 
@@ -101,6 +104,9 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
     sched = torch.optim.lr_scheduler.LambdaLR(
         opt, cosine_with_warmup(int(f["warmup_epochs"] * steps_per_epoch), f["epochs"] * steps_per_epoch))
     ema = EMA(model, f["ema_decay"])
+    # float16 autocast needs loss scaling (bfloat16 does not): GPUs without bf16 (V100, T4) use it
+    fp16 = f.get("amp", True) and f.get("amp_dtype") == "float16" and device.type == "cuda"
+    scaler = torch.amp.GradScaler("cuda", enabled=fp16)
 
     start, best, best_epoch = 1, -1.0, 0
     last = ckpt_dir / "last.pt"
@@ -130,12 +136,14 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
             with autocast(device, cfg):
                 logits = model(x)
             loss = masked_bce(logits, g, m, pw)
-            (loss / accum).backward()
+            scaler.scale(loss / accum).backward()
             total += float(loss.detach()) * len(x)
             n += len(x)
             if (i + 1) % accum == 0 or i + 1 == batches:
+                scaler.unscale_(opt)
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-                opt.step()
+                scaler.step(opt)
+                scaler.update()
                 sched.step()
                 cur = _lrs(opt)
                 peak = {k: max(v, cur[k]) if v is not None else cur[k] for k, v in peak.items()}
@@ -151,13 +159,17 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
               f"peak lr head {peak['head']:.2e} top {peak['backbone_top']:.2e}  ({rec['seconds']:.0f}s)", flush=True)
         if mval["macro_f1"] > best:
             best, best_epoch = mval["macro_f1"], epoch
-            torch.save({"model": ema.model.state_dict(), "epoch": epoch, "val_macro_f1": best, "backbone": loaded,
+            dt = {"bfloat16": torch.bfloat16, "float32": torch.float32}[f.get("save_dtype", "bfloat16")]
+            sd = {k: v.to(dt) if v.is_floating_point() else v for k, v in ema.model.state_dict().items()}
+            torch.save({"model": sd, "epoch": epoch, "val_macro_f1": best, "backbone": loaded,
                         "vocab": vocab}, ckpt_dir / "best.pt")
         if f.get("save_last", True):
             torch.save({"model": model.state_dict(), "ema": ema.state_dict(), "opt": opt.state_dict(),
                         "sched": sched.state_dict(), "epoch": epoch, "best": best, "best_epoch": best_epoch,
                         "gen": gen.get_state()}, last)
 
+    if last.exists() and not f.get("keep_last", False):
+        last.unlink()                                      # finished: the resume state (~5 GB for ViT-L) is not needed
     ema.model.load_state_dict(torch.load(ckpt_dir / "best.pt", map_location="cpu", weights_only=False)["model"])
     ema.model.to(device).eval()
     results = evaluate_units(lambda x: ema.model(x), cfg, device, run_dir)

@@ -111,7 +111,10 @@ Rules:
 - Keep a running CHANGELOG.md: date, what was done, what was found.
 ```
 
-### 0.6 Compute (added 2026-10-10)
+### 0.6 Compute (added 2026-10-10; revised 2026-10-12)
+
+**Revised 2026-10-12: Phase 7 runs on the UOWD AI Lab GPUs** (Colab Pro has ~167 compute units, about 14 A100-hours, far below the plan's fine-tune budget). Same code and configs; the lab uses `configs/lab.yaml` (repo-local paths), `scripts/lab_setup.sh`, `python -m experiments.benchmark` (measured throughput and per-experiment time) and `python -m experiments.queue configs/queue_phase7.yaml` (one run per GPU, skips finished runs, resumes interrupted ones). Step-by-step: `LAB_GUIDE.md`. Colab stays as a backup. The Colab notes below still apply to Colab sessions.
+
 
 - **Local (Apple M5, MPS, 24 GB unified memory, no CUDA):** development, tests, data build, verifier, synthetic generation, smoke runs.
 - **Google Colab Pro (CUDA):** probe feature extraction, every fine-tune, scaling and self-training runs. A100 for full fine-tunes; L4 acceptable for probes and smoke. Not T4 (no bf16) and not TPU.

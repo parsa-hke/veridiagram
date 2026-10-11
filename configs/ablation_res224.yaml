@@ -1,0 +1,5 @@
+# Plan 7.6: input long side 224 instead of 448 (overlay width unchanged in pixels).
+inherit: finetune.yaml
+name: ablation_res224
+input:
+  long_side: 224
