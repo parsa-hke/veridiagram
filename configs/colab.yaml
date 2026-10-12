@@ -12,3 +12,6 @@ paths:
   log_csv: /content/drive/MyDrive/geo-relations/runs/log.csv
 data:
   num_workers: 8
+  cache_overlays: false                # same reason as the lab: ~1M overlay files for the 50k pool
+model:
+  grad_checkpointing: false            # A100 40 GB (the lab used ~20 GB without it); turn back on for an L4

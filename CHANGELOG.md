@@ -516,3 +516,20 @@ Done (plan §0.2 #10, #11 and task 6.4 edited first)
   priority order, ~2-2.5 h on 4 GPUs) and `configs/queue_phase7_part2.yaml` (DINOv2 ablation, Part A
   1k and 50k; for Colab or a second visit). 7.8 and Part B follow in a later update.
 - Benchmark estimates include the LP stage, epoch images and evaluation caps. Tests: 148 passed.
+
+## 2026-10-12 — First Phase 7 results (lab) and Colab for the second batch
+
+Found (lab, in progress)
+- Probes (3 seeds), geometric macro-F1: val 0.597-0.601, geometry3k_test 0.585-0.609,
+  pgdp5k_heldout 0.515-0.520, synth_extrap 0.17-0.20 (probe_s0 20.4 min incl. features; s1/s2 ~0.5 min
+  from the cache).
+- finetune_s0 (LP-FT, 2 x 40k images): val 0.869, geometry3k_test 0.858, pgdp5k_heldout 0.861
+  (asserted 0.535-0.624). A fine-tune takes ~74 min on one RTX 5000 Ada (~28 min per 40k-image epoch,
+  ~10 min evaluation); GPU utilisation 62-100% with four runs sharing the CPU for data loading.
+
+Done
+- `data/VERSION` names the Colab data tarball (bump only when pipeline outputs change); the launcher
+  renames the first tarball (data_4fa8896.tar, identical outputs) instead of rebuilding.
+- `configs/colab.yaml`: no overlay cache, no gradient checkpointing (A100 40 GB).
+- Launcher run cell takes a queue (`QUEUE = "configs/queue_phase7_part2.yaml"`): DINOv2 ablation,
+  Part A 1k and 50k, in parallel with the lab batch.
