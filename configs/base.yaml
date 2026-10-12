@@ -113,8 +113,12 @@ finetune:
   backbone_lr: 2.0e-5
   llrd: 0.8                            # layer-wise decay from the last block downward
   weight_decay: 0.05
-  epochs: 30
-  warmup_epochs: 1
+  epochs: 2                            # x epoch_images = 80k images per run (plan §0.2 #11, revised: LP-FT)
+  epoch_images: 40000                  # images per epoch, drawn with replacement; null = one full pass
+  real_fraction: 0.5                   # share of real queries per batch when the training set has synthetic ones
+  warmup_epochs: 0.2
+  lp_queries: 20000                    # LP-FT: fit the head on frozen features of this many training queries first
+  lp_epochs: 30
   schedule: cosine
   amp: true
   amp_dtype: bfloat16
@@ -129,6 +133,7 @@ finetune:
 eval:
   checkpoint: null
   batch_size: 32
+  max_queries: {synth_extrap: 10000}   # evaluation cap per unit (evenly spaced; plan §0.2 #10)
   label_sets: [geometric, asserted]
   threshold: tune_on_val               # operating threshold per relation, tuned on val
   ece_bins: 15

@@ -70,7 +70,10 @@ class QueryDataset(torch.utils.data.Dataset):
         with open(path) as f:
             self.rows = [json.loads(line) for line in f]
         cap = cfg["data"].get("max_queries_per_unit")
-        if cap and len(self.rows) > cap:                     # smoke: evenly spaced subsample
+        if not self.train:                                   # evaluation cap per unit (plan §0.2 #10)
+            ecap = (cfg.get("eval", {}).get("max_queries") or {}).get(unit)
+            cap = min(c for c in (cap, ecap) if c) if (cap or ecap) else None
+        if cap and len(self.rows) > cap:                     # evenly spaced subsample
             step = len(self.rows) / cap
             self.rows = [self.rows[int(i * step)] for i in range(cap)]
         proc = REPO_ROOT / cfg["paths"]["processed"]
@@ -164,10 +167,10 @@ def make_collate(white: torch.Tensor) -> Collate:
 
 
 def loader(ds: QueryDataset, batch_size: int, shuffle: bool, num_workers: int = 0,
-           generator: torch.Generator | None = None) -> torch.utils.data.DataLoader:
-    return torch.utils.data.DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers,
-                                       collate_fn=make_collate(ds.white()), persistent_workers=num_workers > 0,
-                                       generator=generator)
+           generator: torch.Generator | None = None, sampler=None) -> torch.utils.data.DataLoader:
+    return torch.utils.data.DataLoader(ds, batch_size=batch_size, shuffle=shuffle and sampler is None,
+                                       num_workers=num_workers, collate_fn=make_collate(ds.white()),
+                                       persistent_workers=num_workers > 0, generator=generator, sampler=sampler)
 
 
 def check_disjoint(cfg: dict, units=tuple(UNITS)) -> None:

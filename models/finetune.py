@@ -2,11 +2,16 @@
 
 Dispatched by experiments.run (mode: finetune, also used by scaling and self-training).
 
+LP-FT (plan §0.2 #11, revised): with `finetune.lp_queries`, the head is first fitted on frozen
+features of that many training queries (`lp_stage`), then everything is fine-tuned.
+
 Optimiser: AdamW; head LR `finetune.head_lr` (1e-3); backbone LR `finetune.backbone_lr` (2e-5) for
 the last transformer block and the final norm, multiplied by `finetune.llrd` (0.8) per block going
 down (block L-1-k gets 2e-5 * 0.8^k, the embeddings 2e-5 * 0.8^L); weight decay
 `finetune.weight_decay` (0.05) except on biases, norms and tokens. Cosine schedule with
-`warmup_epochs` of linear warm-up (per optimiser step). Batch `batch_size` with
+`warmup_epochs` of linear warm-up (per optimiser step). With `epoch_images`, an epoch is that many
+images drawn with replacement, and with `real_fraction` a run that mixes real and synthetic
+queries draws that share from the real ones (plan §0.2 #11, revised: equal budget, 50/50). Batch `batch_size` with
 `grad_accum_steps` accumulation, gradient clipping at 1.0, bfloat16 autocast (float16 with a
 gradient scaler on GPUs without bf16). EMA of the weights
 (`ema_decay`, with warm-up) is evaluated on val after every epoch; the best EMA weights by val
@@ -29,7 +34,7 @@ import torch
 from torch import nn
 
 from analysis.metrics import evaluate
-from data.dataset import QueryDataset, loader
+from data.dataset import Collate, QueryDataset, loader
 from data.queries import vocabulary
 from models.backbone import Backbone, load_backbone
 from models.common import EMA, autocast, cosine_with_warmup, device_of, evaluate_units, log_epoch, predict
@@ -44,6 +49,61 @@ class Classifier(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.head(self.backbone(x)["pooled"])
+
+
+def lp_stage(model: Classifier, cfg: dict, device: torch.device, pw: torch.Tensor) -> dict:
+    """LP-FT, step 1 (Kumar et al., ICLR 2022): fit the head on frozen features of `finetune.lp_queries`
+    training queries (no augmentation; evenly spaced, half real / half synthetic when the training set
+    mixes them), so full fine-tuning starts from a fitted head instead of a random one."""
+    f = cfg["finetune"]
+    ds = QueryDataset(cfg, "train", train=False)
+    n = min(int(f["lp_queries"]), len(ds))
+    is_syn = np.array([r["set"].startswith("synth") for r in ds.rows])
+    pools = [np.nonzero(~is_syn)[0], np.nonzero(is_syn)[0]] if is_syn.any() and (~is_syn).any() else [np.arange(len(ds))]
+    frac = f.get("real_fraction") or 0.5
+    take = [round(n * frac), n - round(n * frac)] if len(pools) == 2 else [n]
+    idx = np.concatenate([p[np.linspace(0, len(p) - 1, min(k, len(p))).astype(int)] for p, k in zip(pools, take)])
+    dl = torch.utils.data.DataLoader(torch.utils.data.Subset(ds, idx.tolist()), batch_size=cfg["eval"]["batch_size"],
+                                     shuffle=False, num_workers=cfg["data"]["num_workers"], collate_fn=Collate(ds.white()))
+    model.eval()
+    feats, ys, ms = [], [], []
+    with torch.no_grad():
+        for x, g, _, meta in dl:
+            with autocast(device, cfg):
+                feats.append(model.backbone(x.to(device))["pooled"].float())
+            ys.append(g.to(device))
+            ms.append(meta["mask"].to(device))
+    X, Y, M = torch.cat(feats), torch.cat(ys), torch.cat(ms)
+    opt = torch.optim.AdamW(model.head.parameters(), lr=cfg["probe"]["lr"], weight_decay=cfg["probe"]["weight_decay"])
+    gen = torch.Generator().manual_seed(cfg["seed"])
+    for _ in range(int(f.get("lp_epochs", 30))):
+        perm = torch.randperm(len(X), generator=gen).to(device)
+        for i in range(0, len(X), 256):
+            b = perm[i:i + 256]
+            loss = masked_bce(model.head(X[b]), Y[b], M[b], pw)
+            opt.zero_grad(set_to_none=True)
+            loss.backward()
+            opt.step()
+    model.train()
+    return {"lp_queries": int(len(X)), "lp_final_loss": round(float(loss.detach()), 4)}
+
+
+def train_sampler(ds: QueryDataset, f: dict, gen: torch.Generator):
+    """Fixed-size epochs (`epoch_images`) drawn with replacement; when the training set mixes real and
+    synthetic queries, `real_fraction` of the draws come from the real ones (plan §0.2 #11, revised).
+    Returns None for plain shuffled full passes."""
+    n_img = f.get("epoch_images")
+    is_syn = np.array([r["set"].startswith("synth") for r in ds.rows])
+    frac = f.get("real_fraction")
+    mixed = frac is not None and is_syn.any() and (~is_syn).any()
+    if not n_img and not mixed:
+        return None
+    if mixed:
+        w = np.where(is_syn, (1 - frac) / is_syn.sum(), frac / (~is_syn).sum())
+    else:
+        w = np.full(len(ds), 1.0 / len(ds))
+    return torch.utils.data.WeightedRandomSampler(torch.as_tensor(w, dtype=torch.double),
+                                                  num_samples=int(n_img or len(ds)), replacement=True, generator=gen)
 
 
 def param_groups(model: Classifier, f: dict) -> list[dict]:
@@ -90,7 +150,9 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
 
     ds = QueryDataset(cfg, "train")
     gen = torch.Generator().manual_seed(cfg["seed"])
-    dl = loader(ds, f["batch_size"], shuffle=True, num_workers=cfg["data"]["num_workers"], generator=gen)
+    sampler = train_sampler(ds, f, gen)
+    dl = loader(ds, f["batch_size"], shuffle=sampler is None, num_workers=cfg["data"]["num_workers"],
+                generator=gen, sampler=sampler)
     val_ds = QueryDataset(cfg, "val", train=False)
     val_dl = loader(val_ds, cfg["eval"].get("batch_size", f["batch_size"] * 2), shuffle=False,
                     num_workers=cfg["data"]["num_workers"])
@@ -119,6 +181,13 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
         start, best, best_epoch = st["epoch"] + 1, st["best"], st["best_epoch"]
         gen.set_state(st["gen"])
         print(f"finetune: resumed from epoch {st['epoch']} (best {best:.3f} at {best_epoch})", flush=True)
+    lp_info = {}
+    if start == 1 and f.get("lp_queries") and not f.get("init_checkpoint"):
+        t_lp = time.time()
+        lp_info = lp_stage(model, cfg, device, pw)
+        ema = EMA(model, f["ema_decay"])                      # EMA starts from the fitted head
+        print(f"finetune: LP stage on {lp_info['lp_queries']} queries, head loss {lp_info['lp_final_loss']} "
+              f"({time.time() - t_lp:.0f}s)", flush=True)
     print(f"finetune: {loaded} on {device}; {len(ds)} train queries, {steps_per_epoch} steps/epoch x "
           f"{f['epochs']} epochs; {len(opt.param_groups)} param groups", flush=True)
 
@@ -175,5 +244,5 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
     results = evaluate_units(lambda x: ema.model(x), cfg, device, run_dir)
     return {"backbone": cfg["model"]["backbone"], "backbone_loaded": loaded,
             "backbone_info": getattr(backbone, "load_info", {}), "best_epoch": best_epoch,
-            "val_macro_f1": round(best, 4), "n_train": len(ds), "steps_per_epoch": steps_per_epoch,
+            "val_macro_f1": round(best, 4), "n_train": len(ds), "steps_per_epoch": steps_per_epoch, **lp_info,
             "results": results, "wall_s": round(time.time() - t_start, 1)}

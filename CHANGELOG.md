@@ -495,3 +495,24 @@ Done
   (over a million files for the 50k pool).
 - Tests: 147 passed. The PowerShell script could not be executed here (no PowerShell on the Mac);
   reviewed by hand.
+
+## 2026-10-12 — Lab benchmark and the compute-bounded Phase 7 design
+
+Found
+- Lab benchmark (4x RTX 5000 Ada 32 GB, Windows, DINOv3, gradient checkpointing on): 448 px train
+  22.5 img/s, eval 98.5 img/s, peak 5.5 GB; 224 px train 64.9, eval 491.5 img/s. The plan as
+  written: 1,420 GPU-hours, ~19 days on 4 GPUs (94% from 30 epochs over the 10k/50k synthetic sets).
+- The lab PC is a shared classroom machine: 2-3 h per visit (~10 GPU-hours), may be switched off;
+  a second visit is uncertain.
+
+Done (plan §0.2 #10, #11 and task 6.4 edited first)
+- LP-FT (Kumar et al., ICLR 2022): `finetune.lp_queries` (20,000) frozen-feature head fit, then full
+  fine-tuning for 2 epochs x 40,000 images (`finetune.epoch_images`, drawn with replacement);
+  synthetic runs draw 50% real / 50% synthetic (`finetune.real_fraction`), so every fine-tune has the
+  same budget and Part A compares synthetic diversity at equal compute and real-data exposure.
+- Synthetic extrapolation evaluated on 10,000 of its 60,000 queries (`eval.max_queries`).
+- Lab overlay: gradient checkpointing off (5.5 GB of 32 GB used; it costs ~30% speed).
+- Queues: `configs/queue_phase7.yaml` (today: probes, 7.2 x3, 7.3 x3, 224 px and no-aug ablations, in
+  priority order, ~2-2.5 h on 4 GPUs) and `configs/queue_phase7_part2.yaml` (DINOv2 ablation, Part A
+  1k and 50k; for Colab or a second visit). 7.8 and Part B follow in a later update.
+- Benchmark estimates include the LP stage, epoch images and evaluation caps. Tests: 148 passed.

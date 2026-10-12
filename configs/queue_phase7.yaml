@@ -1,13 +1,10 @@
-# Phase 7 queue (plan 7.1-7.9), in priority order. `python -m experiments.queue configs/queue_phase7.yaml`.
-# Part A points: 0 synthetic = finetune (7.2), 10k = finetune_synth10k (7.3); 1k and 50k added here.
-# Not yet in the queue: 7.8 (no-overlay ablation, needs a query-token model) and Part B (7.10-7.11,
-# needs the 7.3 teacher); both come in a later session.
+# Phase 7, lab visit (2-3 h on 4 GPUs; plan §0.2 #11 revised: LP-FT, 2 x 40k images per fine-tune).
+# Priority order: if the PC is switched off, rerun the same command and finished runs are skipped.
 jobs:
-  - {config: configs/probe.yaml, seeds: [0, 1, 2], serial: true}   # 7.1 linear probe (seed 0 caches the features)
-  - {config: configs/finetune.yaml, seeds: [0, 1, 2]}            # 7.2 fine-tune, real data
-  - {config: configs/finetune_synth10k.yaml, seeds: [0, 1, 2]}   # 7.3 fine-tune, + 10k synthetic
-  - {config: configs/ablation_dinov2.yaml, seeds: [0]}           # 7.5 backbone
-  - {config: configs/ablation_res224.yaml, seeds: [0]}           # 7.6 resolution
-  - {config: configs/ablation_noaug.yaml, seeds: [0]}            # 7.7 augmentation
-  - {config: configs/scaling_1k.yaml, seeds: [0]}                # 7.9 Part A, 1k
-  - {config: configs/scaling_50k.yaml, seeds: [0, 1, 2]}         # 7.9 Part A, 50k
+  - {config: configs/probe.yaml, seeds: [0, 1, 2], serial: true}   # 7.1 linear probe (seed 0 caches features)
+  - {config: configs/finetune.yaml, seeds: [0]}                    # 7.2 fine-tune, real data
+  - {config: configs/finetune_synth10k.yaml, seeds: [0]}           # 7.3 fine-tune, + 10k synthetic (50/50)
+  - {config: configs/finetune.yaml, seeds: [1, 2]}                 # 7.2 seeds 1-2
+  - {config: configs/finetune_synth10k.yaml, seeds: [1, 2]}        # 7.3 seeds 1-2
+  - {config: configs/ablation_res224.yaml, seeds: [0]}             # 7.6 resolution
+  - {config: configs/ablation_noaug.yaml, seeds: [0]}              # 7.7 augmentation

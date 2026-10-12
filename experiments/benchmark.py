@@ -9,7 +9,8 @@ For each input resolution used by the queue (448 and 224), on one GPU with the p
   peak GPU memory
 Then, for every job of the queue: train queries per epoch (from its query index if built, else
 estimated from the real index plus queries per synthetic diagram), epochs, and the estimated hours
-= epochs x (train / train rate + val / eval rate) + final evaluation of all units / eval rate. With
+= epochs x (images per epoch / train rate + val / eval rate) + final evaluation of all units
+(after `eval.max_queries` caps) / eval rate; images per epoch = `finetune.epoch_images` or a full pass. With
 --gpus N the queue's wall time is estimated by assigning jobs in order to the first free GPU.
 Writes runs/benchmark/benchmark.json. Timings include a cold overlay cache, so they are
 conservative for later epochs. The DINOv2 ablation is estimated as 1.35x the 448 cost (1024 vs 784
@@ -118,14 +119,18 @@ def estimate_job(job: dict, rates: dict, real_train: int, eval_sizes: dict) -> d
     synth = cfg["data"].get("synthetic_train_size", 0)
     built = _count(index_path(cfg, "train"))
     n_train = built if built else int(real_train + synth * SYNTH_QUERIES_PER_DIAGRAM)
-    n_eval = sum(v for k, v in eval_sizes.items() if k != "train")
+    caps = cfg["eval"].get("max_queries") or {}
+    capped = {k: min(v, caps[k]) if k in caps else v for k, v in eval_sizes.items()}
+    n_eval = sum(v for k, v in capped.items() if k != "train")
+    per_epoch_imgs = cfg["finetune"].get("epoch_images") or n_train
+    lp = cfg["finetune"].get("lp_queries") or 0
     if job["mode"] == "probe":
         hours = (n_train + n_eval) / r["eval_img_per_s"] / 3600 if job["seed"] == 0 else 0.05
         epochs = cfg["probe"]["epochs"]
     else:
         epochs = cfg["finetune"]["epochs"]
-        per_epoch = n_train / r["train_img_per_s"] + eval_sizes["val"] / r["eval_img_per_s"]
-        hours = (epochs * per_epoch + n_eval / r["eval_img_per_s"] + 120) / 3600
+        per_epoch = per_epoch_imgs / r["train_img_per_s"] + capped["val"] / r["eval_img_per_s"]
+        hours = (lp / r["eval_img_per_s"] + epochs * per_epoch + n_eval / r["eval_img_per_s"] + 120) / 3600
     return {"run": job["run"], "mode": job["mode"], "resolution": L, "train_queries": n_train,
             "train_queries_source": "index" if built else "estimate", "epochs": epochs, "hours": round(hours, 2)}
 

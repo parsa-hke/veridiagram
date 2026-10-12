@@ -39,10 +39,10 @@ def test_estimates_and_makespan():
     sizes = {"train": 37846, "val": 6227, "geometry3k_test": 11319, "pgdp5k_heldout": 25272, "synth_extrap": 60000}
     job = {"run": "finetune_s0", "config": str(REPO_ROOT / "configs/finetune.yaml"), "seed": 0, "set": [], "mode": "finetune"}
     e = benchmark.estimate_job(job, rates, 37846, sizes)
-    expected = (30 * (37846 / 50 + 6227 / 150) + (6227 + 11319 + 25272 + 60000) / 150 + 120) / 3600
+    expected = (20000 / 150 + 2 * (40000 / 50 + 6227 / 150) + (6227 + 11319 + 25272 + 10000) / 150 + 120) / 3600
     assert e["hours"] == pytest.approx(expected, abs=0.01)
     j224 = dict(job, config=str(REPO_ROOT / "configs/ablation_res224.yaml"), run="ablation_res224_s0")
-    assert benchmark.estimate_job(j224, rates, 37846, sizes)["hours"] < e["hours"] / 3
+    assert benchmark.estimate_job(j224, rates, 37846, sizes)["hours"] < e["hours"] / 2.5
     assert benchmark.makespan([4, 3, 3, 2], 2) == 6 and benchmark.makespan([5, 1], 4) == 5
 
 

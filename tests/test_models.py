@@ -139,3 +139,19 @@ def test_describe_tiny_backbone():
     info = describe(tiny_backbone("dinov3"), size=(64, 96))
     assert info["register_tokens"] == 4 and info["patch_tokens"] == info["expected_patch_tokens"] == 24
     assert info["pooled_dim"] == 2 * info["hidden"]
+
+
+def test_train_sampler_mix_and_budget():
+    from models.finetune import train_sampler
+
+    class DS:
+        rows = [{"set": "geometry3k_figures"}] * 30 + [{"set": "synth_train"}] * 270
+
+        def __len__(self):
+            return len(self.rows)
+
+    gen = torch.Generator().manual_seed(0)
+    s = train_sampler(DS(), {"epoch_images": 4000, "real_fraction": 0.5}, gen)
+    idx = list(iter(s))
+    assert len(idx) == 4000 and abs(sum(i < 30 for i in idx) / 4000 - 0.5) < 0.04
+    assert train_sampler(DS(), {"epoch_images": None, "real_fraction": None}, gen) is None

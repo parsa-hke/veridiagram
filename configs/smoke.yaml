@@ -13,5 +13,8 @@ finetune:
   epochs: 1
   warmup_epochs: 0
   save_last: false                     # resume is unit-tested; ViT-L last.pt is ~5 GB
+  epoch_images: null                   # one pass over the (tiny) smoke training set
+  lp_queries: 64
+  lp_epochs: 3
 eval:
   bootstrap_resamples: 50

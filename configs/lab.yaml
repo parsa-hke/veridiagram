@@ -6,3 +6,5 @@
 data:
   num_workers: 8
   cache_overlays: false
+model:
+  grad_checkpointing: false            # 32 GB GPUs; checkpointing used 5.5 GB at 448 px and costs ~30% speed
