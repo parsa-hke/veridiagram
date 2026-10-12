@@ -20,7 +20,7 @@ import numpy as np
 import torch
 
 from analysis.metrics import evaluate
-from data.dataset import QueryDataset, loader
+from data.dataset import QueryDataset, loader, replace_or_discard
 from data.queries import UNITS, index_path, vocabulary
 from experiments.run import REPO_ROOT
 from models.backbone import load_backbone
@@ -51,7 +51,7 @@ def extract(backbone, ds: QueryDataset, cfg: dict, device: torch.device) -> np.n
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_name(f".{path.stem}.{os.getpid()}.npz")      # atomic: parallel runs share the cache
     np.savez(tmp, feats=feats.astype(np.float16), qid=qids)
-    os.replace(tmp, path)
+    replace_or_discard(tmp, path)
     print(f"  features {ds.unit:16s} {feats.shape} in {time.time() - t0:.0f}s -> {path}", flush=True)
     return feats
 

@@ -1,4 +1,8 @@
 # UOWD AI Lab overlay (plan §0.6, LAB_GUIDE.md): GEO_OVERLAYS=configs/lab.yaml or --overlay.
-# Data, caches and runs stay inside the repository folder (all gitignored).
+# Data and runs stay inside the repository folder (all gitignored). The overlay PNG cache is off:
+# with the 50k synthetic pool it would hold over a million files (~30 GB), and on Windows several
+# processes sharing it collide on file locks. Drawing an overlay costs a few ms per image in the
+# DataLoader workers.
 data:
   num_workers: 8
+  cache_overlays: false

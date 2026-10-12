@@ -284,7 +284,8 @@ def build_index(cfg: dict, unit: str) -> tuple["Path", dict]:
     with open(tmp, "w") as f:
         for r in rows_out:
             f.write(_json.dumps(r, separators=(",", ":")) + "\n")
-    os.replace(tmp, path)
+    from data.dataset import replace_or_discard
+    replace_or_discard(tmp, path)
     geo = np.array([r["geo"] for r in rows_out]) if rows_out else np.zeros((0, len(vocab)))
     summary = {"unit": unit, "diagrams": n_diag, "queries": len(rows_out),
                "none": int((geo.sum(1) == 0).sum()) if len(geo) else 0,

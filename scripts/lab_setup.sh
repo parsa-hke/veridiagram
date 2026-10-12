@@ -39,21 +39,7 @@ fi
 uv pip install --python .venv/bin/python -r requirements.txt
 
 echo "== 4/5 CUDA check"
-.venv/bin/python - <<'PY'
-import sys
-import torch
-print("torch", torch.__version__, "| CUDA build", torch.version.cuda, "| available", torch.cuda.is_available(),
-      "| GPUs", torch.cuda.device_count())
-if not torch.cuda.is_available():
-    print("CUDA is NOT available to PyTorch. The build probably needs a newer driver: rerun with\n"
-          "  TORCH_INDEX=https://download.pytorch.org/whl/cu126 bash scripts/lab_setup.sh")
-    sys.exit(1)
-for i in range(torch.cuda.device_count()):
-    print(f"  GPU {i}: {torch.cuda.get_device_name(i)}, {torch.cuda.get_device_properties(i).total_memory / 2**30:.0f} GB, "
-          f"bf16 {'yes' if torch.cuda.is_bf16_supported() else 'NO (use finetune.amp_dtype=float16)'}")
-x = torch.randn(2048, 2048, device="cuda", dtype=torch.bfloat16)
-print("bf16 matmul ok:", tuple((x @ x).shape))
-PY
+.venv/bin/python scripts/cuda_check.py
 
 echo "== 5/5 tests (no downloads)"
 .venv/bin/python -m pytest -q 2>&1 | tail -1

@@ -1,5 +1,8 @@
 # UOWD AI Lab guide: running Phase 7
 
+**Windows lab machines: see "Windows" at the end** (PowerShell commands for every step). The
+sections A-F below are written for Linux.
+
 Every command runs from the repository folder on a Linux machine with NVIDIA GPUs. Copy them
 exactly. If anything in a **Check** line looks different, stop there and send the output.
 
@@ -228,3 +231,28 @@ Delete the `veridiagram` folder only after the results are safely copied.
 
 Both come in a later session; the queue skips everything that is already done, so they can be
 added to the same queue file and started the same way.
+
+---
+
+## Windows (UOWD AI Lab machines)
+
+All commands in **PowerShell** (Start menu: "Windows PowerShell"), from your home folder.
+
+1. GPUs: `nvidia-smi`
+2. Code. With git (`git --version` works):
+   `git clone https://GH_TOKEN_HERE@github.com/parsa-hke/veridiagram.git` then `cd veridiagram` and
+   `git remote set-url origin https://github.com/parsa-hke/veridiagram.git`.
+   Without git:
+   `curl.exe -L -H "Authorization: Bearer GH_TOKEN_HERE" -o veridiagram.zip https://api.github.com/repos/parsa-hke/veridiagram/zipball/main`,
+   `Expand-Archive veridiagram.zip -DestinationPath .`, `Rename-Item (Get-ChildItem -Directory parsa-hke-veridiagram-*).Name veridiagram`, `cd veridiagram`.
+3. Install: `powershell -ExecutionPolicy Bypass -File scripts\lab_setup.ps1` (ends with `setup done`).
+4. Every new PowerShell window:
+   `Set-ExecutionPolicy -Scope Process Bypass`, `.\.venv\Scripts\Activate.ps1`,
+   `$env:GEO_OVERLAYS = "configs/lab.yaml"`, `$env:HF_TOKEN = "HF_TOKEN_HERE"`.
+5. Data: `python -m data.prepare --download`.
+6. Then the same Python commands as B6-D: `python -m models.backbone`, the smoke runs and
+   `python -m experiments.gate smoke`, `python -m experiments.benchmark`,
+   `python -m experiments.queue configs/queue_phase7.yaml`.
+7. Keep the queue's PowerShell window open. Lock the screen (Win+L) when you leave; do **not** sign
+   out or restart (that stops the runs; restarting the queue resumes them).
+8. Pack results: `tar --exclude=*/checkpoints -czf $HOME\geo_results.tar.gz runs reports`.

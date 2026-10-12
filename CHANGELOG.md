@@ -481,3 +481,17 @@ Done
   (`finetune.keep_last` to keep it).
 - float16 training (GPUs without bf16) now uses a gradient scaler.
 - Tests: 147 passed.
+
+## 2026-10-12 — Windows support for the lab machines
+
+Done
+- The UOWD AI Lab machines run Windows: `scripts/lab_setup.ps1` (uv, Python 3.11, PyTorch from the
+  CUDA index matching the driver, since PyTorch's Windows wheels on PyPI are CPU-only; GPU check;
+  tests) and `scripts/cuda_check.py` (shared with the Linux script). LAB_GUIDE.md: Windows section.
+- DataLoader collate is now a picklable class (`data.dataset.Collate`): Windows starts workers with
+  `spawn`, which cannot pickle the previous closure. Verified on the Mac by forcing spawn.
+- Cache writes tolerate Windows file locks (`replace_or_discard`); the queue stops children with
+  terminate() on Windows (SIGINT cannot be sent there); lab overlay turns the overlay PNG cache off
+  (over a million files for the 50k pool).
+- Tests: 147 passed. The PowerShell script could not be executed here (no PowerShell on the Mac);
+  reviewed by hand.

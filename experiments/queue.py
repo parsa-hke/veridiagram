@@ -127,7 +127,10 @@ def main(argv: list[str] | None = None) -> int:
 
     def stop(*_):
         for p, j, _ in running.values():
-            p.send_signal(signal.SIGINT)
+            if os.name == "nt":
+                p.terminate()          # Windows cannot deliver SIGINT to a child; resume works from last.pt
+            else:
+                p.send_signal(signal.SIGINT)
         print("\nqueue stopped; running jobs were interrupted and will resume on the next start", flush=True)
         sys.exit(130)
 
