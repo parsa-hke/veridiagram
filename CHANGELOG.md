@@ -883,3 +883,26 @@ Done
 Waiting for
 - The user's Hugging Face account, tokens and `publish`; then `check` and a second publish so the
   colophon shows the measured latency.
+
+## 2026-10-13 — Website fix: drawing in Construct, and stale pages after a rebuild
+
+Found (by the user, testing locally)
+- **Construct could not draw a segment.** The toolbar wiring selected every element with a
+  `data-tool` attribute, and the drawing area carries one (for its cursor), so every click in the
+  drawing area also re-selected the tool, which cancels a half-drawn segment: clicks made loose
+  points and never a line. The earlier browser checks dispatched synthetic clicks only on loaded
+  examples and in "Point at" mode, which does not reset, so they missed it.
+- After rebuilding the site, the browser kept showing the old page: index.html had no cache
+  header, so it was cached heuristically and pointed at the previous bundle. On the Space this would
+  have shown returning visitors a stale site after every redeploy.
+
+Fixed
+- Only toolbar buttons are wired as tools (`button[data-tool]`); the drawing area's attribute is
+  now `data-mode`. Points are drawn larger, a waiting point is ringed in blue, and the empty
+  drawing area says what to do ("Choose a tool above, then click in here. Segment draws a line in
+  two clicks.").
+- The server sends `Cache-Control: no-cache` for the page and its data and a year-long immutable
+  cache for the content-hashed `/assets/`.
+- Tests: `src/demo/construct.test.ts` draws two segments and points at them through the real panel
+  (fails on the old wiring, passes now); `test_cache_headers`. Checked in the browser with real
+  clicks: two hand-drawn lines 4.3° apart, the Ruler "no" (tolerance 3.7°), the Eye 0.02.

@@ -130,7 +130,13 @@ def create_app(loader: Callable[[], core.Engine] = default_loader, static_dir: s
             who = request.client.host if request.client else "?"
             if not limit.allow(who):
                 return JSONResponse({"error": "too many questions; wait a minute"}, status_code=429)
-        return await call_next(request)
+        response = await call_next(request)
+        path = request.url.path
+        if path.startswith("/assets/"):                   # content-hashed file names: cache for a year
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        elif not path.startswith("/api/"):                # the page and its data: always revalidate
+            response.headers["Cache-Control"] = "no-cache"
+        return response
 
     def prepared(body: ReadIn):
         e = state.engine

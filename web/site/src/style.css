@@ -584,7 +584,8 @@ details.numbers summary:hover { color: var(--ink); }
 
 .editor-host { border: 1px solid var(--rule); background: var(--paper-deep); }
 .editor-svg { display: block; width: 100%; height: auto; touch-action: manipulation; user-select: none; }
-.editor-svg[data-tool="ask"] { cursor: pointer; }
+.editor-svg[data-mode="ask"] { cursor: pointer; }
+.ed-empty { fill: var(--ink-soft); font-family: var(--text); font-style: italic; pointer-events: none; }
 .ed-seg, .ed-circle { fill: none; stroke: var(--ink); stroke-linecap: round; }
 .ed-point { fill: var(--ink); }
 .ed-label { font-family: var(--text); font-style: italic; fill: var(--ink); paint-order: stroke; stroke: var(--paper-deep); stroke-width: 3px; }
@@ -593,6 +594,7 @@ details.numbers summary:hover { color: var(--ink); }
 .ed-point.sel-red { fill: var(--byrne-red); r: 7px; }
 .ed-point.sel-yellow { fill: var(--byrne-yellow); r: 7px; }
 .ed-point.pending, .ed-seg.pending { stroke: var(--byrne-blue); fill: var(--byrne-blue); }
+.ed-point.pending { fill-opacity: 0.35; stroke-width: 2.5px; }
 
 .ask-row { display: flex; flex-wrap: wrap; gap: 0.6rem 0.9rem; align-items: center; margin: 1rem 0; }
 .button:disabled { opacity: 0.45; cursor: not-allowed; }

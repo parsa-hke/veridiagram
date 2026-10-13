@@ -296,11 +296,17 @@ export class Editor {
     }
     for (const [n, p] of Object.entries(this.points)) {
       const pend = this.pending?.kind === "point" && this.pending.name === n ? " pending" : "";
-      parts.push(`<circle class="ed-point${this.selClass(["pt", n])}${pend}" cx="${p[0]}" cy="${p[1]}" r="${4 * k}" />`,
+      parts.push(`<circle class="ed-point${this.selClass(["pt", n])}${pend}" cx="${p[0]}" cy="${p[1]}" r="${(pend ? 7 : 5) * k}" />`,
         `<text class="ed-label" x="${p[0] + 7 * k}" y="${p[1] - 7 * k}" style="font-size:${15 * k}px">${n}</text>`);
     }
+    if (!Object.keys(this.points).length && !this.opts.image) {
+      const x = this.opts.width / 2, y = this.opts.height / 2;
+      parts.push(`<text class="ed-empty" x="${x}" y="${y}" text-anchor="middle" style="font-size:${17 * k}px">
+        <tspan x="${x}" dy="-0.6em">Choose a tool above, then click in here.</tspan>
+        <tspan x="${x}" dy="1.5em">Segment draws a line in two clicks.</tspan></text>`);
+    }
     this.svg.innerHTML = parts.join("");
-    this.svg.dataset.tool = this.tool;
+    this.svg.dataset.mode = this.tool;
   }
 }
 

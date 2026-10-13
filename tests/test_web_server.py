@@ -195,3 +195,13 @@ def test_read_in_chunks_then_closure(client):
     bad = client.post("/api/closure", json={"construction": SQUARE, "answers": [{**answers[0], "refs": [["seg", "A", "Q"]]}]})
     assert bad.status_code == 422
     assert client.post("/api/read", json={"construction": SQUARE, "limit": 0}).status_code == 422
+
+
+def test_cache_headers(engine, tmp_path):
+    """After a redeploy, browsers must fetch the new page (it names the new hashed assets)."""
+    (tmp_path / "assets").mkdir()
+    (tmp_path / "index.html").write_text("<html></html>")
+    (tmp_path / "assets" / "index-abc.js").write_text("1")
+    c = TestClient(create_app(loader=lambda: engine, background=False, static_dir=str(tmp_path)))
+    assert c.get("/").headers["cache-control"] == "no-cache"
+    assert "immutable" in c.get("/assets/index-abc.js").headers["cache-control"]

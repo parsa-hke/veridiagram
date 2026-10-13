@@ -94,15 +94,15 @@ export function constructPanel(host: HTMLElement, upload = false): Panel {
 
   const makeEditor = (opts: ConstructorParameters<typeof Editor>[1]) => {
     editor = new Editor($("[data-host]"), { ...opts, onChange: refresh });
-    const active = host.querySelector<HTMLButtonElement>(".tool.active");
+    const active = host.querySelector<HTMLButtonElement>("button.tool.active");
     editor.setTool((active?.dataset.tool as Tool) ?? "point");
     refresh();
   };
   if (!upload) makeEditor({ width: 600, height: 420 });
 
-  host.querySelectorAll<HTMLButtonElement>("[data-tool]").forEach((b) =>
+  host.querySelectorAll<HTMLButtonElement>("button[data-tool]").forEach((b) =>
     b.addEventListener("click", () => {
-      host.querySelectorAll<HTMLButtonElement>("[data-tool]").forEach((x) => {
+      host.querySelectorAll<HTMLButtonElement>("button[data-tool]").forEach((x) => {
         x.classList.toggle("active", x === b);
         x.setAttribute("aria-pressed", String(x === b));
       });
