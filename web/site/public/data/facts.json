@@ -1,0 +1,422 @@
+{
+ "_export": {
+  "schema": 1,
+  "commit": "db0e6df"
+ },
+ "meta": {
+  "title": "Colour, not Letters",
+  "subtitle": "Teaching a vision transformer to read the geometry in textbook diagrams.",
+  "author": "Parsa Hosseini",
+  "course": "MAAI 901 Applied Vision Transformer Report",
+  "institution": "UOWD",
+  "year": 2026,
+  "repo_public": false,
+  "repo_url": null,
+  "demo_run": "ablation_dinov2_s0",
+  "demo_config": "configs/ablation_dinov2.yaml",
+  "api_url": null,
+  "inference": "cpu",
+  "read_cap_cpu": 30,
+  "part_b_control_seeds_planned": 3,
+  "lab_visit_hours": "2-3",
+  "byrne_year": 1847
+ },
+ "relations": [
+  "parallel",
+  "perpendicular",
+  "equal_length",
+  "on_circle",
+  "tangent",
+  "collinear"
+ ],
+ "data": {
+  "geometry3k_train_figures": 1296,
+  "geometry3k_val_figures": 185,
+  "geometry3k_test_figures": 370,
+  "pgdp5k_heldout_figures": 660,
+  "pgps9k_pool_figures": 3253,
+  "synth_train": {
+   "1000": 1000,
+   "10000": 10000,
+   "50000": 50000
+  },
+  "synth_extrap_diagrams": 1000,
+  "train_queries": 37846,
+  "max_queries_per_diagram": 60,
+  "eval_caps": {
+   "synth_extrap": 10000
+  },
+  "synthetic_points": [
+   4,
+   10
+  ],
+  "extrap_points": [
+   12,
+   20
+  ]
+ },
+ "tolerances": {
+  "parallel_deg": 3.7,
+  "perpendicular_deg": 3.7,
+  "equal_length_pct": 10.0,
+  "on_circle_pct": 7.94,
+  "tangent_pct": 7.94,
+  "collinear_pct": 1.19,
+  "not_to_scale_angle_deg": 10.0,
+  "not_to_scale_length_pct": 15.0,
+  "calibration": {
+   "parallel": {
+    "method": "valley",
+    "valley_or_knee": 2.56,
+    "unit": "deg"
+   },
+   "perpendicular": {
+    "method": "valley",
+    "valley_or_knee": 2.03,
+    "unit": "deg"
+   },
+   "equal_length": {
+    "method": "knee (no valley)",
+    "valley_or_knee": 0.0232,
+    "unit": "relative"
+   },
+   "on_circle": {
+    "method": "valley",
+    "valley_or_knee": 0.0794,
+    "unit": "relative"
+   },
+   "collinear": {
+    "method": "valley",
+    "valley_or_knee": 0.0119,
+    "unit": "relative"
+   }
+  }
+ },
+ "overlay": {
+  "color": [
+   0,
+   200,
+   0
+  ],
+  "width_px": 3,
+  "halo_width_px": 7,
+  "halo_alpha": 0.35,
+  "point_radius_px": 5,
+  "long_side": 448
+ },
+ "input": {
+  "long_side": 448,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ]
+ },
+ "recipe": {
+  "lp_queries": 20000,
+  "epochs": 2,
+  "epoch_images": 40000,
+  "total_images": 80000,
+  "batch_size": 16,
+  "head_lr": 0.001,
+  "backbone_lr": 2e-05,
+  "llrd": 0.8,
+  "weight_decay": 0.05,
+  "ema_decay": 0.999,
+  "amp_dtype": "bfloat16",
+  "real_fraction": 0.5,
+  "augment": {
+   "rotation_deg": 180,
+   "hflip": true,
+   "vflip": true,
+   "scale": [
+    0.8,
+    1.2
+   ]
+  },
+  "probe_epochs": 50,
+  "probe_lr": 0.001
+ },
+ "compute": {
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "n_gpus": 4,
+  "train_img_per_s_448": 22.5,
+  "planned_gpu_hours": 1420.6,
+  "planned_wall_days": 18.9
+ },
+ "backbones": {
+  "main": {
+   "name": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "available": false,
+   "reason": "OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run "
+  },
+  "demo": {
+   "name": "facebook/dinov2-large",
+   "available": true,
+   "class": "Dinov2Model",
+   "hidden": 1024,
+   "layers": 24,
+   "heads": 16,
+   "patch": 14,
+   "register_tokens": 0,
+   "params_M": 304.4,
+   "grid": 32,
+   "patch_tokens": 1024,
+   "tokens": 1025
+  }
+ },
+ "audit": {
+  "collinear": {
+   "candidates": 27866,
+   "asserted_and_geometric": 2941,
+   "asserted_not_geometric": 7,
+   "geometric_not_asserted": 283,
+   "neither": 24635,
+   "pct_asserted_confirmed": 99.8,
+   "pct_geometric_unmarked": 8.8
+  },
+  "equal_length": {
+   "candidates": 66385,
+   "asserted_and_geometric": 403,
+   "asserted_not_geometric": 28,
+   "geometric_not_asserted": 11171,
+   "neither": 54783,
+   "pct_asserted_confirmed": 93.5,
+   "pct_geometric_unmarked": 96.5
+  },
+  "on_circle": {
+   "candidates": 2796,
+   "asserted_and_geometric": 1917,
+   "asserted_not_geometric": 1,
+   "geometric_not_asserted": 0,
+   "neither": 878,
+   "pct_asserted_confirmed": 99.9,
+   "pct_geometric_unmarked": 0.0
+  },
+  "parallel": {
+   "candidates": 14345,
+   "asserted_and_geometric": 190,
+   "asserted_not_geometric": 7,
+   "geometric_not_asserted": 1534,
+   "neither": 12614,
+   "pct_asserted_confirmed": 96.4,
+   "pct_geometric_unmarked": 89.0
+  },
+  "perpendicular": {
+   "candidates": 14345,
+   "asserted_and_geometric": 975,
+   "asserted_not_geometric": 4,
+   "geometric_not_asserted": 1244,
+   "neither": 12122,
+   "pct_asserted_confirmed": 99.6,
+   "pct_geometric_unmarked": 56.1
+  },
+  "tangent": {
+   "candidates": 1661,
+   "asserted_and_geometric": 0,
+   "asserted_not_geometric": 0,
+   "geometric_not_asserted": 315,
+   "neither": 1346,
+   "pct_asserted_confirmed": 0.0,
+   "pct_geometric_unmarked": 100.0
+  }
+ },
+ "not_to_scale": {
+  "geometry3k": {
+   "diagrams": 3002,
+   "not_to_scale": 108,
+   "pct": 3.6,
+   "by_parallel": 24,
+   "by_perpendicular": 51,
+   "by_equal_length": 41,
+   "by_on_circle": 36,
+   "by_tangent": 0
+  },
+  "pgdp5k": {
+   "diagrams": 5000,
+   "not_to_scale": 28,
+   "pct": 0.6,
+   "by_parallel": 5,
+   "by_perpendicular": 1,
+   "by_equal_length": 57,
+   "by_on_circle": 0,
+   "by_tangent": 0
+  },
+  "pgps9k": {
+   "diagrams": 4000,
+   "not_to_scale": 12,
+   "pct": 0.3,
+   "by_parallel": 1,
+   "by_perpendicular": 1,
+   "by_equal_length": 13,
+   "by_on_circle": 0,
+   "by_tangent": 0
+  },
+  "geometry3k_figures": {
+   "diagrams": 1851,
+   "not_to_scale": 11,
+   "pct": 0.6,
+   "by_parallel": 0,
+   "by_perpendicular": 0,
+   "by_equal_length": 18,
+   "by_on_circle": 0,
+   "by_tangent": 0
+  },
+  "pgdp5k_heldout": {
+   "diagrams": 660,
+   "not_to_scale": 4,
+   "pct": 0.6,
+   "by_parallel": 0,
+   "by_perpendicular": 1,
+   "by_equal_length": 9,
+   "by_on_circle": 0,
+   "by_tangent": 0
+  },
+  "pgps9k_pool": {
+   "diagrams": 3253,
+   "not_to_scale": 9,
+   "pct": 0.3,
+   "by_parallel": 1,
+   "by_perpendicular": 1,
+   "by_equal_length": 8,
+   "by_on_circle": 0,
+   "by_tangent": 0
+  },
+  "synth_train": {
+   "diagrams": 50000,
+   "not_to_scale": 5,
+   "pct": 0.0,
+   "by_parallel": 0,
+   "by_perpendicular": 0,
+   "by_equal_length": 5,
+   "by_on_circle": 0,
+   "by_tangent": 0
+  },
+  "synth_extrap": {
+   "diagrams": 1000,
+   "not_to_scale": 0,
+   "pct": 0.0,
+   "by_parallel": 0,
+   "by_perpendicular": 0,
+   "by_equal_length": 0,
+   "by_on_circle": 0,
+   "by_tangent": 0
+  }
+ },
+ "gold": {
+  "round1": {
+   "fp_rate": 0.051,
+   "fn_rate": 0.088,
+   "n": 100
+  },
+  "round1_adjudicated": {
+   "fp_rate": 0.05,
+   "fn_rate": 0.071,
+   "n": 100
+  },
+  "round2": {
+   "fp_rate": 0.042,
+   "fn_rate": 0.057,
+   "n": 60
+  },
+  "round2_weighted": {
+   "fp_rate": 0.001,
+   "fn_rate": 0.439,
+   "n": 60
+  },
+  "round2_adjudicated": {
+   "fp_rate": 0.038,
+   "fn_rate": 0.0,
+   "n": 60
+  },
+  "round2_adjudicated_weighted": {
+   "fp_rate": 0.0,
+   "fn_rate": 0.0,
+   "n": 60
+  }
+ },
+ "colour_check": {
+  "hue_red": {
+   "images": 600,
+   "images_with": 316,
+   "pct": 52.7,
+   "min_pixels": 20,
+   "radius": null
+  },
+  "hue_orange": {
+   "images": 600,
+   "images_with": 406,
+   "pct": 67.7,
+   "min_pixels": 20,
+   "radius": null
+  },
+  "hue_yellow": {
+   "images": 600,
+   "images_with": 0,
+   "pct": 0.0,
+   "min_pixels": 20,
+   "radius": null
+  },
+  "hue_green": {
+   "images": 600,
+   "images_with": 6,
+   "pct": 1.0,
+   "min_pixels": 20,
+   "radius": null
+  },
+  "hue_cyan": {
+   "images": 600,
+   "images_with": 83,
+   "pct": 13.8,
+   "min_pixels": 20,
+   "radius": null
+  },
+  "hue_blue": {
+   "images": 600,
+   "images_with": 512,
+   "pct": 85.3,
+   "min_pixels": 20,
+   "radius": null
+  },
+  "hue_magenta": {
+   "images": 600,
+   "images_with": 228,
+   "pct": 38.0,
+   "min_pixels": 20,
+   "radius": null
+  },
+  "near_highlight_r40": {
+   "images": 600,
+   "images_with": 0,
+   "pct": 0.0,
+   "min_pixels": 20,
+   "radius": 40
+  },
+  "near_highlight_r60": {
+   "images": 600,
+   "images_with": 0,
+   "pct": 0.0,
+   "min_pixels": 20,
+   "radius": 60
+  },
+  "near_highlight_r80": {
+   "images": 600,
+   "images_with": 0,
+   "pct": 0.0,
+   "min_pixels": 20,
+   "radius": 80
+  },
+  "near_highlight_r100": {
+   "images": 600,
+   "images_with": 3,
+   "pct": 0.5,
+   "min_pixels": 20,
+   "radius": 100
+  }
+ }
+}

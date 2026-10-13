@@ -27,7 +27,10 @@ So the site is designed as a **lost fifth edition of Byrne's Euclid, written for
 - the four sections are "Books", findings are "Propositions" that end in Q.E.D.;
 - the model's own highlight colour, **green (0, 200, 0)**, is the one colour Byrne never used. We
   chose it because it appears in **0 of 600** sampled textbook diagrams, so it can never be confused
-  with ink. On the page green belongs to the machine only: whenever something is green, the model is
+  with ink. *(Re-measured 2026-10-13 with a script, `python -m data.colour_check` →
+  `reports/tables/highlight_colour_check.csv`: no image of 600 contains the highlight's colour (within
+  RGB distance 80), but green-family ink of darker or teal shades appears in 1.0%, so the page says
+  "the highlight's colour", not "green".)* On the page green belongs to the machine only: whenever something is green, the model is
   looking at it.
 
 That gives the site a story, a look nobody else has, and a reason for every design choice.
@@ -315,3 +318,9 @@ export on fake runs (as `tests/test_analysis_phase7.py` does) in under 10 s.
 3. **Part B numbers:** run the two extra control seeds first (recommended) or show one seed.
 4. **Timing:** build now from Phase 7 data and add Phase 8 later (recommended), or wait.
 5. **Name on the page** and whether the GitHub repository becomes public (links in the colophon).
+
+**Decided 2026-10-13 (recorded in `web/site.yaml`):** (1) `ablation_dinov2_s0`; (2) free CPU Space,
+"read the whole figure" capped at 30 queries; (3) run the two extra Part B control seeds; until they
+exist the page labels the control "one seed" (the label comes from the export); (4) build now from
+Phase 7 data, Phase 8 later; (5) name "Parsa Hosseini", repository private (no repository link in
+the colophon until `repo_public` is set).

@@ -1,0 +1,19 @@
+# Site metadata for python -m web.export (WEBSITE_PLAN.md §8 decisions, 2026-10-13).
+# Only words and choices live here; every measured number comes from runs/, reports/ or configs/.
+title: Colour, not Letters
+subtitle: Teaching a vision transformer to read the geometry in textbook diagrams.
+author: Parsa Hosseini
+course: MAAI 901 Applied Vision Transformer Report
+institution: UOWD
+year: 2026
+repo_public: false            # §8.5: private for now; the colophon shows no repository link
+repo_url: null                # set when the repository is made public
+demo_run: ablation_dinov2_s0  # §8.1: DINOv2-L, Apache-2.0 weights
+demo_config: configs/ablation_dinov2.yaml
+api_url: null                 # §4.3: inference backend URL (milestone 4/6); null = demo offline
+inference: cpu                # §8.2: free CPU Space; whole-figure reading capped
+read_cap_cpu: 30              # §3.1: queries per "read the whole figure" on CPU
+part_b_control_seeds_planned: 3   # §8.3: two more control seeds to run; the page labels what exists
+# Narrative facts that are not measurements (stated in the plan, §0.2 #11)
+lab_visit_hours: "2-3"
+byrne_year: 1847

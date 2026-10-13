@@ -1,0 +1,229 @@
+{
+ "_export": {
+  "schema": 1,
+  "commit": "db0e6df"
+ },
+ "points": [
+  {
+   "unit": "pgdp5k_heldout",
+   "synthetic": 0,
+   "experiment": "finetune",
+   "n_seeds": 3,
+   "mean": 0.8687,
+   "sd": 0.0079,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.8605,
+    0.8694,
+    0.8762
+   ]
+  },
+  {
+   "unit": "pgdp5k_heldout",
+   "synthetic": 1000,
+   "experiment": "scaling_1k",
+   "n_seeds": 1,
+   "mean": 0.8848,
+   "sd": null,
+   "seeds": [
+    0
+   ],
+   "values": [
+    0.8848
+   ]
+  },
+  {
+   "unit": "pgdp5k_heldout",
+   "synthetic": 10000,
+   "experiment": "finetune_synth10k",
+   "n_seeds": 3,
+   "mean": 0.8846,
+   "sd": 0.0043,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.8818,
+    0.8825,
+    0.8895
+   ]
+  },
+  {
+   "unit": "pgdp5k_heldout",
+   "synthetic": 50000,
+   "experiment": "scaling_50k",
+   "n_seeds": 3,
+   "mean": 0.8822,
+   "sd": 0.0049,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.8854,
+    0.8765,
+    0.8846
+   ]
+  },
+  {
+   "unit": "synth_extrap",
+   "synthetic": 0,
+   "experiment": "finetune",
+   "n_seeds": 3,
+   "mean": 0.6309,
+   "sd": 0.0167,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.6148,
+    0.6482,
+    0.6298
+   ]
+  },
+  {
+   "unit": "synth_extrap",
+   "synthetic": 1000,
+   "experiment": "scaling_1k",
+   "n_seeds": 1,
+   "mean": 0.718,
+   "sd": null,
+   "seeds": [
+    0
+   ],
+   "values": [
+    0.718
+   ]
+  },
+  {
+   "unit": "synth_extrap",
+   "synthetic": 10000,
+   "experiment": "finetune_synth10k",
+   "n_seeds": 3,
+   "mean": 0.7127,
+   "sd": 0.0094,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.702,
+    0.7198,
+    0.7164
+   ]
+  },
+  {
+   "unit": "synth_extrap",
+   "synthetic": 50000,
+   "experiment": "scaling_50k",
+   "n_seeds": 3,
+   "mean": 0.707,
+   "sd": 0.0078,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.7028,
+    0.716,
+    0.7021
+   ]
+  },
+  {
+   "unit": "geometry3k_test",
+   "synthetic": 0,
+   "experiment": "finetune",
+   "n_seeds": 3,
+   "mean": 0.8665,
+   "sd": 0.0071,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.8584,
+    0.8695,
+    0.8715
+   ]
+  },
+  {
+   "unit": "geometry3k_test",
+   "synthetic": 1000,
+   "experiment": "scaling_1k",
+   "n_seeds": 1,
+   "mean": 0.8761,
+   "sd": null,
+   "seeds": [
+    0
+   ],
+   "values": [
+    0.8761
+   ]
+  },
+  {
+   "unit": "geometry3k_test",
+   "synthetic": 10000,
+   "experiment": "finetune_synth10k",
+   "n_seeds": 3,
+   "mean": 0.8714,
+   "sd": 0.0099,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.8628,
+    0.8693,
+    0.8822
+   ]
+  },
+  {
+   "unit": "geometry3k_test",
+   "synthetic": 50000,
+   "experiment": "scaling_50k",
+   "n_seeds": 3,
+   "mean": 0.8715,
+   "sd": 0.0041,
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "values": [
+    0.8734,
+    0.8668,
+    0.8742
+   ]
+  }
+ ],
+ "sizes": [
+  0,
+  1000,
+  10000,
+  50000
+ ],
+ "units": [
+  "pgdp5k_heldout",
+  "synth_extrap",
+  "geometry3k_test"
+ ],
+ "budget": {
+  "epochs": 2,
+  "epoch_images": 40000,
+  "total_images": 80000,
+  "real_fraction": 0.5
+ }
+}

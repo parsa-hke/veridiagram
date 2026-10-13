@@ -595,3 +595,48 @@ Done
   reports/figures/scaling.png; plan 7.4, 7.5, 7.8, 7.9, 7.11, 7.12 ticked. COLAB_GUIDE.md corrected
   (run progress is in /content/veridiagram/runs/queue_logs, not in the notebook cell; Colab's own
   package conflict message is harmless; caffeinate without -d lets the screen sleep).
+
+## 2026-10-13 — Website, milestone 1: data export and a plain-text site (WEBSITE_PLAN.md §6.1)
+
+Decisions (WEBSITE_PLAN.md §8, recorded there and in `web/site.yaml`): demo model
+`ablation_dinov2_s0`; free CPU Space; run the two extra Part B control seeds (the page labels the
+control "one seed" until then); build now, Phase 8 later; name "Parsa Hosseini", repository private.
+
+Done
+- `web/export.py` (`python -m web.export`, 2.5 s): runs/ + reports/tables/ + configs/ + split
+  manifests -> `web/site/public/data/{results,scaling,pseudo_labels,facts}.json`. results: every
+  experiment x unit x label set (seeds, values, mean, sd, per-relation F1 mean/sd) and the
+  not-to-scale subset; scaling: the 7.9 points; pseudo_labels: the 7.11 precision table; facts: site
+  metadata, dataset sizes, tolerances and calibration, overlay, recipe, compute, backbone
+  architecture (from the Hugging Face config on the meta device, no weights), audit, gold-set rates,
+  not-to-scale counts, colour check. Each file is stamped with the commit it was exported from.
+  Game and gallery exports are deferred to milestone 5 (they need the demo pool and images).
+- `analysis/phase7.py`: `scaling_points()` factored out of `scaling_figure()` so the figure and the
+  site share one computation (figure unchanged).
+- `data/colour_check.py` (`python -m data.colour_check`, 3 s): scripted version of the Phase 5.3
+  highlight-colour check -> `reports/tables/highlight_colour_check.csv`.
+- `web/site/`: Vite 8 + TypeScript 7, no framework. Renders the frontispiece, Books I-III
+  (Propositions I-X) and a colophon as plain text from the JSON. Every number goes through
+  `n("doc:path", fmt)`, which wraps it in a span carrying its JSON path; comparative words ("below",
+  "beat both", "by less than two standard deviations") are computed from the data too. A trace
+  check (`src/audit.ts`) flags any number in visible text that is not traced; in dev mode (or with
+  `?trace`) the page shows the count: 234 traced, 0 missing, 0 untraced.
+- Tests: `tests/test_web_export.py` (fake runs, tables, manifests; 1.3 s), `tests/test_colour_check.py`,
+  `tests/test_web_site.py` (runs the site's vitest suite, 0.5 s: formats, path resolution, and the
+  whole page rendered from the real export with no untraced or missing number). `web` and
+  `data.colour_check` added to `tests/test_skeleton.py`. 171 passed.
+
+Found
+- **The "green in 0 of 600" fact did not reproduce as stated.** The 2026-10-11 check had no script.
+  Re-measured on a fixed sample (200 each of Geometry3K, PGDP5K, PGPS9K): green-family ink (hue
+  70-165°, saturated) appears in 6/600 images (1.0%: green labels, lines and sector fills in coloured
+  textbook figures, e.g. (0, 142, 68)), but no image has 20+ pixels within RGB distance 80 of the
+  highlight (0, 200, 0) (3/600 at distance 100). The highlight is still the safest choice (red family
+  52.7%, blue 85.3% under the same rule; the old 13.8% red figure used an unrecorded, stricter rule).
+  The site says "the highlight's colour", with the rule in a margin note; WEBSITE_PLAN §1.1 and plan
+  5.3 annotated.
+- The DINOv3 config is gated and not in the local Hugging Face cache, so its architecture facts are
+  exported as unavailable (the page says so); `python -m web.export --online` after `hf auth login`
+  fills them. DINOv2-L from the cache: 304.4M parameters, 24 layers, 1,024 patch tokens at 448 px.
+- 7.11 kept pseudo-positive precision is 0.8975, which formats as 0.897 at three decimals (the
+  changelog above rounded it to 0.898).

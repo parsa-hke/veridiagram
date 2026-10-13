@@ -1,0 +1,16 @@
+/* Milestone 1: plain readable text. The Byrne design system arrives in milestone 2. */
+:root { color-scheme: light dark; }
+body { margin: 0; padding: 0 16px; font: 17px/1.55 Georgia, serif; background: #fff; color: #111; }
+@media (prefers-color-scheme: dark) { body { background: #161616; color: #e8e8e8; } }
+#app { max-width: 46rem; margin: 0 auto; padding: 2rem 0 4rem; }
+table.results { border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; display: block; overflow-x: auto; }
+table.results th, table.results td { padding: 0.25rem 0.6rem; text-align: left; border-bottom: 1px solid #8884; }
+.seeds { font-size: 0.85em; opacity: 0.75; }
+.note { font-size: 0.9rem; opacity: 0.85; border-left: 2px solid #8886; padding-left: 0.75rem; }
+.qed { text-align: right; font-variant: small-caps; }
+.contents { display: flex; flex-wrap: wrap; gap: 1rem; }
+.num.missing { background: #f003; }
+body.trace .num { outline: 1px dotted #0a0; }
+.trace-panel { position: fixed; right: 8px; bottom: 8px; font: 12px monospace; background: #ffd; color: #111;
+  padding: 4px 8px; border: 1px solid #aa8; }
+.error { color: #b00; }

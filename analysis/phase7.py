@@ -187,30 +187,43 @@ def pseudo_label_table(runs: Path, latest: dict, vocab: list[str]) -> list[dict]
     return out
 
 
+SCALING_UNITS = [("pgdp5k_heldout", "PGDP5K held-out source"), ("synth_extrap", "synthetic extrapolation"),
+                 ("geometry3k_test", "Geometry3K test (in-distribution)")]
+
+
+def scaling_points(rows: list[dict]) -> list[dict]:
+    """7.9: geometric macro-F1 per unit and synthetic training size, over seeds."""
+    size_of = {e: s for e, (_, s) in EXPERIMENTS.items() if s is not None}
+    pts = []
+    for u, _ in SCALING_UNITS:
+        for exp, size in sorted(size_of.items(), key=lambda kv: kv[1]):
+            g = sorted((r for r in rows if r["experiment"] == exp and r["unit"] == u and r["label_set"] == "geometric"),
+                       key=lambda r: r["seed"])
+            if not g:
+                continue
+            v = [r["macro_f1"] for r in g]
+            pts.append({"unit": u, "synthetic": size, "experiment": exp, "n_seeds": len(v),
+                        "mean": round(float(np.mean(v)), 4),
+                        "sd": round(float(np.std(v, ddof=1)), 4) if len(v) > 1 else None,
+                        "seeds": [r["seed"] for r in g], "values": v})
+    return pts
+
+
 def scaling_figure(rows: list[dict], out: Path) -> list[dict]:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    size_of = {e: s for e, (_, s) in EXPERIMENTS.items() if s is not None}
-    units = [("pgdp5k_heldout", "PGDP5K held-out source"), ("synth_extrap", "synthetic extrapolation"),
-             ("geometry3k_test", "Geometry3K test (in-distribution)")]
-    pts = []
+    pts = scaling_points(rows)
     fig, ax = plt.subplots(figsize=(6.4, 4.2))
-    for (u, label), c in zip(units, ("C0", "C3", "C7")):
-        xs, means, sds = [], [], []
-        for exp, size in sorted(size_of.items(), key=lambda kv: kv[1]):
-            v = [r["macro_f1"] for r in rows if r["experiment"] == exp and r["unit"] == u and r["label_set"] == "geometric"]
-            if not v:
-                continue
-            x = max(size, 300)                          # 0 drawn at 300 on the log axis, labelled "0"
-            ax.scatter([x] * len(v), v, color=c, s=12, alpha=0.5)
-            xs.append(x)
-            means.append(np.mean(v))
-            sds.append(np.std(v, ddof=1) if len(v) > 1 else 0.0)
-            pts.append({"unit": u, "synthetic": size, "n_seeds": len(v), "mean": round(float(np.mean(v)), 4)})
+    for (u, label), c in zip(SCALING_UNITS, ("C0", "C3", "C7")):
+        up = [p for p in pts if p["unit"] == u]
+        xs = [max(p["synthetic"], 300) for p in up]             # 0 drawn at 300 on the log axis, labelled "0"
+        for x, p in zip(xs, up):
+            ax.scatter([x] * len(p["values"]), p["values"], color=c, s=12, alpha=0.5)
         if xs:
-            ax.errorbar(xs, means, yerr=sds, color=c, marker="o", capsize=3, label=label)
+            ax.errorbar(xs, [p["mean"] for p in up], yerr=[p["sd"] or 0.0 for p in up], color=c, marker="o",
+                        capsize=3, label=label)
     ax.set_xscale("log")
     ax.set_xticks([300, 1000, 10000, 50000], ["0", "1k", "10k", "50k"])
     ax.set_xlabel("synthetic training diagrams (50% of every batch when > 0)")
