@@ -15,3 +15,4 @@ jobs:
   - {config: configs/selftrain_confidence.yaml, seeds: [1, 2]}     # 7.11: three seeds each
   - {config: configs/selftrain_consistency.yaml, seeds: [1, 2]}
   - {config: configs/selftrain_control.yaml, seeds: [0]}           # Part B control (no pseudo-labels)
+  - {config: configs/selftrain_control.yaml, seeds: [1, 2]}        # added 2026-10-13: control seeds 1-2 (3 seeds like the students)
