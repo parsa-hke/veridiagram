@@ -1,0 +1,12 @@
+# Plan 7.8: no highlight overlay. The query is given only as token indices (kind + point names, see
+# data/query_tokens.py) that cross-attend over the patch tokens; expected to fail, which shows the
+# overlay is doing the work. No LP stage: its frozen-feature shortcut needs the query encoder, which is
+# trained during the fine-tune instead (same 2 x 40k image budget).
+inherit: finetune.yaml
+name: ablation_nooverlay
+overlay:
+  enabled: false
+model:
+  query_input: tokens
+finetune:
+  lp_queries: null

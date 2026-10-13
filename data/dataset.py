@@ -9,7 +9,12 @@ on the right/bottom with white to a multiple of `input.pad_to_multiple` (the pat
 normalised with `input.mean` / `input.std`. `collate` pads a batch to its largest height and width
 with normalised white, so batches are (B, 3, H, W) with H, W <= 448 and multiples of 16.
 
-meta per item: qid, diagram_id, set, split, kind, relation mask (applicability), refs.
+meta per item: qid, diagram_id, set, split, kind, relation mask (applicability), refs, and with
+`model.query_input: tokens` the query as token indices (data.query_tokens, plan §7.8).
+
+`overlay.enabled: false` (plan §7.8 ablation) skips the highlight: every query of a diagram then sees
+the same image. `data.extra_train_index` (Part B) appends the rows of another index file (the
+pseudo-labelled PGPS9K queries, same row format) to the training unit.
 
     python -m data.dataset --config configs/smoke.yaml [--examples]   # plan §5.8 gate: build + load one batch
 """
@@ -29,6 +34,7 @@ from PIL import Image
 from data.augment import build_augment
 from data.overlay import draw_overlay, flatten
 from data.queries import UNITS, build_index, index_path, vocabulary
+from data.query_tokens import encode as encode_query
 from data.schema import read_jsonl
 from experiments.run import REPO_ROOT, load_config
 
@@ -76,6 +82,10 @@ class QueryDataset(torch.utils.data.Dataset):
         if cap and len(self.rows) > cap:                     # evenly spaced subsample
             step = len(self.rows) / cap
             self.rows = [self.rows[int(i * step)] for i in range(cap)]
+        extra = cfg["data"].get("extra_train_index") if unit == "train" else None
+        if extra:                                            # Part B: pseudo-labelled pool queries
+            with open(extra) as f:
+                self.rows += [json.loads(line) for line in f]
         proc = REPO_ROOT / cfg["paths"]["processed"]
         need: dict[str, set] = {}
         for r in self.rows:
@@ -91,6 +101,8 @@ class QueryDataset(torch.utils.data.Dataset):
         self.cache = (REPO_ROOT / cfg["paths"]["cache"] / "overlays" / self.cache_tag
                       if cfg["data"].get("cache_overlays", True) else None)
         self.L = cfg["input"]["long_side"]
+        self.highlight = cfg["overlay"].get("enabled", True)
+        self.tokens = cfg["model"].get("query_input", "overlay") == "tokens"
         self.patch = cfg["input"]["pad_to_multiple"]
         self.mean = torch.tensor(cfg["input"]["mean"]).view(3, 1, 1)
         self.std = torch.tensor(cfg["input"]["std"]).view(3, 1, 1)
@@ -114,7 +126,8 @@ class QueryDataset(torch.utils.data.Dataset):
                 return Image.open(path).convert("RGB")
         with Image.open(self.raw / d.image_path) as im:
             img, k = fit_long_side(flatten(im), self.L)
-        img, _ = draw_overlay(img, d, r["refs"], self.cfg["overlay"], scale=k)
+        if self.highlight:
+            img, _ = draw_overlay(img, d, r["refs"], self.cfg["overlay"], scale=k)
         if path is not None:                                  # atomic: parallel runs may share the cache
             path.parent.mkdir(parents=True, exist_ok=True)
             tmp = path.with_name(f".{path.stem}.{os.getpid()}.png")
@@ -136,8 +149,17 @@ class QueryDataset(torch.utils.data.Dataset):
                 im, _ = fit_long_side(im, self.L)
         meta = {"qid": r["qid"], "diagram_id": r["diagram_id"], "set": r["set"], "split": r["split"],
                 "kind": r["kind"], "mask": torch.tensor(r["mask"], dtype=torch.float32), "refs": r["refs"]}
+        if self.tokens:
+            d = self.diagrams[r["diagram_id"]]
+            meta["qtok"] = encode_query(r["kind"], r["refs"], {i: c.center for i, c in enumerate(d.circles)})
         return (self.to_tensor(im), torch.tensor(r["geo"], dtype=torch.float32),
                 torch.tensor(r["asr"], dtype=torch.float32), meta)
+
+    def auxiliary(self) -> np.ndarray:
+        """Per row: True for queries outside the labelled real sources of the unit (synthetic or
+        pseudo-labelled); `finetune.real_fraction` balances the two groups."""
+        real = {s for s, _ in UNITS.get(self.unit, [])}
+        return np.array([r["set"] not in real for r in self.rows], dtype=bool)
 
     def white(self) -> torch.Tensor:
         return ((torch.ones(3, 1, 1) - self.mean) / self.std).view(3)
@@ -157,9 +179,11 @@ class Collate:
         out = self.white.view(1, 3, 1, 1).repeat(len(imgs), 1, H, W)
         for k, x in enumerate(imgs):
             out[k, :, : x.shape[1], : x.shape[2]] = x
-        return out, torch.stack(geo), torch.stack(asr), {
-            "mask": torch.stack([m["mask"] for m in metas]),
-            **{key: [m[key] for m in metas] for key in ("qid", "diagram_id", "set", "split", "kind", "refs")}}
+        meta = {"mask": torch.stack([m["mask"] for m in metas]),
+                **{key: [m[key] for m in metas] for key in ("qid", "diagram_id", "set", "split", "kind", "refs")}}
+        if "qtok" in metas[0]:
+            meta["qtok"] = torch.stack([m["qtok"] for m in metas])
+        return out, torch.stack(geo), torch.stack(asr), meta
 
 
 def make_collate(white: torch.Tensor) -> Collate:

@@ -16,7 +16,7 @@ import torch
 from data.queries import vocabulary
 from models.backbone import load_backbone
 from models.common import device_of, evaluate_units
-from models.finetune import Classifier
+from models.finetune import build_classifier
 
 
 def run(cfg: dict, run_dir: Path) -> dict:
@@ -28,9 +28,9 @@ def run(cfg: dict, run_dir: Path) -> dict:
     backbone = load_backbone(cfg)
     if sd.get("backbone") and sd["backbone"] != backbone.name:
         raise ValueError(f"checkpoint was trained on {sd['backbone']}, loaded {backbone.name}")
-    model = Classifier(backbone, len(vocabulary(cfg)))
+    model = build_classifier(cfg, backbone, len(vocabulary(cfg)))
     model.load_state_dict(sd["model"])
     model.to(device).eval()
-    results = evaluate_units(lambda x: model(x), cfg, device, Path(run_dir))
+    results = evaluate_units(model, cfg, device, Path(run_dir))
     return {"checkpoint": str(ckpt), "checkpoint_epoch": sd.get("epoch"), "backbone_loaded": backbone.name,
             "results": results}

@@ -1,0 +1,17 @@
+# Phase 7, everything the lab batch (queue_phase7.yaml, 2026-10-12) did not run; Colab A100, one run
+# at a time. Seed 0 of every experiment first, so a partial night still covers every row of the
+# results table; the remaining seeds after. Restartable: finished runs are skipped, an interrupted
+# fine-tune resumes from its last epoch.
+# Part B needs the 7.3 teacher at <runs>/finetune_synth10k_s2/checkpoints/best.pt (the launcher puts
+# it there from the lab archive on Drive).
+jobs:
+  - {config: configs/scaling_50k.yaml, seeds: [0]}                 # 7.9 Part A, 50k
+  - {config: configs/selftrain_confidence.yaml, seeds: [0]}        # 7.11 (a)
+  - {config: configs/selftrain_consistency.yaml, seeds: [0]}       # 7.11 (b)
+  - {config: configs/ablation_nooverlay.yaml, seeds: [0]}          # 7.8
+  - {config: configs/ablation_dinov2.yaml, seeds: [0]}             # 7.5
+  - {config: configs/scaling_1k.yaml, seeds: [0]}                  # 7.9 Part A, 1k (one seed in between)
+  - {config: configs/scaling_50k.yaml, seeds: [1, 2]}              # 7.9: three seeds at 0 and 50k
+  - {config: configs/selftrain_confidence.yaml, seeds: [1, 2]}     # 7.11: three seeds each
+  - {config: configs/selftrain_consistency.yaml, seeds: [1, 2]}
+  - {config: configs/selftrain_control.yaml, seeds: [0]}           # Part B control (no pseudo-labels)

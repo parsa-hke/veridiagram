@@ -155,6 +155,11 @@ UNITS = {
     "synth_extrap": [("synth_extrap", "extrap")],
 }
 TRAIN_UNITS = {"train"}
+# Part B unlabelled pool (plan §0.2 #9 (d), §7.11): the PGPS9K pool figures that are not shared with
+# the training split (2,037 of 3,253; the other 1,216 are training figures the teacher has seen with
+# labels). Indexed like an evaluation unit (uniform cap, natural ratio); its geometric labels stay
+# unused until the post-hoc pseudo-label precision. Not an evaluation unit.
+POOL_UNITS = {"pgps9k_pool": [("pgps9k_pool", "all")]}
 
 
 def vocabulary(cfg: dict) -> list[str]:
@@ -241,7 +246,7 @@ def index_path(cfg: dict, unit: str) -> "Path":
 def unit_sources(cfg: dict, unit: str) -> list[tuple[str, str, int | None]]:
     """(set, split, max diagrams) parts of a unit, honouring synthetic_train_size and max_diagrams."""
     n = cfg["data"].get("max_diagrams")
-    parts = [(s, sp, n) for s, sp in UNITS[unit]]
+    parts = [(s, sp, n) for s, sp in {**UNITS, **POOL_UNITS}[unit]]
     size = cfg["data"].get("synthetic_train_size", 0)
     if unit in TRAIN_UNITS and size:
         parts.append(("synth_train", "train", min(size, n) if n else size))
@@ -266,7 +271,7 @@ def build_index(cfg: dict, unit: str) -> tuple["Path", dict]:
     for set_name, split, limit in unit_sources(cfg, unit):
         taken = 0
         for d in read_jsonl(proc / f"{set_name}.jsonl"):
-            if d.split != split:
+            if d.split != split or (unit in POOL_UNITS and d.meta.get("in_train")):
                 continue
             if limit is not None and taken >= limit:
                 break
@@ -300,7 +305,7 @@ def main(argv: list[str] | None = None) -> int:
 
     ap = argparse.ArgumentParser(description=main.__doc__)
     ap.add_argument("--config", default=str(REPO_ROOT / "configs" / "base.yaml"))
-    ap.add_argument("--units", nargs="+", default=list(UNITS))
+    ap.add_argument("--units", nargs="+", default=list(UNITS), help=f"also: {', '.join(POOL_UNITS)}")
     args = ap.parse_args(argv)
     cfg = load_config(args.config)
     for unit in args.units:

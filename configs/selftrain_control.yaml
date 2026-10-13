@@ -1,0 +1,7 @@
+# Part B control (not in the plan's list): the same continued fine-tune from the teacher on the
+# labelled Geometry3K train only, so (a) and (b) can be separated from "two more epochs of training".
+inherit: base.yaml
+name: selftrain_control
+mode: selftrain
+selftrain:
+  filter: none

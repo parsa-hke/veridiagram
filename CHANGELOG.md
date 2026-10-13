@@ -533,3 +533,39 @@ Done
 - `configs/colab.yaml`: no overlay cache, no gradient checkpointing (A100 40 GB).
 - Launcher run cell takes a queue (`QUEUE = "configs/queue_phase7_part2.yaml"`): DINOv2 ablation,
   Part A 1k and 50k, in parallel with the lab batch.
+
+## 2026-10-13 — Phase 7: lab batch complete; 7.8, Part B and the wrap-up built; the rest goes to Colab
+
+Found (lab batch, 11 runs, all ok on DINOv3; archives verified: 13 metrics, 52 prediction files with
+exact query counts, three 7.3 checkpoints that load with weights_only and match their metrics)
+- Geometric macro-F1, mean ± sd over 3 seeds (geometry3k_test / pgdp5k_heldout / synth_extrap):
+  probe 0.595 ± 0.013 / 0.517 ± 0.003 / 0.185 ± 0.013; fine-tune 0.867 ± 0.007 / 0.869 ± 0.008 /
+  0.631 ± 0.017; fine-tune + 10k synthetic 0.871 ± 0.010 / 0.885 ± 0.004 / 0.713 ± 0.009.
+  Synthetic data helps out of distribution (held-out source +0.016, extrapolation +0.082, seed ranges
+  disjoint) and not in distribution. 224 px (seed 0): 0.855 / 0.861 / 0.609; no augmentation: 0.868 /
+  0.870 / 0.632. Asserted labels: 0.54-0.56 for every fine-tune (most true relations are unmarked).
+- Not-to-scale subset (7.4): 7 test diagrams, 353 queries; reported per run, too small for claims.
+- Part B teacher = finetune_synth10k_s2 (val 0.8824). On a 150-diagram sample of the pool (local,
+  ViT-L rebuilt from the checkpoint; it reproduces the lab's saved val predictions, 0 decisions
+  differ): at τ 0.9 the confident entries' pseudo-positive precision is 0.89 (accuracy 0.979). The
+  plan's contradiction alone (parallel and perpendicular) flags 1/150 diagrams; with confident
+  negatives as facts (C2) 13/150, and the entries it removes have precision 0.74 vs 0.92 kept. C2
+  is therefore on. It also fires on 10.4% of the pool's verifier labels: tolerance relations are not
+  transitive (equal_length chains within 10% drift past 10%).
+
+Done (plan §0.2 #9 and #11 and §0.6 edited first: Part B pool = pool figures outside the training
+split; everything remaining on Colab)
+- 7.10 `verifier/consistency.py`: closure (parallel classes of carrier lines, perpendicular between
+  classes, two perpendiculars to one line are parallel, equal_length classes); contradictions C1/C2.
+- 7.11 `experiments/selftrain.py`: teacher predictions on the `pgps9k_pool` unit (2,037 diagrams,
+  66,019 queries), cached and shared; confidence / consistency / none (control) filters; student from
+  the teacher's weights, 2 x 40k images, 50% Geometry3K / 50% pseudo-labelled
+  (`data.extra_train_index`); post-hoc precision of both filters in metrics.json.
+- 7.8 `configs/ablation_nooverlay.yaml`: no highlight; the query as kind + point-name tokens
+  (`data/query_tokens.py`) cross-attending over the patch tokens (`models.head.QueryAttention`).
+- `python -m analysis.phase7`: phase7_runs/summary tables, not_to_scale_eval.csv,
+  selftrain_pseudo_labels.csv, reports/figures/scaling.png. `python -m experiments.gate phase7`.
+- `configs/queue_phase7_colab.yaml` (13 runs, seed 0 of everything first; replaces
+  queue_phase7_part2.yaml), launcher cells for the teacher (unpacked from the lab archive on Drive,
+  sha256-checked), the Phase 7 smoke gate and packing the results; `COLAB_GUIDE.md`.
+- Lab results imported into the local runs/ (gitignored) and runs/log.csv. Tests: 164 passed.

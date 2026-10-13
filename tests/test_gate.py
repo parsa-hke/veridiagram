@@ -13,7 +13,7 @@ def _run(root, mode, backbone, dur, status="ok"):
     (d / "predictions").mkdir(parents=True)
     for u in UNITS:
         (d / "predictions" / f"{u}.npz").write_bytes(b"x")
-    if mode == "finetune":
+    if mode != "probe":
         (d / "checkpoints").mkdir()
         (d / "checkpoints" / "best.pt").write_bytes(b"x")
     (d / "metrics.json").write_text(json.dumps({"status": status, "backbone_loaded": backbone, "duration_s": dur}))
@@ -30,3 +30,17 @@ def test_smoke_gate(tmp_path):
         {"status": "ok", "backbone_loaded": cfg["model"]["backbone_fallback"], "duration_s": 300}))
     failed = [n for n, ok, _ in gate.check_smoke(cfg) if not ok]
     assert failed == ["finetune: primary backbone"]
+
+
+def test_phase7_gate(tmp_path):
+    cfg = load_config(REPO_ROOT / "configs/base.yaml")
+    cfg["paths"]["runs"] = str(tmp_path)
+    primary = cfg["model"]["backbone"]
+    _run(tmp_path, "ablation_nooverlay", primary, 200)
+    _run(tmp_path, "selftrain_consistency", primary, 250)
+    names = gate.GATES["phase7"][1]
+    failed = [n for n, ok, _ in gate.check_smoke(cfg, 0, names) if not ok]
+    assert failed == ["selftrain_consistency: pseudo-labels"]
+    (tmp_path / "smoke_selftrain_consistency_s0/metrics.json").write_text(json.dumps(
+        {"status": "ok", "backbone_loaded": primary, "duration_s": 250, "pseudo_labels": {"train_rows": 40}}))
+    assert all(ok for _, ok, _ in gate.check_smoke(cfg, 0, names))

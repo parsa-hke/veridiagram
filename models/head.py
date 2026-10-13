@@ -26,6 +26,29 @@ class Head(nn.Module):
         return self.fc(self.drop(self.norm(feats)))
 
 
+class QueryAttention(nn.Module):
+    """Plan §7.8 ablation: the query arrives as token indices (data.query_tokens), not as a highlight.
+    The tokens (embedding + slot embedding) are projected to one query vector that cross-attends over
+    the backbone's CLS and patch tokens; the attended vector is concatenated with the pooled feature
+    before the head. The model can only answer by finding the named points (letters) in the image."""
+
+    def __init__(self, dim: int, emb_dim: int = 128, heads: int = 8):
+        super().__init__()
+        from data.query_tokens import N_SLOTS, VOCAB_SIZE
+        self.emb = nn.Embedding(VOCAB_SIZE, emb_dim, padding_idx=0)
+        self.slot = nn.Parameter(torch.zeros(N_SLOTS, emb_dim))
+        nn.init.normal_(self.slot, std=0.02)
+        self.proj = nn.Linear(N_SLOTS * emb_dim, dim)
+        self.kv_norm = nn.LayerNorm(dim)
+        self.attn = nn.MultiheadAttention(dim, heads, batch_first=True)
+
+    def forward(self, qtok: torch.Tensor, tokens: torch.Tensor) -> torch.Tensor:
+        q = self.proj((self.emb(qtok) + self.slot).flatten(1))[:, None]
+        kv = self.kv_norm(tokens)
+        z, _ = self.attn(q, kv, kv, need_weights=False)
+        return z[:, 0]
+
+
 def pos_weights(labels: np.ndarray, mask: np.ndarray, cap: float = 50.0) -> torch.Tensor:
     labels, mask = np.asarray(labels, float), np.asarray(mask, float)
     pos = (labels * mask).sum(0)

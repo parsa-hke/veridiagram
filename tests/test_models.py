@@ -150,6 +150,9 @@ def test_train_sampler_mix_and_budget():
         def __len__(self):
             return len(self.rows)
 
+        def auxiliary(self):
+            return np.array([r["set"] != "geometry3k_figures" for r in self.rows])
+
     gen = torch.Generator().manual_seed(0)
     s = train_sampler(DS(), {"epoch_images": 4000, "real_fraction": 0.5}, gen)
     idx = list(iter(s))

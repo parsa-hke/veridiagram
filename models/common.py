@@ -75,13 +75,18 @@ def cosine_with_warmup(warmup: int, total: int, min_ratio: float = 0.01):
     return f
 
 
+def query_kwargs(meta: dict, device: torch.device) -> dict:
+    """Extra model inputs carried in a batch's meta: the query tokens of the §7.8 ablation."""
+    return {"qtok": meta["qtok"].to(device)} if "qtok" in meta else {}
+
+
 @torch.no_grad()
 def predict(forward, dl, device: torch.device, cfg: dict) -> dict:
-    """Run `forward(images) -> logits` over a loader; returns numpy arrays."""
+    """Run `forward(images[, qtok=...]) -> logits` over a loader; returns numpy arrays."""
     probs, geo, asr, mask, qids = [], [], [], [], []
     for x, g, a, meta in dl:
         with autocast(device, cfg):
-            logits = forward(x.to(device, non_blocking=True))
+            logits = forward(x.to(device, non_blocking=True), **query_kwargs(meta, device))
         probs.append(torch.sigmoid(logits.float()).cpu().numpy())
         geo.append(g.numpy())
         asr.append(a.numpy())

@@ -224,13 +224,12 @@ Delete the `veridiagram` folder only after the results are safely copied.
 
 ---
 
-## What is not in this queue yet
+## What is not in this queue
 
-- 7.8, the no-overlay ablation (needs a model that takes the query as a token index), and
-- Part B, self-training (needs the 7.3 model as teacher).
-
-Both come in a later session; the queue skips everything that is already done, so they can be
-added to the same queue file and started the same way.
+The lab batch finished on 2026-10-12. Everything else in Phase 7 (Part A 1k and 50k, Part B, 7.5 and
+7.8) runs on Colab: [COLAB_GUIDE.md](COLAB_GUIDE.md), `configs/queue_phase7_colab.yaml`. The same
+queue also runs here (`python -m experiments.queue configs/queue_phase7_colab.yaml`) if a lab visit
+is easier; Part B then needs `runs/finetune_synth10k_s2/checkpoints/best.pt` from the lab archive.
 
 ---
 

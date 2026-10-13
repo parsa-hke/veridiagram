@@ -84,6 +84,22 @@ Download and layout: [data/README.md](data/README.md). After the raw files are i
 .venv/bin/python -m data.synthetic.check                                   # injected vs random pass rates, example figure
 ```
 
+## Phase 7 experiments
+
+```bash
+python -m experiments.run --config configs/ablation_nooverlay.yaml        # 7.8: query as point-name tokens, no highlight
+python -m experiments.run --config configs/selftrain_consistency.yaml     # 7.11: Part B student (also _confidence, _control)
+python -m experiments.gate phase7                                         # smoke gate of those modes
+python -m analysis.phase7                                                 # tables, not-to-scale subset, scaling.png
+```
+
+Part B (`experiments/selftrain.py`) uses the best 7.3 run as teacher (`selftrain.teacher_run`),
+pseudo-labels the PGPS9K pool figures that are not training figures, filters by confidence or by
+confidence plus deductive consistency (`verifier/consistency.py`) and fine-tunes a student from the
+teacher's weights; the post-hoc pseudo-label precision against the sealed verifier labels is in its
+metrics.json. The lab ran the first batch (`configs/queue_phase7.yaml`); the rest runs on Colab
+(`configs/queue_phase7_colab.yaml`, see below).
+
 ## Running on the UOWD AI Lab GPUs (Phase 7)
 
 Step by step: [LAB_GUIDE.md](LAB_GUIDE.md). In short: `bash scripts/lab_setup.sh`, then
@@ -92,7 +108,8 @@ Step by step: [LAB_GUIDE.md](LAB_GUIDE.md). In short: `bash scripts/lab_setup.sh
 
 ## Running on Google Colab
 
-Heavy runs (fine-tunes, scaling, self-training) run on Colab Pro. Open
+Heavy runs (fine-tunes, scaling, self-training) run on Colab Pro; step by step for the Phase 7
+queue: [COLAB_GUIDE.md](COLAB_GUIDE.md). Open
 [notebooks/colab_launcher.ipynb](notebooks/colab_launcher.ipynb) in Colab, pick an A100 runtime
 (L4 is fine for probes and smoke runs; avoid T4, which lacks bf16), add the `GH_TOKEN` (while the
 repo is private) and `HF_TOKEN` secrets, and run the cells. The notebook mounts Drive, clones

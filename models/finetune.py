@@ -37,18 +37,32 @@ from analysis.metrics import evaluate
 from data.dataset import Collate, QueryDataset, loader
 from data.queries import vocabulary
 from models.backbone import Backbone, load_backbone
-from models.common import EMA, autocast, cosine_with_warmup, device_of, evaluate_units, log_epoch, predict
-from models.head import Head, masked_bce, pos_weights
+from models.common import (EMA, autocast, cosine_with_warmup, device_of, evaluate_units, log_epoch, predict,
+                           query_kwargs)
+from models.head import Head, QueryAttention, masked_bce, pos_weights
 
 
 class Classifier(nn.Module):
-    def __init__(self, backbone: Backbone, n_out: int, dropout: float = 0.0):
+    """Backbone pooled feature -> head. With `query_tokens` (plan §7.8, no overlay) the query's token
+    indices also cross-attend over the patch tokens (models.head.QueryAttention)."""
+
+    def __init__(self, backbone: Backbone, n_out: int, dropout: float = 0.0, query_tokens: bool = False):
         super().__init__()
         self.backbone = backbone
-        self.head = Head(backbone.out_dim, n_out, dropout)
+        self.query = QueryAttention(backbone.dim) if query_tokens else None
+        self.head = Head(backbone.out_dim + (backbone.dim if query_tokens else 0), n_out, dropout)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.head(self.backbone(x)["pooled"])
+    def forward(self, x: torch.Tensor, qtok: torch.Tensor | None = None) -> torch.Tensor:
+        out = self.backbone(x)
+        if self.query is None:
+            return self.head(out["pooled"])
+        z = self.query(qtok, torch.cat([out["cls"][:, None], out["patches"]], dim=1))
+        return self.head(torch.cat([out["pooled"], z], dim=-1))
+
+
+def build_classifier(cfg: dict, backbone: Backbone, n_out: int) -> Classifier:
+    return Classifier(backbone, n_out, cfg["model"].get("head_dropout", 0.0),
+                      query_tokens=cfg["model"].get("query_input", "overlay") == "tokens")
 
 
 def lp_stage(model: Classifier, cfg: dict, device: torch.device, pw: torch.Tensor) -> dict:
@@ -58,7 +72,7 @@ def lp_stage(model: Classifier, cfg: dict, device: torch.device, pw: torch.Tenso
     f = cfg["finetune"]
     ds = QueryDataset(cfg, "train", train=False)
     n = min(int(f["lp_queries"]), len(ds))
-    is_syn = np.array([r["set"].startswith("synth") for r in ds.rows])
+    is_syn = ds.auxiliary()
     pools = [np.nonzero(~is_syn)[0], np.nonzero(is_syn)[0]] if is_syn.any() and (~is_syn).any() else [np.arange(len(ds))]
     frac = f.get("real_fraction") or 0.5
     take = [round(n * frac), n - round(n * frac)] if len(pools) == 2 else [n]
@@ -90,10 +104,10 @@ def lp_stage(model: Classifier, cfg: dict, device: torch.device, pw: torch.Tenso
 
 def train_sampler(ds: QueryDataset, f: dict, gen: torch.Generator):
     """Fixed-size epochs (`epoch_images`) drawn with replacement; when the training set mixes real and
-    synthetic queries, `real_fraction` of the draws come from the real ones (plan §0.2 #11, revised).
-    Returns None for plain shuffled full passes."""
+    auxiliary (synthetic or pseudo-labelled) queries, `real_fraction` of the draws come from the real
+    ones (plan §0.2 #11, revised). Returns None for plain shuffled full passes."""
     n_img = f.get("epoch_images")
-    is_syn = np.array([r["set"].startswith("synth") for r in ds.rows])
+    is_syn = ds.auxiliary()
     frac = f.get("real_fraction")
     mixed = frac is not None and is_syn.any() and (~is_syn).any()
     if not n_img and not mixed:
@@ -118,8 +132,10 @@ def param_groups(model: Classifier, f: dict) -> list[dict]:
         wd = 0.0 if p.ndim <= 1 or "token" in name else f["weight_decay"]
         g = groups.setdefault((round(lr, 15), wd), {"params": [], "lr": lr, "weight_decay": wd, "depth": depth})
         g["params"].append(p)
-    for name, p in model.head.named_parameters():
-        wd = 0.0 if p.ndim <= 1 else f["weight_decay"]
+    for name, p in model.named_parameters():
+        if name.startswith("backbone.") or not p.requires_grad:
+            continue                                       # head and, for §7.8, the query encoder
+        wd = 0.0 if p.ndim <= 1 or name.endswith("slot") else f["weight_decay"]
         g = groups.setdefault(("head", wd), {"params": [], "lr": f["head_lr"], "weight_decay": wd, "depth": "head"})
         g["params"].append(p)
     return list(groups.values())
@@ -143,7 +159,7 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
 
     backbone = backbone or load_backbone(cfg)
     loaded = backbone.name
-    model = Classifier(backbone, len(vocab), cfg["model"].get("head_dropout", 0.0)).to(device)
+    model = build_classifier(cfg, backbone, len(vocab)).to(device)
     if f.get("init_checkpoint"):
         sd = torch.load(f["init_checkpoint"], map_location="cpu")
         model.load_state_dict(sd.get("model", sd), strict=True)
@@ -182,7 +198,7 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
         gen.set_state(st["gen"])
         print(f"finetune: resumed from epoch {st['epoch']} (best {best:.3f} at {best_epoch})", flush=True)
     lp_info = {}
-    if start == 1 and f.get("lp_queries") and not f.get("init_checkpoint"):
+    if start == 1 and f.get("lp_queries") and not f.get("init_checkpoint") and model.query is None:
         t_lp = time.time()
         lp_info = lp_stage(model, cfg, device, pw)
         ema = EMA(model, f["ema_decay"])                      # EMA starts from the fitted head
@@ -203,7 +219,7 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
                 break
             x, g, m = x.to(device, non_blocking=True), g.to(device), meta["mask"].to(device)
             with autocast(device, cfg):
-                logits = model(x)
+                logits = model(x, **query_kwargs(meta, device))
             loss = masked_bce(logits, g, m, pw)
             scaler.scale(loss / accum).backward()
             total += float(loss.detach()) * len(x)
@@ -218,7 +234,7 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
                 peak = {k: max(v, cur[k]) if v is not None else cur[k] for k, v in peak.items()}
                 opt.zero_grad(set_to_none=True)
                 ema.update(model)
-        pred = predict(lambda x: ema.model(x), val_dl, device, cfg)
+        pred = predict(ema.model, val_dl, device, cfg)
         mval = evaluate(pred["probs"], pred["geo"], pred["mask"], vocab)
         rec = {"epoch": epoch, "train_loss": total / max(n, 1), "val_macro_f1": mval["macro_f1"],
                "val_f1": {r: v["f1"] for r, v in mval["per_relation"].items()}, "lr": _lrs(opt), "lr_peak": peak,
@@ -241,7 +257,7 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
         last.unlink()                                      # finished: the resume state (~5 GB for ViT-L) is not needed
     ema.model.load_state_dict(torch.load(ckpt_dir / "best.pt", map_location="cpu", weights_only=False)["model"])
     ema.model.to(device).eval()
-    results = evaluate_units(lambda x: ema.model(x), cfg, device, run_dir)
+    results = evaluate_units(ema.model, cfg, device, run_dir)
     return {"backbone": cfg["model"]["backbone"], "backbone_loaded": loaded,
             "backbone_info": getattr(backbone, "load_info", {}), "best_epoch": best_epoch,
             "val_macro_f1": round(best, 4), "n_train": len(ds), "steps_per_epoch": steps_per_epoch, **lp_info,

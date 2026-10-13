@@ -1,6 +1,0 @@
-# Phase 7, second batch (Colab or a second lab visit): 7.5 backbone ablation and Part A.
-# 7.8 (no-overlay) and Part B (needs the 7.3 model) are added here in a later update.
-jobs:
-  - {config: configs/ablation_dinov2.yaml, seeds: [0]}             # 7.5 backbone
-  - {config: configs/scaling_50k.yaml, seeds: [0, 1, 2]}           # 7.9 Part A, 50k (0 = 7.2, 10k = 7.3)
-  - {config: configs/scaling_1k.yaml, seeds: [0]}                  # 7.9 Part A, 1k
