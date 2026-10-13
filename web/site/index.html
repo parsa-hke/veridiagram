@@ -4,10 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Teaching a vision transformer to read the geometry in textbook diagrams." />
+    <meta name="theme-color" content="#F3EAD3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1C2421" media="(prefers-color-scheme: dark)" />
     <title>Colour, not Letters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=JetBrains+Mono:wght@400;500&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap"
+    />
+    <script>
+      try {
+        var t = localStorage.getItem("edition");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
   </head>
   <body>
-    <div id="app"><p>Loading…</p></div>
+    <a class="skip" href="#book-1">Skip to the text</a>
+    <div class="running-head" id="running-head">
+      <a class="running-title" href="#top">Colour, not Letters</a>
+      <span class="running-book" aria-live="off"></span>
+      <button class="edition" id="edition" type="button">Night edition</button>
+    </div>
+    <div id="app"><p class="loading">Setting the type…</p></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

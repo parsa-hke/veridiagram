@@ -1,16 +1,518 @@
-/* Milestone 1: plain readable text. The Byrne design system arrives in milestone 2. */
-:root { color-scheme: light dark; }
-body { margin: 0; padding: 0 16px; font: 17px/1.55 Georgia, serif; background: #fff; color: #111; }
-@media (prefers-color-scheme: dark) { body { background: #161616; color: #e8e8e8; } }
-#app { max-width: 46rem; margin: 0 auto; padding: 2rem 0 4rem; }
-table.results { border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; display: block; overflow-x: auto; }
-table.results th, table.results td { padding: 0.25rem 0.6rem; text-align: left; border-bottom: 1px solid #8884; }
-.seeds { font-size: 0.85em; opacity: 0.75; }
-.note { font-size: 0.9rem; opacity: 0.85; border-left: 2px solid #8886; padding-left: 0.75rem; }
-.qed { text-align: right; font-variant: small-caps; }
-.contents { display: flex; flex-wrap: wrap; gap: 1rem; }
-.num.missing { background: #f003; }
-body.trace .num { outline: 1px dotted #0a0; }
-.trace-panel { position: fixed; right: 8px; bottom: 8px; font: 12px monospace; background: #ffd; color: #111;
-  padding: 4px 8px; border: 1px solid #aa8; }
-.error { color: #b00; }
+/* Colour, not Letters: a lost edition of Byrne's Euclid (WEBSITE_PLAN.md §1.3).
+   Byrne's red, yellow, blue and black; green (--machine) belongs to the model and nothing else. */
+
+:root {
+  --paper: #f3ead3;
+  --paper-deep: #ebe0c4;
+  --ink: #1a1a1a;
+  --ink-soft: #4b4538;
+  --byrne-red: #c8312b;
+  --byrne-yellow: #e8b10e;
+  --byrne-blue: #1f4e8c;
+  --machine: #00c800;
+  --rule: #b9ae95;
+
+  --measure: 34rem;
+  --margin: 14.5rem;
+  --gap: 2.5rem;
+  --display: "Libre Caslon Display", "Libre Caslon Text", Georgia, serif;
+  --text: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+  --caps: "IM Fell English SC", "Libre Caslon Text", Georgia, serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+
+/* Night edition: a blackboard, chalk lines, the same four colours a little softened. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1c2421;
+    --paper-deep: #232d29;
+    --ink: #ece8dc;
+    --ink-soft: #b8b4a7;
+    --byrne-red: #e0574f;
+    --byrne-yellow: #f0c23a;
+    --byrne-blue: #5b8bd0;
+    --rule: #3a4541;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1c2421;
+  --paper-deep: #232d29;
+  --ink: #ece8dc;
+  --ink-soft: #b8b4a7;
+  --byrne-red: #e0574f;
+  --byrne-yellow: #f0c23a;
+  --byrne-blue: #5b8bd0;
+  --rule: #3a4541;
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ base */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 3.5rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+@media (min-width: 48rem) {
+  body { font-size: 1.125rem; }
+}
+
+#app { padding: 0 16px; }
+
+a {
+  color: inherit;
+  text-decoration-color: var(--byrne-blue);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.18em;
+}
+a:hover { color: var(--byrne-blue); }
+
+:focus-visible {
+  outline: 2px solid var(--byrne-blue);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.8em;
+  font-variant-numeric: lining-nums;
+  background: var(--paper-deep);
+  padding: 0.05em 0.3em;
+  border-radius: 2px;
+}
+
+em { font-style: italic; }
+strong { font-weight: 700; }
+
+.smallcaps { font-family: var(--caps); letter-spacing: 0.04em; }
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+}
+.skip:focus {
+  left: 16px;
+  z-index: 20;
+  background: var(--paper);
+  padding: 0.5rem 0.75rem;
+}
+
+.loading, .error {
+  max-width: var(--measure);
+  margin: 30vh auto;
+  text-align: center;
+  font-style: italic;
+}
+.error { color: var(--byrne-red); }
+
+/* ------------------------------------------------------------------ running head */
+
+.running-head {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 16px 0.45rem;
+  font-family: var(--caps);
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+}
+.running-title { text-decoration: none; }
+.running-book {
+  flex: 1;
+  text-align: center;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.edition {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0.15rem 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+.edition:hover { text-decoration-color: var(--byrne-blue); }
+@media (max-width: 40rem) {
+  .running-book { display: none; }
+}
+
+/* ------------------------------------------------------------------ frontispiece */
+
+.frontispiece {
+  max-width: 44rem;
+  margin: 0 auto;
+  min-height: calc(100svh - 2.6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 0 4rem;
+}
+.imprint {
+  font-family: var(--caps);
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+}
+.frontispiece h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.9rem, 12vw, 6.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.emblem-figure { margin: 1.75rem 0 0.5rem; width: min(26rem, 100%); }
+.emblem { display: block; width: 100%; height: auto; }
+.emblem-figure figcaption {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+.subtitle {
+  font-style: italic;
+  font-size: clamp(1.15rem, 3.2vw, 1.4rem);
+  line-height: 1.4;
+  max-width: 30rem;
+  margin: 0.75rem 0 1rem;
+}
+.course { color: var(--ink-soft); margin: 0 0 2rem; font-size: 0.95rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+.button {
+  display: inline-block;
+  font-family: var(--caps);
+  letter-spacing: 0.05em;
+  font-size: 1.05rem;
+  text-decoration: none;
+  padding: 0.55rem 1.2rem 0.5rem;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  transition: background-color 0.15s, color 0.15s;
+}
+.button:hover { background: var(--ink); color: var(--paper); }
+.button.primary { background: var(--byrne-red); border-color: var(--byrne-red); color: #fff8ec; }
+.button.primary:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+/* SVG figure parts (shared with the constructions of milestone 3) */
+.ink-line { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.ink-dot { fill: var(--ink); }
+.bar { stroke-width: 16; stroke-linecap: butt; }
+.bar-red { stroke: var(--byrne-red); }
+.bar-yellow { stroke: var(--byrne-yellow); }
+.bar-blue { stroke: var(--byrne-blue); }
+.machine-trace .halo { stroke: var(--machine); stroke-opacity: 0.3; stroke-width: 6; stroke-linecap: round; }
+.machine-trace .core { stroke: var(--machine); stroke-width: 2; stroke-linecap: round; }
+
+/* ------------------------------------------------------------------ contents */
+
+.contents {
+  max-width: var(--measure);
+  margin: 0 auto 2rem;
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.5rem 0;
+}
+.contents h2 { font-weight: 400; font-size: 1rem; margin: 0 0 0.75rem; color: var(--byrne-red); }
+.contents ol { list-style: none; margin: 0; padding: 0; }
+.contents li { margin: 0.2rem 0; }
+.contents a { text-decoration: none; }
+.contents a:hover .smallcaps { color: var(--byrne-red); }
+
+/* ------------------------------------------------------------------ the book column and its margin */
+
+main, .colophon {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.book { padding-top: 5rem; }
+
+.book > h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 8vw, 3.5rem);
+  line-height: 1.05;
+  text-align: center;
+  margin: 0 0 2.5rem;
+}
+.book > h2::after {
+  content: "";
+  display: block;
+  width: 4.5rem;
+  height: 0.55rem;
+  margin: 1.1rem auto 0;
+  background: linear-gradient(90deg, var(--byrne-red) 0 33.3%, var(--byrne-yellow) 0 66.6%, var(--byrne-blue) 0);
+}
+.book-no {
+  display: block;
+  font-family: var(--caps);
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  color: var(--byrne-red);
+  margin-bottom: 0.35rem;
+}
+
+p { margin: 0 0 1.05em; hyphens: auto; -webkit-hyphens: auto; }
+ul { padding-left: 1.2em; margin: 0 0 1.05em; }
+li { margin-bottom: 0.35em; }
+li::marker { color: var(--byrne-red); }
+
+/* Drop caps: a huge vermilion initial opens each Book. */
+.opening::first-letter {
+  float: left;
+  font-family: var(--display);
+  font-size: 5.1em;
+  line-height: 0.78;
+  padding: 0.06em 0.09em 0 0;
+  margin-top: 0.02em;
+  color: var(--byrne-red);
+}
+.opening { font-size: 1.06em; }
+
+.prop { margin: 3.25rem 0 0; }
+.prop h3 {
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.32rem;
+  line-height: 1.35;
+  margin: 0 0 1rem;
+}
+.prop-no {
+  display: block;
+  font-family: var(--caps);
+  font-style: normal;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: var(--byrne-red);
+  margin-bottom: 0.2rem;
+}
+.prop h3 + p::first-line { font-variant: small-caps; letter-spacing: 0.03em; }
+
+.qed {
+  text-align: right;
+  font-family: var(--caps);
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin-top: 1.25rem;
+}
+.qed::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-left: 0.5em;
+  background: var(--ink);
+  vertical-align: 0.05em;
+}
+
+/* The machine's colour, shown where the text names it. */
+.swatch-machine { white-space: nowrap; }
+.swatch-machine::before {
+  content: "";
+  display: inline-block;
+  width: 1.5em;
+  height: 0.32em;
+  margin: 0 0.45em 0 0.1em;
+  vertical-align: 0.25em;
+  background: var(--machine);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--machine) 35%, transparent);
+}
+
+/* Margin notes: in the margin on wide pages, behind a tappable † on narrow ones. */
+.note-mark {
+  font: inherit;
+  font-size: 0.8em;
+  line-height: 0;
+  vertical-align: super;
+  color: var(--byrne-red);
+  background: none;
+  border: 0;
+  padding: 0 0.15em;
+  margin-left: 0.05em;
+  position: relative;
+  cursor: pointer;
+}
+.note-mark::after {               /* a finger-sized target that does not move the line */
+  content: "";
+  position: absolute;
+  inset: -16px -14px;
+}
+.sidenote {
+  display: none;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  hyphens: auto;
+}
+.sidenote.open {
+  display: block;
+  margin: 0.6rem 0 0.4rem;
+  padding: 0.55rem 0 0.55rem 0.9rem;
+  border-left: 2px solid var(--byrne-red);
+}
+.note-dagger { color: var(--byrne-red); }
+
+/* ------------------------------------------------------------------ tables */
+
+.table-wrap { overflow-x: auto; margin: 1.25rem 0 1.5rem; -webkit-overflow-scrolling: touch; }
+table.results {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  font-variant-numeric: lining-nums tabular-nums;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+table.results th, table.results td {
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+table.results thead th {
+  font-family: var(--caps);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--ink);
+  vertical-align: bottom;
+}
+table.results tbody th { font-weight: 400; font-style: italic; }
+table.results td { white-space: nowrap; }
+table.results code { background: none; padding: 0; font-size: 0.78em; }
+.row-unit { display: none; }
+
+/* Phones: each table row becomes a small card, label on the left, value on the right. */
+@media (max-width: 40rem) {
+  .table-wrap { overflow: visible; }
+  table.results, table.results tbody, table.results tr, table.results th, table.results td { display: block; }
+  table.results { border-bottom: 0; }
+  table.results thead { display: none; }
+  table.results tr { border-bottom: 2px solid var(--ink); padding: 0.4rem 0 0.35rem; }
+  table.results tbody th { border: 0; padding: 0.2rem 0 0.3rem; font-size: 1rem; }
+  table.results td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 0;
+    border-top: 1px solid var(--rule);
+    padding: 0.35rem 0;
+    white-space: normal;
+    text-align: right;
+  }
+  table.results td::before {
+    content: attr(data-label);
+    font-family: var(--caps);
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+    text-align: left;
+  }
+  .row-unit { display: inline; }
+}
+
+.seeds { font-size: 0.82em; color: var(--ink-soft); font-style: normal; white-space: nowrap; }
+
+/* ------------------------------------------------------------------ colophon */
+
+.colophon {
+  margin-top: 6rem;
+  padding: 2.5rem 0 4rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+.colophon h2 {
+  font-family: var(--caps);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  font-size: 1.05rem;
+  color: var(--byrne-red);
+  margin: 0 0 1rem;
+}
+
+/* ------------------------------------------------------------------ wide pages: the margin column */
+
+@media (min-width: 70rem) {
+  main, .colophon {
+    max-width: calc(var(--measure) + var(--gap) + var(--margin));
+    padding-right: calc(var(--gap) + var(--margin));
+  }
+  .note-mark { pointer-events: none; cursor: default; }
+  .sidenote, .sidenote.open {
+    display: block;
+    float: right;
+    clear: right;
+    width: var(--margin);
+    margin: 0.3rem calc(-1 * (var(--gap) + var(--margin))) 1rem 0;
+    padding: 0;
+    border: 0;
+    position: relative;
+  }
+  .table-wrap.wide { margin-right: calc(-1 * (var(--gap) + var(--margin))); }
+  .table-wrap { clear: right; }
+}
+
+/* ------------------------------------------------------------------ trace mode (?trace) */
+
+body.trace .num { outline: 1px dotted var(--byrne-blue); outline-offset: 1px; }
+.num.missing { background: color-mix(in srgb, var(--byrne-red) 25%, transparent); }
+.trace-panel {
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 30;
+  font: 12px var(--mono);
+  background: var(--paper-deep);
+  color: var(--ink);
+  padding: 4px 8px;
+  border: 1px solid var(--rule);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  .running-head, .actions, .note-mark { display: none; }
+  .sidenote { display: block; font-size: 0.8rem; margin: 0.4rem 0; }
+}

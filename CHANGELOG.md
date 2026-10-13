@@ -640,3 +640,30 @@ Found
   fills them. DINOv2-L from the cache: 304.4M parameters, 24 layers, 1,024 patch tokens at 448 px.
 - 7.11 kept pseudo-positive precision is 0.8975, which formats as 0.897 at three decimals (the
   changelog above rounded it to 0.898).
+
+## 2026-10-13 — Website, milestone 2: the look (WEBSITE_PLAN.md §1.3, §6.2)
+
+Done
+- Design tokens from §1.3 on `:root` (paper, ink, Byrne red / yellow / blue, `--machine` green, rule),
+  redefined for the night edition under `prefers-color-scheme: dark` and `[data-theme]`; an edition
+  switch in the running head (choice kept in localStorage, guarded; set before first paint).
+- Type: Libre Caslon Display (titles, drop caps), Libre Caslon Text (body, old-style figures; tables
+  lining tabular figures), IM Fell English SC (book and proposition labels, Q.E.D., table heads),
+  JetBrains Mono (code only).
+- Book layout: frontispiece (title, static emblem: compass circle, red and yellow Byrne bars, the
+  machine's green trace; it is animated in milestone 3), contents, sticky running head showing the
+  current Book, Book openings with vermilion drop caps, a red-yellow-blue rule under each Book title,
+  proposition labels in small caps, first lines in small caps, Q.E.D. with a black square. Book IV is
+  a placeholder until the demo.
+- Margin notes (`src/ui.ts` `note()`): in the right margin from 70rem up; below that a † button
+  (aria-expanded, 44-px touch area) folds the note open under its paragraph.
+- Tables: hairline Byrne tables; wide ones extend into the margin; on phones each row becomes a card
+  (label left, value right) instead of a sideways-scrolling table.
+- Checked in the browser: 375, 768 and 1280 px, both editions: no horizontal scroll at any width;
+  the trace check still reports 0 untraced and 0 missing numbers; `prefers-reduced-motion` disables
+  transitions (the scroll drawing of milestone 3 will honour it too). `src/ui.test.ts`: notes toggle,
+  editions switch and persist (site suite: 6 tests).
+
+Found
+- Under the colour finding of milestone 1, "real diagrams do not use green" was too strong; the text
+  now says they rarely use it, with the measured shares.

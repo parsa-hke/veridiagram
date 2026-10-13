@@ -1,4 +1,5 @@
 import { get, ms, n } from "../data";
+import { note } from "../ui";
 
 const RELATION_WORDS: Record<string, string> = {
   parallel: "parallel",
@@ -19,8 +20,11 @@ export function book1(): string {
   const relations = (get("results:relations") as string[]).map((r) => `<code>${r}</code>`).join(", ");
 
   return `
-<section class="book" id="book-1">
+<section class="book" id="book-1" data-running="Book I · The Problem">
   <h2><span class="book-no">Book I</span> The Problem</h2>
+  <p class="opening">Every geometry textbook is full of diagrams, and every diagram is full of facts that
+  nobody wrote down. This book is about the gap between what a figure shows and what its labels say,
+  and about the instrument used to measure it.</p>
 
   <article class="prop" id="prop-1">
     <h3><span class="prop-no">Proposition I.</span> A diagram says more than it is labelled to say.</h3>
@@ -55,15 +59,14 @@ export function book1(): string {
     Two lines are parallel or perpendicular within ${n("facts:tolerances.parallel_deg", "deg")}; two
     segments are equal within ${n("facts:tolerances.equal_length_pct", "pctv")}; a point is on a circle
     within ${n("facts:tolerances.on_circle_pct", "pctv")} of the radius; three points are collinear within
-    ${n("facts:tolerances.collinear_pct", "pctv")} of the diagram's size.</p>
-    <aside class="note">The first tolerances came from valleys in the histograms of measured margins
+    ${n("facts:tolerances.collinear_pct", "pctv")} of the diagram's size.${note(`The first tolerances came from valleys in the histograms of measured margins
     (parallel ${n("facts:tolerances.calibration.parallel.valley_or_knee", "deg")}, perpendicular
     ${n("facts:tolerances.calibration.perpendicular.valley_or_knee", "deg")}). A first round of
     ${n("facts:gold.round1.n", "int")} hand-labelled queries showed that the eye accepts more
     (false negatives ${n("facts:gold.round1.fn_rate", "pct1")}), so the tolerances were widened and checked
     on ${n("facts:gold.round2.n", "int")} fresh queries: population-weighted false-positive rate
     ${n("facts:gold.round2_adjudicated_weighted.fp_rate", "pct1")}, false-negative rate
-    ${n("facts:gold.round2_adjudicated_weighted.fn_rate", "pct1")} after adjudication.</aside>
+    ${n("facts:gold.round2_adjudicated_weighted.fn_rate", "pct1")} after adjudication.`)}</p>
     <p class="qed">Q.E.D.</p>
   </article>
 

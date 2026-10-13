@@ -13,9 +13,9 @@ function table(rows: { label: string; exp: string }[], units = TEST_UNITS, ls = 
   const body = rows
     .filter((r) => hasExp(r.exp))
     .map((r) => `<tr><th scope="row">${r.label} <span class="seeds">(${seeds(r.exp)})</span></th>${units
-      .map((u) => `<td>${ms(r.exp, u, ls)}</td>`).join("")}</tr>`)
+      .map((u) => `<td data-label="${UNIT_NAMES[u]}"><span class="cell">${ms(r.exp, u, ls)}</span></td>`).join("")}</tr>`)
     .join("");
-  return `<table class="results"><thead><tr><th></th>${head}</tr></thead><tbody>${body}</tbody></table>`;
+  return `<div class="table-wrap"><table class="results"><thead><tr><th></th>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 
 function prop(no: string, id: string, statement: string, body: string): string {
@@ -35,15 +35,15 @@ function scalingTable(): string {
   const rows = sizes.map((s) => {
     const cells = units.map((u) => {
       const i = at(u, s);
-      if (i < 0) return "<td>—</td>";
+      if (i < 0) return `<td data-label="${UNIT_NAMES[u]}">—</td>`;
       const sd = get(`scaling:points.${i}.sd`);
-      return `<td>${n(`scaling:points.${i}.mean`)}${sd == null ? "" : ` ± ${n(`scaling:points.${i}.sd`)}`}
-        <span class="seeds">(${n(`scaling:points.${i}.n_seeds`, "seeds")})</span></td>`;
+      return `<td data-label="${UNIT_NAMES[u]}"><span class="cell">${n(`scaling:points.${i}.mean`)}${sd == null ? "" : ` ± ${n(`scaling:points.${i}.sd`)}`}
+        <span class="seeds">(${n(`scaling:points.${i}.n_seeds`, "seeds")})</span></span></td>`;
     });
-    return `<tr><th scope="row">${n(`scaling:sizes.${sizeIdx(s)}`, "int")}</th>${cells.join("")}</tr>`;
+    return `<tr><th scope="row">${n(`scaling:sizes.${sizeIdx(s)}`, "int")}<span class="row-unit"> synthetic diagrams</span></th>${cells.join("")}</tr>`;
   });
-  return `<table class="results"><thead><tr><th>synthetic diagrams</th>${units
-    .map((u) => `<th>${UNIT_NAMES[u]}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
+  return `<div class="table-wrap"><table class="results"><thead><tr><th>synthetic diagrams</th>${units
+    .map((u) => `<th>${UNIT_NAMES[u]}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`;
 }
 
 function teacherCell(unit: string): string {
@@ -60,9 +60,9 @@ function perRelationTable(exps: { label: string; exp: string }[], unit: string):
   const rows = exps
     .filter((e) => hasExp(e.exp))
     .map((e) => `<tr><th scope="row">${e.label} <span class="seeds">(${seeds(e.exp)})</span></th>${rels
-      .map((r) => `<td>${n(`${cell(e.exp, unit)}.per_relation.${r}.mean`)}</td>`).join("")}</tr>`);
-  return `<table class="results"><thead><tr><th>${UNIT_NAMES[unit]}</th>${rels
-    .map((r) => `<th><code>${r}</code></th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
+      .map((r) => `<td data-label="${r.replace("_", " ")}"><span class="cell">${n(`${cell(e.exp, unit)}.per_relation.${r}.mean`)}</span></td>`).join("")}</tr>`);
+  return `<div class="table-wrap wide"><table class="results"><thead><tr><th>${UNIT_NAMES[unit]}</th>${rels
+    .map((r) => `<th><code>${r.replace("_", "_<wbr>")}</code></th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`;
 }
 
 function weakest(exp: string, unit: string): string {
@@ -85,9 +85,9 @@ export function book3(): string {
     < 2 * Math.max(sd("selftrain_consistency", u), sd("selftrain_confidence", u)));
 
   return `
-<section class="book" id="book-3">
+<section class="book" id="book-3" data-running="Book III · The Propositions">
   <h2><span class="book-no">Book III</span> The Propositions</h2>
-  <p>Each finding is one proposition. Scores are macro-F1 against the geometric labels at a threshold of
+  <p class="opening">Each finding is one proposition. Scores are macro-F1 against the geometric labels at a threshold of
   ${n("results:threshold", "f1")}, mean ± standard deviation over seeds; single seeds are labelled as such.</p>
 
   ${prop("IV", "prop-4", "Fine-tuning reads geometry; a frozen eye does not.", `

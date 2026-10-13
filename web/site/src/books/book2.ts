@@ -1,4 +1,5 @@
 import { get, n } from "../data";
+import { note } from "../ui";
 
 function backbone(key: "main" | "demo", label: string): string {
   const b = `facts:backbones.${key}`;
@@ -19,11 +20,17 @@ export function book2(): string {
   const synth = Object.keys(get("facts:data.synth_train") ?? {});
   const largest = synth[synth.length - 1];
   return `
-<section class="book" id="book-2">
+<section class="book" id="book-2" data-running="Book II · The Instrument">
   <h2><span class="book-no">Book II</span> The Instrument</h2>
+  <p class="opening">An instrument for reading diagrams has four parts: the diagrams it learns from, the
+  way a question is put to it, the eye that looks, and the discipline by which the eye is trained.</p>
 
   <article class="prop" id="data">
     <h3><span class="prop-no">The data.</span></h3>
+    <p>Real textbook diagrams from three public datasets, and synthetic ones drawn by our own renderer, all
+    split by figure so that no picture is seen twice.${note(`Each diagram yields at most ${n("facts:data.max_queries_per_diagram", "int")} queries;
+    training uses ${n("facts:data.train_queries", "int")} real queries, and the extrapolation set is evaluated
+    on ${n("facts:data.eval_caps.synth_extrap", "int")} of its queries.`)}</p>
     <ul>
       <li>Geometry3K figures, split by figure (not by problem, so no test figure was seen in training):
         ${n("facts:data.geometry3k_train_figures", "int")} train,
@@ -39,9 +46,6 @@ export function book2(): string {
       <li>An unlabelled pool for self-training: PGPS9K figures, of which
         ${n("pseudo_labels:pool_diagrams", "int")} were never seen with labels.</li>
     </ul>
-    <aside class="note">Each diagram yields at most ${n("facts:data.max_queries_per_diagram", "int")} queries;
-    training uses ${n("facts:data.train_queries", "int")} real queries, and the extrapolation set is evaluated
-    on ${n("facts:data.eval_caps.synth_extrap", "int")} of its queries.</aside>
   </article>
 
   <article class="prop" id="query">
@@ -51,14 +55,13 @@ export function book2(): string {
     image is resized to ${n("facts:overlay.long_side", "int")} px, so the highlight is the same width in
     every input: a ${n("facts:overlay.width_px", "int")}-px core inside a ${n("facts:overlay.halo_width_px", "int")}-px
     translucent halo.</p>
-    <p>Green was chosen because real diagrams do not use it. In ${n("facts:colour_check.near_highlight_r80.images", "int")}
+    <p>Green was chosen because real diagrams rarely use it. In ${n("facts:colour_check.near_highlight_r80.images", "int")}
     sampled textbook diagrams, ${n("facts:colour_check.near_highlight_r80.images_with", "int")} contain the highlight's
     colour; green-family ink of any shade appears in ${n("facts:colour_check.hue_green.pct", "pctv")} of them,
     against ${n("facts:colour_check.hue_red.pct", "pctv")} for red and ${n("facts:colour_check.hue_blue.pct", "pctv")}
-    for blue.</p>
-    <aside class="note">A pixel counts as the highlight's colour when it lies within RGB distance
+    for blue.${note(`A pixel counts as the highlight's colour when it lies within RGB distance
     ${n("facts:colour_check.near_highlight_r80.radius", "int")} of it; an image counts when at least
-    ${n("facts:colour_check.near_highlight_r80.min_pixels", "int")} of its pixels do. Darker and teal greens from coloured textbook figures make up the green-family share.</aside>
+    ${n("facts:colour_check.near_highlight_r80.min_pixels", "int")} of its pixels do. Darker and teal greens from coloured textbook figures make up the green-family share.`)}</p>
   </article>
 
   <article class="prop" id="model">
@@ -78,11 +81,10 @@ export function book2(): string {
     ${n("facts:recipe.epoch_images", "int")} images. Augmentation keeps every relation true: rotations up to
     ±${n("facts:recipe.augment.rotation_deg", "deg")}, flips, scaling between
     ${n("facts:recipe.augment.scale.0", "f1")} and ${n("facts:recipe.augment.scale.1", "f1")}, noise. Never shear,
-    which would break parallels.</p>
-    <aside class="note">Layer-wise learning-rate decay ${n("facts:recipe.llrd", "f1")} from the top block down;
+    which would break parallels.${note(`Layer-wise learning-rate decay ${n("facts:recipe.llrd", "f1")} from the top block down;
     backbone learning rate ${n("facts:recipe.backbone_lr", "sci")}, head ${n("facts:recipe.head_lr", "sci")};
     ${n("facts:recipe.amp_dtype", "raw")} mixed precision; weight EMA ${n("facts:recipe.ema_decay", "raw")};
-    batch ${n("facts:recipe.batch_size", "int")}.</aside>
+    batch ${n("facts:recipe.batch_size", "int")}.`)}</p>
     <p>The plan as first written needed ${n("facts:compute.planned_gpu_hours", "int")} GPU-hours
     (measured at ${n("facts:compute.train_img_per_s_448", "f1")} images per second per GPU). The project had a
     classroom PC for ${n("facts:meta.lab_visit_hours", "raw")} hours per visit and a Colab account, so every
