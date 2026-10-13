@@ -731,3 +731,82 @@ Done
 - Tests: `src/cursor.test.ts` (trace pruning, no pencil on touch screens, the switch, motion off
   under reduced motion), `src/draw.test.ts` extended (the compass appears while a circle is drawn and
   is put away after). Site suite 12 tests.
+
+## 2026-10-13 — Website, milestone 4: the inference server (WEBSITE_PLAN.md §4, §6.4), part 1
+
+Done
+- `web/server/core.py` (no web framework): a Construct drawing becomes a `user` Diagram fitted into
+  the synthetic canvas by a similarity map (every relation preserved) and rendered by
+  `data.synthetic.render.render_array` at the middle of the training style ranges, no noise; an
+  upload is used as it is with the visitor's clicked primitives. Per query the model input is made by
+  `data.dataset.overlay_image` and `data.dataset.normalise`, factored out of `QueryDataset` so the
+  dataset and the server run the same code (parity rule, §4.1). Applicable relations and the Ruler
+  come from `data.queries.label_rows` (enumeration, mask, verifier with the fixed tolerances);
+  "read the whole figure" samples queries as the index does (`cap_rows`, same seed rule) and runs the
+  Part B closure on the model's confident answers (τ and C2 from `configs`), via
+  `experiments.selftrain.query_facts` (renamed from the private `_facts`).
+- `web/server/app.py`: FastAPI `/api/ask`, `/api/read`, `/api/health` (§4.2); the model loads in a
+  background thread so health answers during warm-up (503 "the instrument is warming up" until
+  ready); limits: 8 MB body, 5 MB image, 4,096 px side, 60 queries, 26 points, 40 segments, 6 circles,
+  30 requests per minute per address; CORS configurable; no access log, nothing stored; load errors
+  are logged, not shown to visitors. Serves the built site at / (one URL for the Space). The
+  checkpoint comes from CHECKPOINT or, on a Space, from HF_MODEL_REPO (+ HF_TOKEN).
+  `python -m web.server.app --static web/site/dist`. The architecture is built from the backbone's
+  configuration (`AutoModel.from_config`): no pretrained download, the checkpoint holds every weight.
+- `data/schema.py`: source `user` for website input (test). `web/server/Dockerfile` (site built in a
+  Node stage, CPU torch, uid 1000, port 7860), `web/server/requirements.txt`, `.dockerignore`;
+  fastapi / uvicorn / httpx pinned in requirements.txt.
+- Tests `tests/test_web_server.py` on a tiny DINOv2: both input modes, the Ruler (square: AB ∥ CD,
+  equal, not perpendicular; C on the circle; an upload's clicks measured at 2.2°), the model's view
+  (448 px, green highlight present), whole-figure reading, errors, warm-up, rate limit, and **parity:
+  three real validation queries sent through the upload path give exactly QueryDataset's tensor**.
+  Probability parity against `predictions/val.npz` (≤ 0.03, same decisions) is written and runs with
+  `WEB_PARITY=1` once the checkpoint is local.
+
+Found
+- Latency (DINOv2-L architecture with random weights, same cost as the trained model; Apple M5):
+  one question 1.23 s on the CPU (4 threads), 0.24 s on MPS; reading a whole figure (26 queries)
+  35 s on the CPU, 5.5 s on MPS. Each query is its own forward pass (the highlight differs), so
+  whole-figure reading grows linearly with the queries; on a 2-vCPU free Space expect several
+  seconds per question and minutes per figure, as the plan warned (§4.3).
+- Real diagrams have unnamed points (`_p0`), so point names allow letters, digits, `_` and `'`.
+
+Waiting for
+- The checkpoint (`runs/ablation_dinov2_s0/checkpoints/best.pt`, from Drive): probability parity and
+  the local run on MPS. Docker Desktop running: the image build.
+
+## 2026-10-13 — Website, milestone 4, part 2: the real checkpoint, parity, Docker
+
+Done
+- With `runs/ablation_dinov2_s0/checkpoints/best.pt` (609 MB) local: the server runs on MPS
+  (`python -m web.server.app --static web/site/dist`). A hand-drawn slanted parallelogram ABDC with a
+  stray line CE: one question 0.38 s (AB ∥ CD and equal, p 1.00; the Ruler 0.48° and 0.05%); reading
+  the whole figure, 25 queries in 6.2 s, gives exactly the Ruler's relation set (AB ∥ CD, AC ∥ BD,
+  both pairs equal) and no contradictions. The model's view is returned as the 448 × 448 PNG it
+  received.
+- `web/server/parity.py` (`python -m web.server.parity`): compares the server's probabilities with
+  `predictions/val.npz` on a sample of validation queries under three ways of asking.
+  `data.dataset.pad_batch` factored out of `Collate` so the server batches like evaluation.
+- Docker image (`docker build -f web/server/Dockerfile -t colour-not-letters .`, 1.72 GB) builds and
+  serves the site and the API with the checkpoint mounted read-only; the square of the parallelogram
+  test gives the same answers on its CPU.
+
+Found
+- **Answers depend on padding, so the saved evaluation depended on batch neighbours.** The pooled
+  feature is CLS ⊕ the mean of all patch tokens, padding included, and evaluation padded every image
+  in a batch of 32 to the batch's largest. On 640 validation queries (demo model, MPS):
+  asked as evaluation did, 0 of 1,339 decisions differ (max |dp| 0.040 = bf16 MPS vs CUDA; macro-F1
+  0.9425 = saved); asked one at a time with the dataset's own padding, 30 of 1,346 differ (2.2%;
+  macro-F1 0.919 vs 0.937 saved on that sample); padded to a fixed 448 × 448 square, 25 differ (1.9%;
+  macro-F1 0.952). A wide figure (176 × 448) in a batch padded to 416 × 448 is the clearest case:
+  equal_length 0.00 in its batch, 0.99 alone (same on CPU fp32). The Phase 7 numbers therefore carry
+  a batch-composition effect of about ±1-2 macro-F1 points; Phase 8 should state it and can
+  re-evaluate with a fixed padding (or mask padding tokens in the pooling for future training).
+- The website asks with the fixed square (`configs/base.yaml` `server.pad: square`): an answer then
+  depends only on its own question, and it is the best of the three on the sample. The parity test
+  reproduces an original evaluation batch instead (no decision may differ, |dp| ≤ 0.05).
+- Latency in the container (Docker Desktop, linux/arm64, CPU torch, 10 cores): ~7 s per question and
+  207 s for a 25-query figure, against 1.2 s per question natively on the same Mac's CPU (Apple
+  Accelerate) and 0.38 s on MPS; the square input is always 1,024 tokens. A free CPU Space (x86, 2
+  vCPU) will be measured in milestone 6; whole-figure reading on CPU takes minutes, so milestone 5
+  should lean on the precomputed gallery and stream progress for live reads.

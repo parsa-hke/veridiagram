@@ -56,3 +56,13 @@ def test_order_along_and_segments():
     pts = {"A": (0, 0), "B": (10, 10), "M": (5, 5)}
     assert order_along(["B", "A", "M"], pts) in (["A", "M", "B"], ["B", "M", "A"])
     assert segments_from_lines([["A", "M", "B"]]) == [("A", "B"), ("A", "M"), ("B", "M")]
+
+
+def test_user_source_for_website_input():
+    """Diagrams drawn or uploaded on the website are a source of their own (WEBSITE_PLAN.md §4.1)."""
+    from data.schema import Diagram
+    d = Diagram(id="user:abc", source="user", split="all", image_path="", width=512, height=512,
+                points={"A": (1.0, 2.0), "B": (3.0, 4.0)}, segments=[("A", "B")])
+    assert Diagram.from_json(d.to_json()) == d
+    with pytest.raises(ValueError):
+        Diagram(id="x", source="website", split="all", image_path="", width=1, height=1)

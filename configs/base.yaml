@@ -189,6 +189,11 @@ selftrain:                             # Part B (plan §7.11), experiments/selft
   teacher_checkpoint: null             # explicit path instead of <runs>/<teacher_run>/checkpoints/best.pt
   rounds: 1
 
+server:                                # website inference (web/server, WEBSITE_PLAN.md §4)
+  pad: square                          # square: every query padded to long_side x long_side (answers independent of
+                                       # batch neighbours; python -m web.server.parity, 2026-10-13); patch: QueryDataset's own
+  batch_size: 8
+
 logging:
   wandb: false
   wandb_project: geo-relations

@@ -89,7 +89,7 @@ def teacher_predictions(cfg: dict, ckpt: Path, backbone: Backbone, device: torch
     return {"rows": ds.rows, "probs": pred["probs"], "diagrams": ds.diagrams}
 
 
-def _facts(d, row: dict, vocab: list[str], labels: np.ndarray, use: np.ndarray, car: Carriers):
+def query_facts(d, row: dict, vocab: list[str], labels: np.ndarray, use: np.ndarray, car: Carriers):
     """(positives, negatives) facts of one query for the closure, from labels where `use`."""
     pos, neg = [], []
     for j, rel in enumerate(vocab):
@@ -120,7 +120,7 @@ def contradictory_diagrams(rows: list[dict], diagrams: dict, vocab: list[str], l
         car = Carriers(d)
         pos, neg = [], []
         for i in idx:
-            p, n = _facts(d, rows[i], vocab, labels[i], use[i], car)
+            p, n = query_facts(d, rows[i], vocab, labels[i], use[i], car)
             pos += p
             neg += n
         contradictions, _ = closure(pos, neg if negatives else ())

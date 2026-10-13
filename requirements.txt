@@ -11,5 +11,9 @@ pyyaml==6.0.3
 scikit-learn==1.9.1
 pytest==9.1.1
 tqdm==4.70.1
+# Website inference server (web/server) and its tests
+fastapi==0.143.0
+uvicorn==0.54.0
+httpx==0.28.1
 # Optional
 wandb==0.30.0

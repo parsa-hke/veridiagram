@@ -1,0 +1,11 @@
+# Inference server image (web/server/Dockerfile). torch is installed first from the CPU wheel index.
+# Versions match the project's requirements.txt.
+transformers==5.19.0
+huggingface_hub==2.2.0
+numpy==2.2.6
+pillow==12.3.0
+matplotlib==3.11.2
+pyyaml==6.0.3
+tqdm==4.70.1
+fastapi==0.143.0
+uvicorn==0.54.0

@@ -64,6 +64,22 @@ def pad_to_multiple(im: Image.Image, m: int) -> Image.Image:
     return out
 
 
+def overlay_image(im: Image.Image, d, refs: list, L: int, ocfg: dict, highlight: bool = True) -> Image.Image:
+    """The model's view of a query before normalisation: the diagram flattened on white, its long side
+    resized to L, the queried primitives drawn on it. Shared by QueryDataset and the website's
+    inference server (web/server), so both feed the model the same pixels (WEBSITE_PLAN.md §4.1)."""
+    img, k = fit_long_side(flatten(im), L)
+    if highlight:
+        img, _ = draw_overlay(img, d, refs, ocfg, scale=k)
+    return img
+
+
+def normalise(im: Image.Image, patch: int, mean: torch.Tensor, std: torch.Tensor) -> torch.Tensor:
+    """Pad right/bottom with white to a multiple of the patch size, scale to [0, 1], normalise: (3, H, W)."""
+    a = torch.from_numpy(np.asarray(pad_to_multiple(im, patch), dtype=np.float32) / 255.0).permute(2, 0, 1)
+    return (a - mean) / std
+
+
 class QueryDataset(torch.utils.data.Dataset):
     def __init__(self, cfg: dict, unit: str, train: bool | None = None, build: bool = False):
         self.cfg = cfg
@@ -125,9 +141,7 @@ class QueryDataset(torch.utils.data.Dataset):
             if path.exists():
                 return Image.open(path).convert("RGB")
         with Image.open(self.raw / d.image_path) as im:
-            img, k = fit_long_side(flatten(im), self.L)
-        if self.highlight:
-            img, _ = draw_overlay(img, d, r["refs"], self.cfg["overlay"], scale=k)
+            img = overlay_image(im, d, r["refs"], self.L, self.cfg["overlay"], self.highlight)
         if path is not None:                                  # atomic: parallel runs may share the cache
             path.parent.mkdir(parents=True, exist_ok=True)
             tmp = path.with_name(f".{path.stem}.{os.getpid()}.png")
@@ -136,8 +150,7 @@ class QueryDataset(torch.utils.data.Dataset):
         return img
 
     def to_tensor(self, im: Image.Image) -> torch.Tensor:
-        a = torch.from_numpy(np.asarray(pad_to_multiple(im, self.patch), dtype=np.float32) / 255.0).permute(2, 0, 1)
-        return (a - self.mean) / self.std
+        return normalise(im, self.patch, self.mean, self.std)
 
     def __getitem__(self, i: int):
         r = self.rows[i]
@@ -165,6 +178,17 @@ class QueryDataset(torch.utils.data.Dataset):
         return ((torch.ones(3, 1, 1) - self.mean) / self.std).view(3)
 
 
+def pad_batch(imgs, white: torch.Tensor) -> torch.Tensor:
+    """Stack (3, H, W) tensors, padding each to the batch's largest height and width with normalised
+    white (the batches of evaluation and of the website's server)."""
+    H = max(x.shape[1] for x in imgs)
+    W = max(x.shape[2] for x in imgs)
+    out = white.view(1, 3, 1, 1).repeat(len(imgs), 1, H, W)
+    for k, x in enumerate(imgs):
+        out[k, :, : x.shape[1], : x.shape[2]] = x
+    return out
+
+
 class Collate:
     """Pads a batch to its largest height/width with normalised white. A class, not a closure, so it
     can be pickled into DataLoader worker processes on Windows (spawn)."""
@@ -174,11 +198,7 @@ class Collate:
 
     def __call__(self, batch):
         imgs, geo, asr, metas = zip(*batch)
-        H = max(x.shape[1] for x in imgs)
-        W = max(x.shape[2] for x in imgs)
-        out = self.white.view(1, 3, 1, 1).repeat(len(imgs), 1, H, W)
-        for k, x in enumerate(imgs):
-            out[k, :, : x.shape[1], : x.shape[2]] = x
+        out = pad_batch(imgs, self.white)
         meta = {"mask": torch.stack([m["mask"] for m in metas]),
                 **{key: [m[key] for m in metas] for key in ("qid", "diagram_id", "set", "split", "kind", "refs")}}
         if "qtok" in metas[0]:

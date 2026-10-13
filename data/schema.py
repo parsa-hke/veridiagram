@@ -30,7 +30,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Iterator
 
-SOURCES = ("geometry3k", "pgdp5k", "pgps9k", "synthetic")
+SOURCES = ("geometry3k", "pgdp5k", "pgps9k", "synthetic", "user")   # user: drawn or uploaded on the website
 RELATION_TYPES = (
     "parallel", "perpendicular", "equal_length", "on_circle", "tangent",            # Tier 1
     "collinear", "midpoint", "equal_angle", "perp_bisector",                       # Tier 2

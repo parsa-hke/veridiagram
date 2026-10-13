@@ -1,0 +1,13 @@
+# Docker build context for web/server/Dockerfile: code and configs only.
+.git
+.venv
+runs
+data/raw
+data/processed
+data/cache
+reports
+notebooks
+**/__pycache__
+**/*.pt
+web/site/node_modules
+web/site/dist
