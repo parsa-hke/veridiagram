@@ -11,7 +11,8 @@ manifests, and writes JSON for the static site:
   figures.json        real synthetic diagrams for the constructions (web.figures): the frontispiece
                       query with the demo model's probability, Book II's four query kinds, Proposition I
   facts.json          site metadata (web/site.yaml), dataset sizes, tolerances, overlay, recipe, compute,
-                      backbone architecture, verifier audit, not-to-scale counts, highlight-colour check
+                      backbone architecture, verifier audit, not-to-scale counts, highlight-colour check,
+                      the deployed Space's measured latency and parity (web.deploy check)
 Nothing on the page is typed by hand: rerun this after new runs (e.g. the Part B control seeds, Phase 8)
 and the page follows. Backbone facts come from the Hugging Face config in the local cache (no download
 unless --online); a backbone whose config is unavailable is exported with null facts and a reason.
@@ -225,11 +226,13 @@ def facts(cfg: dict, site: dict, runs: Path, tables: Path, processed: Path, voca
                           "min_pixels": _num(r.get("min_pixels")),
                           "radius": _num(r["test"].rpartition("_r")[2]) if r["test"].startswith("near_") else None}
               for r in read_csv(tables / "highlight_colour_check.csv")}
+    dep = read_csv(tables / "web_deploy_check.csv")
+    deploy = {k: _num(v) for k, v in dep[-1].items()} if dep else None
     meta = {k: v for k, v in site.items()}
     return {"meta": meta, "relations": vocab, "data": data, "tolerances": tolerances, "overlay": overlay,
             "input": {"long_side": L, "mean": cfg["input"]["mean"], "std": cfg["input"]["std"]},
             "recipe": recipe, "compute": compute, "backbones": backbones, "audit": audit, "not_to_scale": nts,
-            "gold": gold, "colour_check": colour}
+            "gold": gold, "colour_check": colour, "deploy": deploy}
 
 
 # ---------------------------------------------------------------- main

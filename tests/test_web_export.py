@@ -64,6 +64,8 @@ def _fixture(tmp_path):
     _write_csv(tables / "verifier_audit.csv", [
         {"evaluation": "round2_adjudicated_weighted", "relation": "ALL", "n": 60, "fp_rate": "0.000", "fn_rate": "0.000"},
         {"evaluation": "round2", "relation": "parallel", "n": 5, "fp_rate": "0.2", "fn_rate": "0"}])
+    _write_csv(tables / "web_deploy_check.csv", [{"date": "2026-10-14", "url": "https://x.hf.space", "device": "cpu",
+                                                  "ask_median_s": 6.2, "parity_max_dp": 0.0004, "parity_n": 3}])
     processed = tmp_path / "processed"
     (processed / "splits").mkdir(parents=True)
     for name, n in (("train", 13), ("val", 2), ("test", 4), ("pgdp5k_heldout", 6)):
@@ -115,6 +117,7 @@ def test_export_from_fake_runs(tmp_path):
     assert f["colour_check"]["near_highlight_r80"]["images_with"] == 0 and f["colour_check"]["near_highlight_r80"]["radius"] == 80
     assert f["audit"]["parallel"]["candidates"] == 100
     assert f["backbones"]["main"]["name"] == CFG["model"]["backbone"]
+    assert f["deploy"]["ask_median_s"] == 6.2 and f["deploy"]["url"] == "https://x.hf.space"
     assert f["backbones"]["demo"]["name"] == "facebook/dinov2-large"        # demo config from site.yaml
 
 

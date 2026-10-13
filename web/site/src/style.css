@@ -685,6 +685,10 @@ table.verdicts tr.disagree th { color: var(--byrne-red); }
   margin: 0 0 1rem;
 }
 
+.colophon h3 { font-weight: 400; font-size: 0.95rem; letter-spacing: 0.08em; color: var(--ink); margin: 1.75rem 0 0.4rem; }
+.colophon-list { padding-left: 1.1em; }
+.cite { font-style: italic; }
+
 /* ------------------------------------------------------------------ wide pages: the margin column */
 
 @media (min-width: 70rem) {

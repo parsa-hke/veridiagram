@@ -31,6 +31,15 @@ async function start(): Promise<void> {
   drawOnScroll(Array.from(root.querySelectorAll(".construction-figure")).map(prepare));
   wireRuler(root);
   wireBook4(root);
+  root.querySelector("[data-copy-cite]")?.addEventListener("click", async (e) => {
+    const b = e.currentTarget as HTMLButtonElement;
+    try {
+      await navigator.clipboard.writeText(root.querySelector("[data-cite]")?.textContent ?? "");
+      b.textContent = "Copied";
+    } catch {
+      b.textContent = "Select and copy";
+    }
+  });
   wireTooltips(root);
   wireMotion(root);
   const trace = new URLSearchParams(location.search).has("trace");

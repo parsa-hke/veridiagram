@@ -55,10 +55,22 @@ function contents(): string {
 </nav>`;
 }
 
+function deployLine(): string {
+  if (!get("facts:deploy")) return "";
+  return `<p>Measured on the live instrument (${get("facts:deploy.device")}, ${lit(String(get("facts:deploy.date")))}): one
+  question takes ${n("facts:deploy.ask_median_s", "f1")} s (median of ${n("facts:deploy.ask_runs", "int")}); reading a
+  figure, ${n("facts:deploy.read_per_query_s", "f1")} s a question. Its answers to
+  ${n("facts:deploy.parity_n", "int")} validation questions match the model run locally within
+  ${n("facts:deploy.parity_max_dp", "f3")}.</p>`;
+}
+
 function colophon(): string {
   const repo = get("facts:meta.repo_public") && get("facts:meta.repo_url")
     ? `<a href="${get("facts:meta.repo_url")}">the code repository</a>`
     : "the code repository, which is private for now";
+  const author = String(get("facts:meta.author") ?? "");
+  const title = String(get("facts:meta.title") ?? "");
+  const cite = `${author.split(" ").reverse().join(", ")} (${get("facts:meta.year")}). ${title}: ${String(get("facts:meta.subtitle") ?? "").replace(/\.$/, "")}. ${get("facts:meta.course")}, ${get("facts:meta.institution")}.`;
   return `
 <footer class="colophon" id="colophon" data-running="Colophon">
   <h2>Colophon</h2>
@@ -67,7 +79,31 @@ function colophon(): string {
   letters. Green, which Byrne never used, belongs here to the machine alone.</p>
   <p>Every number on this page is read from JSON written by <code>python -m web.export</code> from the
   project's run records (export of commit <code>${get("results:_export.commit") ?? "unknown"}</code>). See ${repo}.</p>
-  <p class="smallcaps">${get("facts:meta.author")} · ${get("facts:meta.institution")} · ${n("facts:meta.year", "raw")}</p>
+  ${deployLine()}
+
+  <h3 class="smallcaps">What the instrument cannot do</h3>
+  <p>It does not find points, lines or circles: you supply them, and it judges relations between the parts you
+  point at. It was trained on clean printed textbook diagrams; photographs and hand-drawn sketches are outside
+  what it has seen. Results from a single training seed are labelled as such, and the not-to-scale subset is
+  too small to support a claim.</p>
+
+  <h3 class="smallcaps">Privacy</h3>
+  <p>Pictures you upload and figures you draw are processed in memory to answer you and are never stored or
+  logged. The page keeps two preferences in your browser (the edition and the cursor) and nothing else.</p>
+
+  <h3 class="smallcaps">Licences and sources</h3>
+  <ul class="colophon-list">
+    <li>The model is fine-tuned from <span class="ref">DINOv2 ViT-L/14</span> (Meta AI), released under the <span class="ref">Apache License 2.0</span>.</li>
+    <li>Training and evaluation data: Geometry3K (<span class="ref">Lu et al., ACL 2021</span>; its repository is MIT-licensed, with no
+    separate data licence stated), PGDP5K (<span class="ref">Hao et al., ICPR 2022; Zhang et al., IJCAI 2022</span>; MIT per its dataset
+    card) and PGPS9K (<span class="ref">Zhang et al., IJCAI 2023</span>; MIT per its dataset card). No image from these datasets is shown
+    on this page: every diagram here is drawn by the project's own renderer.</li>
+    <li>Fonts: Libre Caslon, IM Fell English and JetBrains Mono, under the SIL Open Font License.</li>
+  </ul>
+
+  <h3 class="smallcaps">Cite this</h3>
+  <p class="cite"><span class="ref" data-cite>${cite}</span> <button type="button" class="tool plain" data-copy-cite>Copy</button></p>
+  <p class="smallcaps">${author} · ${get("facts:meta.institution")} · ${n("facts:meta.year", "raw")}</p>
 </footer>`;
 }
 

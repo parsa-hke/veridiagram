@@ -17,6 +17,9 @@ checkpoints/
 *.safetensors
 wandb/
 
+# Website deployment files (python -m web.deploy space)
+build/
+
 # OS / editors
 .DS_Store
 .ipynb_checkpoints/

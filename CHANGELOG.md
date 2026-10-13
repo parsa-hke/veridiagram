@@ -855,3 +855,31 @@ Found
   with the Eye's denial (the deduced pair is 14-25% apart): "equal within 10%" is not transitive,
   as noted for Part B. In 2 the Ruler says the deduced equality holds (2.4%, 2.6%): genuine Eye
   errors caught by the closure. The page says both.
+
+## 2026-10-13 — Website, milestone 6 (prepared): deployment to a Hugging Face Space
+
+Decision: the Space is public, the code is not: the Space holds only a README card and a Dockerfile
+that clones this private repository at a pinned commit with a read-only token (build secret
+`GITHUB_TOKEN`); the checkpoint sits in a private model repository read with `HF_TOKEN`.
+
+Done
+- `web/deploy.py`: `space` writes the Space's README (front matter: Docker SDK, port 7860) and
+  Dockerfile (same stages and copies as the tested `web/server/Dockerfile`; the clone runs in the
+  Node stage and `.git` is removed, so the token stays out of the image); `publish` (run by the user
+  with their own login and two tokens from the environment) creates the private model repo and
+  uploads best.pt, creates the public Docker Space on free CPU, sets secrets (GITHUB_TOKEN, HF_TOKEN)
+  and variables (HF_MODEL_REPO, RUN_NAME, READ_CAP 30), pins HEAD (refuses an unpushed commit) and
+  uploads the two files; `check` waits for the Space, compares its answers on three validation
+  queries with the local engine (CPU), times questions and a chunked whole-figure read, and writes
+  `reports/tables/web_deploy_check.csv`, which `web.export` puts in the colophon.
+- Fetching a commit by SHA from the private repository (the Space's clone step) tested locally.
+- Colophon (WEBSITE_PLAN §7): what the instrument cannot do, privacy, licences and sources (DINOv2
+  Apache-2.0; Geometry3K, PGDP5K, PGPS9K as recorded in data/README.md; no dataset image is shown;
+  fonts OFL), a "cite this" line with a copy button, and the measured live latency once checked.
+- `DEPLOY_GUIDE.md`: the user's step-by-step guide (accounts, tokens, publish, build, check,
+  visibility, updates). Tests `tests/test_web_deploy.py` (the Space's files match the tested image;
+  the token never reaches the runtime stage), export of the deployment check. 191 passed.
+
+Waiting for
+- The user's Hugging Face account, tokens and `publish`; then `check` and a second publish so the
+  colophon shows the measured latency.
