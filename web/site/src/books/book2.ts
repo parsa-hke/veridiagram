@@ -1,5 +1,7 @@
 import { get, n } from "../data";
 import { note } from "../ui";
+import { queriesFigure } from "../figures/geometry";
+import { modelFigure, partitionFigure } from "../figures/instrument";
 
 function backbone(key: "main" | "demo", label: string): string {
   const b = `facts:backbones.${key}`;
@@ -46,6 +48,7 @@ export function book2(): string {
       <li>An unlabelled pool for self-training: PGPS9K figures, of which
         ${n("pseudo_labels:pool_diagrams", "int")} were never seen with labels.</li>
     </ul>
+    ${partitionFigure()}
   </article>
 
   <article class="prop" id="query">
@@ -62,6 +65,7 @@ export function book2(): string {
     for blue.${note(`A pixel counts as the highlight's colour when it lies within RGB distance
     ${n("facts:colour_check.near_highlight_r80.radius", "int")} of it; an image counts when at least
     ${n("facts:colour_check.near_highlight_r80.min_pixels", "int")} of its pixels do. Darker and teal greens from coloured textbook figures make up the green-family share.`)}</p>
+    ${queriesFigure()}
   </article>
 
   <article class="prop" id="model">
@@ -72,6 +76,7 @@ export function book2(): string {
       ${backbone("main", "Main experiments")}
       ${backbone("demo", "Best model and the live demo")}
     </ul>
+    ${modelFigure()}
   </article>
 
   <article class="prop" id="recipe">

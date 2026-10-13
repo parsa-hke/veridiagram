@@ -1,0 +1,406 @@
+{
+ "_export": {
+  "schema": 1,
+  "commit": "3a5fe4c"
+ },
+ "source": "synthetic diagrams drawn by the project's renderer",
+ "hero": {
+  "diagram": {
+   "id": "synthetic:extrap_000334",
+   "width": 512,
+   "height": 512,
+   "points": {
+    "A": [
+     201.8,
+     326.3
+    ],
+    "B": [
+     110.4,
+     157.5
+    ],
+    "C": [
+     397.3,
+     122.7
+    ],
+    "D": [
+     462.4,
+     85.8
+    ],
+    "E": [
+     43.0,
+     382.4
+    ],
+    "F": [
+     157.0,
+     254.2
+    ],
+    "G": [
+     56.0,
+     135.1
+    ],
+    "H": [
+     329.6,
+     198.4
+    ],
+    "I": [
+     367.6,
+     228.8
+    ],
+    "J": [
+     108.2,
+     238.1
+    ],
+    "K": [
+     237.8,
+     233.2
+    ],
+    "L": [
+     96.0,
+     48.6
+    ]
+   },
+   "segments": [
+    [
+     "A",
+     "E"
+    ],
+    [
+     "B",
+     "D"
+    ],
+    [
+     "B",
+     "L"
+    ],
+    [
+     "C",
+     "F"
+    ],
+    [
+     "C",
+     "G"
+    ],
+    [
+     "D",
+     "H"
+    ],
+    [
+     "E",
+     "F"
+    ],
+    [
+     "F",
+     "J"
+    ],
+    [
+     "F",
+     "L"
+    ],
+    [
+     "I",
+     "J"
+    ],
+    [
+     "I",
+     "K"
+    ],
+    [
+     "J",
+     "K"
+    ]
+   ],
+   "circles": [
+    {
+     "center": "A",
+     "cx": 201.8,
+     "cy": 326.3,
+     "r": 128.4
+    },
+    {
+     "center": "B",
+     "cx": 110.4,
+     "cy": 157.5,
+     "r": 50.5
+    }
+   ]
+  },
+  "query": {
+   "qid": "57e9fd21f9f4",
+   "kind": "seg_pair",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "G"
+    ],
+    [
+     "seg",
+     "I",
+     "J"
+    ]
+   ]
+  },
+  "verdicts": {
+   "parallel": {
+    "prob": 1.0,
+    "truth": true,
+    "margin": 0.000596
+   },
+   "perpendicular": {
+    "prob": 0.0,
+    "truth": false,
+    "margin": 1.0
+   },
+   "equal_length": {
+    "prob": 0.3107,
+    "truth": false,
+    "margin": 0.239819
+   }
+  },
+  "angle_off_deg": 0.03
+ },
+ "queries": [
+  {
+   "qid": "57e9fd21f9f4",
+   "kind": "seg_pair",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "G"
+    ],
+    [
+     "seg",
+     "I",
+     "J"
+    ]
+   ],
+   "verdicts": {
+    "parallel": {
+     "prob": 1.0,
+     "truth": true,
+     "margin": 0.000596
+    },
+    "perpendicular": {
+     "prob": 0.0,
+     "truth": false,
+     "margin": 1.0
+    },
+    "equal_length": {
+     "prob": 0.3107,
+     "truth": false,
+     "margin": 0.239819
+    }
+   }
+  },
+  {
+   "qid": "089842fb1b13",
+   "kind": "pt_circle",
+   "refs": [
+    [
+     "pt",
+     "J"
+    ],
+    [
+     "circle",
+     0
+    ]
+   ],
+   "verdicts": {
+    "on_circle": {
+     "prob": 1.0,
+     "truth": true,
+     "margin": 0.001644
+    }
+   }
+  },
+  {
+   "qid": "77fbc43914e5",
+   "kind": "seg_circle",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "L"
+    ],
+    [
+     "circle",
+     1
+    ]
+   ],
+   "verdicts": {
+    "tangent": {
+     "prob": 0.0,
+     "truth": false,
+     "margin": 1.0
+    }
+   }
+  },
+  {
+   "qid": "5760a472dccf",
+   "kind": "pt_line",
+   "refs": [
+    [
+     "pt",
+     "H"
+    ],
+    [
+     "pt",
+     "I"
+    ],
+    [
+     "pt",
+     "J"
+    ]
+   ],
+   "verdicts": {
+    "collinear": {
+     "prob": 0.0,
+     "truth": false,
+     "margin": 0.05926
+    }
+   }
+  }
+ ],
+ "model_run": "ablation_dinov2_s0",
+ "unmarked": {
+  "diagram": {
+   "id": "synthetic:train_000326",
+   "width": 512,
+   "height": 512,
+   "points": {
+    "A": [
+     189.5,
+     339.7
+    ],
+    "B": [
+     270.4,
+     152.7
+    ],
+    "C": [
+     166.7,
+     119.8
+    ],
+    "D": [
+     238.1,
+     232.2
+    ],
+    "E": [
+     396.2,
+     302.6
+    ],
+    "F": [
+     229.9,
+     307.0
+    ],
+    "G": [
+     261.3,
+     311.0
+    ],
+    "H": [
+     132.3,
+     218.5
+    ]
+   },
+   "segments": [
+    [
+     "A",
+     "B"
+    ],
+    [
+     "A",
+     "D"
+    ],
+    [
+     "B",
+     "C"
+    ],
+    [
+     "B",
+     "D"
+    ],
+    [
+     "C",
+     "F"
+    ],
+    [
+     "D",
+     "E"
+    ]
+   ],
+   "circles": []
+  },
+  "marked": [
+   {
+    "type": "perpendicular",
+    "args": [
+     [
+      "seg",
+      "A",
+      "B"
+     ],
+     [
+      "seg",
+      "D",
+      "E"
+     ]
+    ],
+    "margin": null
+   }
+  ],
+  "unmarked": [
+   {
+    "type": "equal_length",
+    "args": [
+     [
+      "seg",
+      "A",
+      "B"
+     ],
+     [
+      "seg",
+      "C",
+      "F"
+     ]
+    ],
+    "margin": 0.030510014087272684,
+    "off_pct": 3.1
+   },
+   {
+    "type": "equal_length",
+    "args": [
+     [
+      "seg",
+      "A",
+      "D"
+     ],
+     [
+      "seg",
+      "B",
+      "C"
+     ]
+    ],
+    "margin": 0.07743212688241785,
+    "off_pct": 7.7
+   },
+   {
+    "type": "perpendicular",
+    "args": [
+     [
+      "seg",
+      "B",
+      "D"
+     ],
+     [
+      "seg",
+      "D",
+      "E"
+     ]
+    ],
+    "margin": 0.0319471295376999,
+    "off_deg": 1.83
+   }
+  ],
+  "geometric_total": 5
+ }
+}

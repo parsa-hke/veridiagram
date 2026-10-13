@@ -2,6 +2,7 @@ import { book1 } from "./books/book1";
 import { book2 } from "./books/book2";
 import { book3 } from "./books/book3";
 import { get, lit, n } from "./data";
+import { hero } from "./figures/geometry";
 import { resetNotes } from "./ui";
 
 /** The frontispiece figure: a compass circle, two Byrne bars, and the machine's green trace over both.
@@ -28,10 +29,7 @@ function frontispiece(): string {
 <header class="frontispiece" id="top">
   <p class="imprint">The Elements, a lost edition · written for a machine</p>
   <h1>${get("facts:meta.title")}</h1>
-  <figure class="emblem-figure">
-    ${emblem()}
-    <figcaption><span class="smallcaps">parallel</span></figcaption>
-  </figure>
+  ${hero() || `<figure class="emblem-figure">${emblem()}</figure>`}
   <p class="subtitle">${get("facts:meta.subtitle")}</p>
   <p class="course smallcaps">${get("facts:meta.author")} · ${lit(String(get("facts:meta.course")))} ·
     ${get("facts:meta.institution")} · ${n("facts:meta.year", "raw")}</p>

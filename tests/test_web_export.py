@@ -79,8 +79,9 @@ def test_export_from_fake_runs(tmp_path):
     runs, tables, processed = _fixture(tmp_path)
     site = yaml.safe_load(export.SITE_YAML.read_text())
     out = tmp_path / "data"
-    docs = export.export(out, runs, tables, processed, CFG, site, _fake_backbone)
-    assert {p.name for p in out.iterdir()} == {"results.json", "scaling.json", "pseudo_labels.json", "facts.json"}
+    docs = export.export(out, runs, tables, processed, CFG, site, _fake_backbone, lambda: {"hero": {"x": 1}})
+    assert {p.name for p in out.iterdir()} == {"results.json", "scaling.json", "pseudo_labels.json", "facts.json",
+                                              "figures.json"}
     for p in out.iterdir():
         json.loads(p.read_text())                                          # valid JSON, no NaN
 
@@ -103,6 +104,7 @@ def test_export_from_fake_runs(tmp_path):
     pl = docs["pseudo_labels"]
     assert pl["available"] and pl["teacher"] == "finetune_synth10k_s2" and pl["filters"]["consistency"]["all"]["accuracy"] == 0.8
 
+    assert docs["figures"] == {"hero": {"x": 1}}
     f = docs["facts"]
     assert f["meta"]["author"] == site["author"] and f["data"]["geometry3k_train_figures"] == 13
     assert f["data"]["synth_extrap_diagrams"] is None                       # missing file -> null, not a crash

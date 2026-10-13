@@ -2,7 +2,7 @@
 // sit inside .num (traced), .lit (a literal such as a year) or .ref (a plan section reference).
 // Digits inside names (Geometry3K, DINOv2) are part of a word, not a number.
 
-const ALLOWED = ".num, .lit, .ref, code, script, style, svg";
+const ALLOWED = ".num, .lit, .ref, .live, code, script, style, svg";   // .live: computed from what the reader drags
 
 const NUMBER = /(^|[^A-Za-z\d])\d/;
 

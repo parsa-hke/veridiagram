@@ -8,6 +8,8 @@ manifests, and writes JSON for the static site:
                       plus the not-to-scale subset (7.4) from reports/tables/not_to_scale_eval.csv
   scaling.json        the 7.9 points (analysis.phase7.scaling_points) and the training budget
   pseudo_labels.json  the 7.11 post-hoc pseudo-label precision per filter and relation
+  figures.json        real synthetic diagrams for the constructions (web.figures): the frontispiece
+                      query with the demo model's probability, Book II's four query kinds, Proposition I
   facts.json          site metadata (web/site.yaml), dataset sizes, tolerances, overlay, recipe, compute,
                       backbone architecture, verifier audit, not-to-scale counts, highlight-colour check
 Nothing on the page is typed by hand: rerun this after new runs (e.g. the Part B control seeds, Phase 8)
@@ -30,6 +32,7 @@ import yaml
 
 from analysis import phase7
 from data.queries import vocabulary
+from web import figures as web_figures
 from experiments.run import REPO_ROOT, load_config
 
 SITE_YAML = REPO_ROOT / "web" / "site.yaml"
@@ -241,11 +244,12 @@ def _git_commit() -> str | None:
 
 
 def export(out: Path, runs: Path, tables: Path, processed: Path, cfg: dict, site: dict,
-           backbone_facts: Callable[[str, int], dict]) -> dict[str, dict]:
+           backbone_facts: Callable[[str, int], dict], figures_fn: Callable[[], dict] | None = None) -> dict[str, dict]:
     vocab = vocabulary(cfg)
     docs = {"results": results(runs, tables, vocab), "scaling": scaling(runs, vocab, cfg),
             "pseudo_labels": pseudo_labels(runs, vocab),
-            "facts": facts(cfg, site, runs, tables, processed, vocab, backbone_facts)}
+            "facts": facts(cfg, site, runs, tables, processed, vocab, backbone_facts),
+            "figures": figures_fn() if figures_fn else {"hero": None, "queries": None, "unmarked": None}}
     stamp = {"schema": SCHEMA_VERSION, "commit": _git_commit()}
     out.mkdir(parents=True, exist_ok=True)
     for name, doc in docs.items():
@@ -262,8 +266,11 @@ def main(argv: list[str] | None = None) -> int:
     cfg = load_config(REPO_ROOT / "configs" / "base.yaml")
     site = yaml.safe_load(SITE_YAML.read_text())
     runs = Path(args.runs) if args.runs else REPO_ROOT / cfg["paths"]["runs"]
-    docs = export(Path(args.out), runs, REPO_ROOT / cfg["paths"]["tables"], REPO_ROOT / cfg["paths"]["processed"],
-                  cfg, site, lambda name, L: hf_backbone_facts(name, L, args.online))
+    processed = REPO_ROOT / cfg["paths"]["processed"]
+    demo_cfg = load_config(REPO_ROOT / site["demo_config"])
+    docs = export(Path(args.out), runs, REPO_ROOT / cfg["paths"]["tables"], processed, cfg, site,
+                  lambda name, L: hf_backbone_facts(name, L, args.online),
+                  lambda: web_figures.figures(demo_cfg, runs, processed, site["demo_run"], vocabulary(demo_cfg)))
     r = docs["results"]
     print(f"{len(r['runs'])} runs, {len(r['experiments'])} experiments -> {args.out}")
     for e, d in r["experiments"].items():
@@ -271,6 +278,11 @@ def main(argv: list[str] | None = None) -> int:
     for k, b in docs["facts"]["backbones"].items():
         print(f"  backbone {k}: {b['name']} " + (f"{b['params_M']}M params, {b['tokens']} tokens" if b["available"]
                                                  else f"UNAVAILABLE ({b['reason'][:80]})"))
+    f = docs["figures"]
+    print("  figures: hero " + (f"{f['hero']['diagram']['id']} p(parallel) {f['hero']['verdicts']['parallel']['prob']}"
+                                if f.get("hero") else f"unavailable ({f.get('hero_reason')})")
+          + f", {len(f.get('queries') or [])} query kinds, unmarked "
+          + (f["unmarked"]["diagram"]["id"] if f.get("unmarked") else "none"))
     return 0
 
 

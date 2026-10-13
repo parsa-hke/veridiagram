@@ -8,6 +8,7 @@ const docs = {
   scaling: { points: [{ mean: 0.5 }] },
   pseudo_labels: {},
   facts: { a: { "b": 1296 }, missing: null },
+  figures: {},
 };
 
 describe("data", () => {

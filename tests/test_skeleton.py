@@ -25,7 +25,7 @@ MODULES = [
     "experiments.selftrain",
     "analysis", "analysis.metrics", "analysis.headline_table", "analysis.attention_maps",
     "analysis.error_analysis", "analysis.phase7",
-    "web", "web.export",
+    "web", "web.export", "web.figures",
 ]
 PACKAGES = ["data", "verifier", "models", "experiments", "analysis", "web"]
 

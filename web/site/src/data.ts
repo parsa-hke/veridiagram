@@ -2,7 +2,7 @@
 // n("results:experiments.finetune.units.geometry3k_test.geometric.mean") returns a <span class="num">
 // whose data-src names the JSON field it came from (WEBSITE_PLAN.md §5: nothing typed by hand).
 
-export const DOC_NAMES = ["results", "scaling", "pseudo_labels", "facts"] as const;
+export const DOC_NAMES = ["results", "scaling", "pseudo_labels", "facts", "figures"] as const;
 export type DocName = (typeof DOC_NAMES)[number];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Json = any;

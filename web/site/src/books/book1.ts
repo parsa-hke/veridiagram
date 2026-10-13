@@ -1,5 +1,6 @@
 import { get, ms, n } from "../data";
 import { note } from "../ui";
+import { notToScaleFigure, rulerFigure, unmarkedFigure } from "../figures/geometry";
 
 const RELATION_WORDS: Record<string, string> = {
   parallel: "parallel",
@@ -32,6 +33,7 @@ export function book1(): string {
     the author marked with an arrow, a tick or a right-angle box. Measured with a ruler on the
     annotated coordinates of the Geometry3K figures, most true relations carry no mark at all:</p>
     <ul>${unmarked}</ul>
+    ${unmarkedFigure()}
     <p>So a model graded against the marks is graded against an incomplete answer key. The same
     fine-tuned model scores ${ms("finetune", "geometry3k_test", "asserted")} against the marked
     (<em>asserted</em>) labels and ${ms("finetune", "geometry3k_test", "geometric")} against the measured
@@ -50,6 +52,7 @@ export function book1(): string {
     ${n("results:not_to_scale.finetune.geometric.n_diagrams", "int")} diagrams
     (${n("results:not_to_scale.finetune.geometric.n_queries", "int")} queries), where the fine-tune scores
     ${n("results:not_to_scale.finetune.geometric.mean")}. So few diagrams support no claim, and the page says so.</p>
+    ${notToScaleFigure()}
     <p class="qed">Q.E.D.</p>
   </article>
 
@@ -67,6 +70,7 @@ export function book1(): string {
     on ${n("facts:gold.round2.n", "int")} fresh queries: population-weighted false-positive rate
     ${n("facts:gold.round2_adjudicated_weighted.fp_rate", "pct1")}, false-negative rate
     ${n("facts:gold.round2_adjudicated_weighted.fn_rate", "pct1")} after adjudication.`)}</p>
+    ${rulerFigure()}
     <p class="qed">Q.E.D.</p>
   </article>
 

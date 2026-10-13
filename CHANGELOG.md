@@ -667,3 +667,67 @@ Done
 Found
 - Under the colour finding of milestone 1, "real diagrams do not use green" was too strong; the text
   now says they rarely use it, with the measured shares.
+
+## 2026-10-13 — Website, milestone 3: constructions (WEBSITE_PLAN.md §1.2, §6.3)
+
+Done
+- Drawing engine `web/site/src/draw.ts`: every figure is a construction whose elements carry a
+  draw order (`data-step`); strokes use `pathLength="1"` and are drawn by dash offset, text and
+  fills fade in. Scroll position drives progress (start when the figure's top passes 88% of the
+  viewport, finished at 30%; scrolling back undraws); the frontispiece plays on a clock.
+  `prefers-reduced-motion`: every figure is set finished and nothing moves (unit-tested).
+- `web/figures.py` (exported as `figures.json` by `web.export`): the figures draw real synthetic
+  diagrams, never invented ones. Frontispiece: a parallel query from the extrapolation set that the
+  demo model gets right (`synthetic:extrap_000334`, ruler 0.03° off, p(parallel) 1.00), in a diagram
+  with circles and all four query kinds; Book II: one query of each kind on that diagram (a true one
+  where there is one); Proposition I: a renderer-drawn diagram (`synthetic:train_000326`) with its
+  printed mark and three true-but-unmarked relations on disjoint segments. Predictions are aligned
+  by rebuilding the evaluation rows (qids alone are not unique across diagrams: 60,000 rows, 8,672
+  qids in synth_extrap).
+- Figures: frontispiece (compass, straightedge, Byrne bars, the machine's green trace, the model's
+  probability); Proposition I (marks in black, unmarked relations in red / yellow / blue with the
+  ruler's measurement); II (a right-angle mark on lines off by the not-to-scale threshold);
+  III (the Ruler: drag or arrow-key the end of a segment, parallel and equal-length verdicts flip
+  at the tolerances); Book II: the splits as a partition of a square, four queries on one diagram,
+  the model exploded (patch grid, layers, head) with one token rising; Book III: Byrne bar charts
+  for IV, V (with the same diagram asked in colour and in letters), VII, VIII, IX (pseudo-label
+  precision and the students against the control), X (per-relation F1), and the Part A scaling
+  curve plotted point by point with compass arcs. Tables moved under each chart into "The numbers,
+  with seeds".
+- Charts follow the dataviz checks: legend on every multi-series chart (numbers traced), hover
+  tooltips on every mark, ± sd bars only where there is more than one seed, bars from zero,
+  hairline grid, colour by entity (the reference model is ink). Byrne's palette is fixed by the
+  concept: the validator passes colour-blind separation in both editions (worst adjacent ΔE 16.9
+  light, 19.2 dark) but flags yellow's contrast on paper (1.63:1) and the lightness band; relief is
+  the legends and the tables, which every chart has.
+- Tests: `tests/test_web_figures.py` (hero, query kinds, unmarked pick on hand-made diagrams),
+  `src/draw.test.ts` (step order, reduced motion, the Ruler's checks against the verifier's
+  definitions); site suite 9 tests; 174 passed.
+
+Found
+- The first frontispiece drew only the queried pair and the nearest circle, which read as an
+  abstract emblem; it now constructs the whole real diagram in thin ink before painting the pair,
+  which is closer to the concept (the page draws itself) and shows that the figure is real.
+
+## 2026-10-13 — Website: animations and the pencil cursor (before milestone 4)
+
+Done
+- The instruments draw the figures: while a construction is drawn, a compass (needle at the centre,
+  pencil leg on the arc being swept) appears on the largest circle in progress and a small Byrne
+  pencil rides the end of every other stroke; both are put away when the figure is finished. The
+  machine's green trace is drawn without an instrument (`src/draw.ts`).
+- Page motion (`src/motion.ts`, once per element as it enters the viewport): Book titles rise in and
+  their red-yellow-blue rule is laid down block by block; drop caps bleed in like wet ink;
+  proposition labels settle from wide tracking; Q.E.D. squares are stamped; margin notes glide in
+  from the margin; chart legends fade in; button underlines are drawn on hover. Starting states
+  live under `html.motion`, set only by the script, so the page is fully visible without
+  JavaScript and under `prefers-reduced-motion`.
+- The pencil cursor (`src/cursor.ts`): a yellow Byrne pencil with a red eraser in the day edition,
+  a stick of chalk in the night edition, with a short trace that fades in 650 ms (graphite; chalk
+  with a little dust); it tilts over controls and presses on click. Only for fine pointers (mouse,
+  trackpad); a "Plain cursor" button in the running head switches it off (remembered); no trace
+  under `prefers-reduced-motion`. The system cursor is hidden only by the script, never by the
+  early inline script, so a failed load cannot leave the reader without a pointer.
+- Tests: `src/cursor.test.ts` (trace pruning, no pencil on touch screens, the switch, motion off
+  under reduced motion), `src/draw.test.ts` extended (the compass appears while a circle is drawn and
+  is put away after). Site suite 12 tests.
