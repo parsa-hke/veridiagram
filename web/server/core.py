@@ -314,18 +314,16 @@ class Engine:
         probs = self.predict([x for x, _ in inputs])
         return [self._result(p, r, probs[i], inputs[i][1] if images else None) for i, r in enumerate(chosen)]
 
-    def read(self, p: Prepared, cap: int = MAX_QUERIES) -> dict:
-        """Every query of the figure (uniform sample of `cap`, as in evaluation), the model's relation
-        set, the Ruler's, and the contradictions in the model's confident answers (Part B closure)."""
+    def sample(self, p: Prepared, cap: int = MAX_QUERIES) -> tuple[list[dict], int]:
+        """The figure's queries, sampled to `cap` as data.queries.build_index samples evaluation units
+        (deterministic for a figure, so chunks of one read line up)."""
         rows = self.rows(p)
-        n_all = len(rows)
         rng = np.random.default_rng([self.cfg["data"].get("index_seed", 0), zlib.crc32(p.diagram.id.encode())])
-        rows = cap_rows(rows, min(cap, MAX_QUERIES), rng, keep_positives=False)     # as data.queries.build_index
-        if not rows:
-            raise InputError("this figure has no queries: draw at least two segments, or a circle and a point")
-        inputs = [self.model_input(p, r["refs"])[0] for r in rows]
-        probs = self.predict(inputs)
-        results = [self._result(p, r, probs[i], None) for i, r in enumerate(rows)]
+        return cap_rows(rows, min(cap, MAX_QUERIES), rng, keep_positives=False), len(rows)
+
+    def summary(self, p: Prepared, rows: list[dict], probs: np.ndarray) -> dict:
+        """The model's relation set, the Ruler's, and the contradictions in the model's confident
+        answers after deductive closure (the Part B check: τ and rule C2 from configs `selftrain`)."""
         st = self.cfg["selftrain"]
         mask = np.array([r["mask"] for r in rows], dtype=bool)
         labels = probs > 0.5
@@ -337,15 +335,48 @@ class Engine:
             pos += a
             neg += b
         contradictions, _ = closure(pos, neg if st.get("consistency_negatives") else ())
-        rel = lambda res, src: [{"relation": k, "kind": res["kind"], "refs": res["refs"],  # noqa: E731
-                                 **({"prob": v} if src == "model" else {})}
-                                for k, v in (res["probs"] if src == "model" else
-                                             {k: e["holds"] for k, e in res["ruler"].items() if k != "basis"}).items()
-                                if (v > 0.5 if src == "model" else v)]
-        return {"results": results, "queries_total": n_all, "queries_asked": len(rows),
-                "relations": [x for res in results for x in rel(res, "model")],
-                "ruler_relations": [x for res in results for x in rel(res, "ruler")],
-                "contradictions": contradictions, "closure_tau": st["tau"]}
+        model, ruler = [], []
+        for i, r in enumerate(rows):
+            for j, rel in enumerate(self.vocab):
+                if r["mask"][j] and probs[i, j] > 0.5:
+                    model.append({"relation": rel, "kind": r["kind"], "refs": r["refs"], "prob": round(float(probs[i, j]), 4)})
+                if r["mask"][j] and r["geo"][j]:
+                    ruler.append({"relation": rel, "kind": r["kind"], "refs": r["refs"]})
+        return {"relations": model, "ruler_relations": ruler, "contradictions": contradictions, "closure_tau": st["tau"]}
+
+    def read(self, p: Prepared, cap: int = MAX_QUERIES, offset: int = 0, limit: int | None = None) -> dict:
+        """Every query of the figure (uniform sample of `cap`, as in evaluation) answered, with the
+        summary. With `limit`, only queries [offset, offset + limit) and no summary: the page reads a
+        figure in chunks to show progress, then asks /api/closure with all the answers."""
+        rows, n_all = self.sample(p, cap)
+        if not rows:
+            raise InputError("this figure has no queries: draw at least two segments, or a circle and a point")
+        part = rows[offset: offset + limit] if limit else rows
+        probs = self.predict([self.model_input(p, r["refs"])[0] for r in part])
+        out = {"results": [self._result(p, r, probs[i], None) for i, r in enumerate(part)], "offset": offset,
+               "queries_total": n_all, "queries_asked": len(rows)}
+        if limit is None:
+            out.update(self.summary(p, rows, probs))
+        return out
+
+    def closure(self, p: Prepared, answers: list[dict]) -> dict:
+        """The summary for answers the page has collected chunk by chunk ({kind, refs, probs})."""
+        if not answers or len(answers) > MAX_QUERIES:
+            raise InputError(f"send 1 to {MAX_QUERIES} answers")
+        by_key = {_key(r["kind"], r["refs"]): r for r in self.rows(p)}
+        rows, probs = [], np.zeros((len(answers), len(self.vocab)))
+        for i, a in enumerate(answers):
+            row = by_key.get(_key(a.get("kind"), a.get("refs") or []))
+            pr = a.get("probs")
+            if row is None or not isinstance(pr, dict):
+                raise InputError(f"unknown answer {a.get('refs')!r}")
+            for j, rel in enumerate(self.vocab):
+                v = pr.get(rel, 0.0) if row["mask"][j] else 0.0
+                if not isinstance(v, (int, float)) or not 0 <= v <= 1:
+                    raise InputError("probabilities lie in [0, 1]")
+                probs[i, j] = v
+            rows.append(row)
+        return self.summary(p, rows, probs)
 
 
 def timed(fn, *a, **k) -> tuple[object, int]:

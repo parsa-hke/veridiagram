@@ -177,3 +177,21 @@ def test_probability_parity_with_saved_predictions():
     m = z["mask"][sel].astype(bool)
     assert np.abs(probs - z["probs"][sel])[m].max() <= 0.05
     assert ((probs > 0.5) == (z["probs"][sel] > 0.5))[m].all()
+
+
+def test_read_in_chunks_then_closure(client):
+    """The page reads a figure chunk by chunk, then asks for the closure: same as one full read."""
+    full = client.post("/api/read", json={"construction": SQUARE}).json()
+    n = full["queries_asked"]
+    answers = []
+    for off in range(0, n, 4):
+        r = client.post("/api/read", json={"construction": SQUARE, "offset": off, "limit": 4}).json()
+        assert r["offset"] == off and "relations" not in r
+        answers += [{"kind": x["kind"], "refs": x["refs"], "probs": x["probs"]} for x in r["results"]]
+    assert [a["refs"] for a in answers] == [x["refs"] for x in full["results"]]       # same queries, same order
+    c = client.post("/api/closure", json={"construction": SQUARE, "answers": answers}).json()
+    for k in ("relations", "ruler_relations", "contradictions"):
+        assert c[k] == full[k], k
+    bad = client.post("/api/closure", json={"construction": SQUARE, "answers": [{**answers[0], "refs": [["seg", "A", "Q"]]}]})
+    assert bad.status_code == 422
+    assert client.post("/api/read", json={"construction": SQUARE, "limit": 0}).status_code == 422

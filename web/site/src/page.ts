@@ -2,6 +2,7 @@ import { book1 } from "./books/book1";
 import { book2 } from "./books/book2";
 import { book3 } from "./books/book3";
 import { get, lit, n } from "./data";
+import { book4 } from "./demo/book4";
 import { hero } from "./figures/geometry";
 import { resetNotes } from "./ui";
 
@@ -52,15 +53,6 @@ function contents(): string {
     <li><a href="#colophon"><span class="smallcaps">Colophon</span></a></li>
   </ol>
 </nav>`;
-}
-
-function book4(): string {
-  return `
-<section class="book" id="book-4" data-running="Book IV · Constructions">
-  <h2><span class="book-no">Book IV</span> Constructions</h2>
-  <p class="opening">Here you will draw a figure with compass and straightedge, point at two of its parts, and
-  ask the machine what it sees. The instrument is still being assembled.</p>
-</section>`;
 }
 
 function colophon(): string {

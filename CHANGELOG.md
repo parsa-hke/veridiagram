@@ -810,3 +810,48 @@ Found
   Accelerate) and 0.38 s on MPS; the square input is always 1,024 tokens. A free CPU Space (x86, 2
   vCPU) will be measured in milestone 6; whole-figure reading on CPU takes minutes, so milestone 5
   should lean on the precomputed gallery and stream progress for live reads.
+
+## 2026-10-13 — Website, milestone 5: the demo (WEBSITE_PLAN.md §3, §6.5)
+
+Done
+- `web/precompute.py` (`python -m web.precompute`, needs the checkpoint; ~5 min on MPS): the game and
+  the gallery, answered by the website's own engine (same preprocessing and 448 × 448 padding as the
+  live demo). Synthetic diagrams only; the demo model was trained on real diagrams only, so none was
+  seen in training. Game: 105 near-threshold questions from the extrapolation set (2.4°-5.2° from
+  parallel around the 3.7° tolerance; 40 parallel by the Ruler), the model's view as a palette PNG;
+  the model is right on 66 of 105 (63%): near the tolerance the task is hard. Gallery: 12 diagrams
+  (6 of training size, 6 from the extrapolation set) with every query answered, relation sets and
+  contradictions. 7.3 MB in `web/site/public/data/`.
+- Server: `/api/read` takes `offset`/`limit` (one chunk of answers) and `/api/closure` returns the
+  relation sets and contradictions for answers collected chunk by chunk, so the page shows a real
+  progress bar on a slow CPU (tested: chunks + closure = one full read). Rate limit 60/min.
+- Book IV (`web/site/src/demo/`): status line (ready / warming up / offline: a sleeping Space answers
+  502/503 for a minute or two and counts as warming; a 404 means no API behind the page, offline at
+  once; after two minutes, offline and asked every 30 s); four tabs:
+  - Construct: compass-and-straightedge editor (point, segment, circle; parallel and perpendicular
+    through a point, midpoint, point on a circle; snapping, automatic letters, undo, examples, a
+    wobble slider that adds hand-drawn error to the helpers); "Point at" two parts (they turn red and
+    yellow), Ask: the three witnesses (the Ruler with the measured value and tolerance, the Eye's
+    probabilities, the 448 × 448 picture the network received), rows where they disagree flagged;
+    "Read the whole figure" in chunks with a progress bar, then the Eye's relations beside the
+    Ruler's and the contradictions in words, each with the Ruler's own verdict on the pair.
+  - Bring your own: upload or drop a PNG/JPEG (≤ 5 MB, shrunk to ≤ 1,600 px in the browser), clicks
+    snap to the nearest dark ink, the Ruler is labelled as measuring the clicks; privacy note.
+  - Beat the Transformer: ten random rounds from the precomputed pool, then a score card (you, the
+    Eye, the Ruler) that can be saved or shared as an image.
+  - Gallery: twelve thumbnails; a diagram's whole readout; clicking a statement previews its parts in
+    green over the image.
+- Checked in the browser with the real model on MPS: the trapezium example (AB ∥ CD agreed;
+  equal length: the Ruler 21.7% apart, the Eye 0.53, flagged as a disagreement); its whole figure,
+  20 queries in ~5 s; an uploaded drawing whose lines are 3.8° apart: the clicks measure 3.6°
+  (inside the tolerance) while the Eye says not parallel (0.01), correctly for the pixels; the game
+  and the score card; the gallery; phone width (no horizontal scroll).
+- Tests: `tests/test_web_precompute.py`, `tests/test_web_server.py` (chunks + closure),
+  `src/demo/api.test.ts` (status from health answers, query kinds from a selection, readout words).
+  Site suite 17 tests; 189 passed.
+
+Found
+- Every gallery contradiction is an equality chain (C2 on equal_length). In 3 of 5 the Ruler agrees
+  with the Eye's denial (the deduced pair is 14-25% apart): "equal within 10%" is not transitive,
+  as noted for Part B. In 2 the Ruler says the deduced equality holds (2.4%, 2.6%): genuine Eye
+  errors caught by the closure. The page says both.

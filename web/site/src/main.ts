@@ -2,6 +2,7 @@ import "./style.css";
 import { tracedSources, untracedNumbers } from "./audit";
 import { loadDocs, setDocs } from "./data";
 import { wirePencil } from "./cursor";
+import { wireBook4 } from "./demo/book4";
 import { drawOnScroll, play, prepare } from "./draw";
 import { wireRuler } from "./figures/geometry";
 import { wireMotion } from "./motion";
@@ -29,6 +30,7 @@ async function start(): Promise<void> {
   if (heroFig) play(prepare(heroFig), 3600);
   drawOnScroll(Array.from(root.querySelectorAll(".construction-figure")).map(prepare));
   wireRuler(root);
+  wireBook4(root);
   wireTooltips(root);
   wireMotion(root);
   const trace = new URLSearchParams(location.search).has("trace");

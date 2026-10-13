@@ -2,14 +2,15 @@
 
     POST /api/ask    {"construction": {...}} or {"image": <base64>, "primitives": {...}}, plus "queries"
     POST /api/read   the same without "queries": every query of the figure (capped), relation sets,
-                     contradictions
+                     contradictions; with "offset"/"limit" one chunk of answers only (for a progress bar)
+    POST /api/closure  the relation sets and contradictions for answers collected chunk by chunk
     GET  /api/health {"ok", "ready", "model", "device"}; the site pings it on load (cold start)
 
     python -m web.server.app [--checkpoint runs/ablation_dinov2_s0/checkpoints/best.pt] [--port 7860]
 
 Environment (for the Space): CHECKPOINT (a local path; if it does not exist and HF_MODEL_REPO is set,
 best.pt, or HF_MODEL_FILE, is downloaded from that model repo with HF_TOKEN), CONFIG (default configs/ablation_dinov2.yaml), RUN_NAME,
-DEVICE (auto), ALLOW_ORIGINS (comma-separated, default *), RATE_PER_MIN (30), READ_CAP (60),
+DEVICE (auto), ALLOW_ORIGINS (comma-separated, default *), RATE_PER_MIN (60), READ_CAP (60),
 STATIC_DIR (the built site, served at /). The model loads in a background thread, so /api/health
 answers at once and reports ready=false while it warms up. Inputs are processed in memory and
 never stored or logged.
@@ -51,8 +52,17 @@ class ReadIn(BaseModel):
     primitives: Figure | None = None
 
 
+class ChunkIn(ReadIn):
+    offset: int = 0
+    limit: int | None = None
+
+
 class AskIn(ReadIn):
     queries: list[dict]
+
+
+class ClosureIn(ReadIn):
+    answers: list[dict]
 
 
 class State:
@@ -95,7 +105,7 @@ def create_app(loader: Callable[[], core.Engine] = default_loader, static_dir: s
                background: bool = True) -> FastAPI:
     app = FastAPI(title="Colour, not Letters: inference", docs_url=None, redoc_url=None)
     state = State()
-    limit = RateLimit(int(os.environ.get("RATE_PER_MIN", "30")))
+    limit = RateLimit(int(os.environ.get("RATE_PER_MIN", "60")))
     read_cap = int(os.environ.get("READ_CAP", str(core.MAX_QUERIES)))
     origins = [o.strip() for o in os.environ.get("ALLOW_ORIGINS", "*").split(",") if o.strip()]
     app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"], allow_headers=["content-type"])
@@ -157,12 +167,25 @@ def create_app(loader: Callable[[], core.Engine] = default_loader, static_dir: s
         return {"results": results, "model": state.engine.name, "ms": ms}
 
     @app.post("/api/read")
-    def read(body: ReadIn):
+    def read(body: ChunkIn):
+        p, err = prepared(body)
+        if err:
+            return err
+        if body.offset < 0 or (body.limit is not None and not 1 <= body.limit <= core.MAX_QUERIES):
+            return JSONResponse({"error": "offset >= 0 and 1 <= limit <= 60"}, status_code=422)
+        try:
+            out, ms = core.timed(state.engine.read, p, read_cap, body.offset, body.limit)
+        except core.InputError as e:
+            return JSONResponse({"error": str(e)}, status_code=422)
+        return {**out, "model": state.engine.name, "ms": ms}
+
+    @app.post("/api/closure")
+    def closure(body: ClosureIn):
         p, err = prepared(body)
         if err:
             return err
         try:
-            out, ms = core.timed(state.engine.read, p, read_cap)
+            out, ms = core.timed(state.engine.closure, p, body.answers)
         except core.InputError as e:
             return JSONResponse({"error": str(e)}, status_code=422)
         return {**out, "model": state.engine.name, "ms": ms}

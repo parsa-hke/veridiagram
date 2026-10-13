@@ -1,0 +1,2012 @@
+{
+ "source": "synthetic extrapolation set (12-20 points), never seen by the demo model",
+ "tolerance_deg": 3.7,
+ "band_deg": [
+  2.41,
+  5.18
+ ],
+ "model": "dinov2-l / ablation_dinov2_s0",
+ "pad": "square",
+ "items": [
+  {
+   "image": "game/000.png",
+   "diagram": "synthetic:extrap_000013",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "O"
+    ],
+    [
+     "seg",
+     "F",
+     "G"
+    ]
+   ],
+   "angle_deg": 2.42,
+   "parallel": true,
+   "p_parallel": 0.9998
+  },
+  {
+   "image": "game/001.png",
+   "diagram": "synthetic:extrap_000041",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "D"
+    ],
+    [
+     "seg",
+     "G",
+     "J"
+    ]
+   ],
+   "angle_deg": 3.61,
+   "parallel": true,
+   "p_parallel": 0.0223
+  },
+  {
+   "image": "game/002.png",
+   "diagram": "synthetic:extrap_000053",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "B",
+     "D"
+    ]
+   ],
+   "angle_deg": 4.35,
+   "parallel": false,
+   "p_parallel": 0.0
+  },
+  {
+   "image": "game/003.png",
+   "diagram": "synthetic:extrap_000057",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "B",
+     "D"
+    ]
+   ],
+   "angle_deg": 3.18,
+   "parallel": true,
+   "p_parallel": 0.0408
+  },
+  {
+   "image": "game/004.png",
+   "diagram": "synthetic:extrap_000057",
+   "refs": [
+    [
+     "seg",
+     "G",
+     "K"
+    ],
+    [
+     "seg",
+     "L",
+     "R"
+    ]
+   ],
+   "angle_deg": 2.86,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/005.png",
+   "diagram": "synthetic:extrap_000092",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "N"
+    ],
+    [
+     "seg",
+     "K",
+     "L"
+    ]
+   ],
+   "angle_deg": 2.44,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/006.png",
+   "diagram": "synthetic:extrap_000104",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "H"
+    ],
+    [
+     "seg",
+     "K",
+     "M"
+    ]
+   ],
+   "angle_deg": 4.48,
+   "parallel": false,
+   "p_parallel": 0.0526
+  },
+  {
+   "image": "game/007.png",
+   "diagram": "synthetic:extrap_000132",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "A",
+     "C"
+    ]
+   ],
+   "angle_deg": 4.39,
+   "parallel": false,
+   "p_parallel": 0.7341
+  },
+  {
+   "image": "game/008.png",
+   "diagram": "synthetic:extrap_000138",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "F"
+    ],
+    [
+     "seg",
+     "D",
+     "F"
+    ]
+   ],
+   "angle_deg": 5.12,
+   "parallel": false,
+   "p_parallel": 0.0011
+  },
+  {
+   "image": "game/009.png",
+   "diagram": "synthetic:extrap_000153",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "A",
+     "H"
+    ]
+   ],
+   "angle_deg": 3.99,
+   "parallel": false,
+   "p_parallel": 0.0619
+  },
+  {
+   "image": "game/010.png",
+   "diagram": "synthetic:extrap_000160",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "E"
+    ],
+    [
+     "seg",
+     "I",
+     "K"
+    ]
+   ],
+   "angle_deg": 4.4,
+   "parallel": false,
+   "p_parallel": 0.9995
+  },
+  {
+   "image": "game/011.png",
+   "diagram": "synthetic:extrap_000164",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "E"
+    ],
+    [
+     "seg",
+     "B",
+     "C"
+    ]
+   ],
+   "angle_deg": 4.35,
+   "parallel": false,
+   "p_parallel": 0.9997
+  },
+  {
+   "image": "game/012.png",
+   "diagram": "synthetic:extrap_000168",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "D"
+    ],
+    [
+     "seg",
+     "B",
+     "C"
+    ]
+   ],
+   "angle_deg": 4.06,
+   "parallel": false,
+   "p_parallel": 0.01
+  },
+  {
+   "image": "game/013.png",
+   "diagram": "synthetic:extrap_000189",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "D"
+    ],
+    [
+     "seg",
+     "G",
+     "N"
+    ]
+   ],
+   "angle_deg": 3.33,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/014.png",
+   "diagram": "synthetic:extrap_000207",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "K",
+     "L"
+    ]
+   ],
+   "angle_deg": 3.44,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/015.png",
+   "diagram": "synthetic:extrap_000213",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "I",
+     "M"
+    ]
+   ],
+   "angle_deg": 3.24,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/016.png",
+   "diagram": "synthetic:extrap_000234",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "H"
+    ],
+    [
+     "seg",
+     "H",
+     "N"
+    ]
+   ],
+   "angle_deg": 2.47,
+   "parallel": false,
+   "p_parallel": 0.0051
+  },
+  {
+   "image": "game/017.png",
+   "diagram": "synthetic:extrap_000238",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "F"
+    ],
+    [
+     "seg",
+     "F",
+     "G"
+    ]
+   ],
+   "angle_deg": 2.72,
+   "parallel": true,
+   "p_parallel": 0.6146
+  },
+  {
+   "image": "game/018.png",
+   "diagram": "synthetic:extrap_000258",
+   "refs": [
+    [
+     "seg",
+     "G",
+     "H"
+    ],
+    [
+     "seg",
+     "L",
+     "M"
+    ]
+   ],
+   "angle_deg": 2.77,
+   "parallel": true,
+   "p_parallel": 0.061
+  },
+  {
+   "image": "game/019.png",
+   "diagram": "synthetic:extrap_000265",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "M"
+    ],
+    [
+     "seg",
+     "C",
+     "K"
+    ]
+   ],
+   "angle_deg": 4.53,
+   "parallel": false,
+   "p_parallel": 0.0018
+  },
+  {
+   "image": "game/020.png",
+   "diagram": "synthetic:extrap_000267",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "H"
+    ],
+    [
+     "seg",
+     "F",
+     "Q"
+    ]
+   ],
+   "angle_deg": 3.2,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/021.png",
+   "diagram": "synthetic:extrap_000273",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "R"
+    ],
+    [
+     "seg",
+     "I",
+     "K"
+    ]
+   ],
+   "angle_deg": 4.63,
+   "parallel": false,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/022.png",
+   "diagram": "synthetic:extrap_000276",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "E",
+     "Q"
+    ]
+   ],
+   "angle_deg": 4.63,
+   "parallel": false,
+   "p_parallel": 0.0011
+  },
+  {
+   "image": "game/023.png",
+   "diagram": "synthetic:extrap_000276",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "O"
+    ],
+    [
+     "seg",
+     "H",
+     "I"
+    ]
+   ],
+   "angle_deg": 4.1,
+   "parallel": false,
+   "p_parallel": 0.6307
+  },
+  {
+   "image": "game/024.png",
+   "diagram": "synthetic:extrap_000276",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "E"
+    ],
+    [
+     "seg",
+     "G",
+     "I"
+    ]
+   ],
+   "angle_deg": 3.25,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/025.png",
+   "diagram": "synthetic:extrap_000284",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "J"
+    ],
+    [
+     "seg",
+     "E",
+     "K"
+    ]
+   ],
+   "angle_deg": 2.94,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/026.png",
+   "diagram": "synthetic:extrap_000292",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "D"
+    ],
+    [
+     "seg",
+     "C",
+     "J"
+    ]
+   ],
+   "angle_deg": 3.14,
+   "parallel": true,
+   "p_parallel": 0.9964
+  },
+  {
+   "image": "game/027.png",
+   "diagram": "synthetic:extrap_000293",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "K"
+    ],
+    [
+     "seg",
+     "C",
+     "E"
+    ]
+   ],
+   "angle_deg": 2.58,
+   "parallel": true,
+   "p_parallel": 0.4789
+  },
+  {
+   "image": "game/028.png",
+   "diagram": "synthetic:extrap_000315",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "H"
+    ],
+    [
+     "seg",
+     "C",
+     "D"
+    ]
+   ],
+   "angle_deg": 4.44,
+   "parallel": false,
+   "p_parallel": 0.0373
+  },
+  {
+   "image": "game/029.png",
+   "diagram": "synthetic:extrap_000319",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "M"
+    ],
+    [
+     "seg",
+     "P",
+     "Q"
+    ]
+   ],
+   "angle_deg": 5.17,
+   "parallel": false,
+   "p_parallel": 0.6663
+  },
+  {
+   "image": "game/030.png",
+   "diagram": "synthetic:extrap_000324",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "B",
+     "D"
+    ]
+   ],
+   "angle_deg": 5.15,
+   "parallel": false,
+   "p_parallel": 0.9995
+  },
+  {
+   "image": "game/031.png",
+   "diagram": "synthetic:extrap_000332",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "D"
+    ],
+    [
+     "seg",
+     "F",
+     "K"
+    ]
+   ],
+   "angle_deg": 2.51,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/032.png",
+   "diagram": "synthetic:extrap_000341",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "H"
+    ],
+    [
+     "seg",
+     "I",
+     "J"
+    ]
+   ],
+   "angle_deg": 4.8,
+   "parallel": false,
+   "p_parallel": 0.4249
+  },
+  {
+   "image": "game/033.png",
+   "diagram": "synthetic:extrap_000364",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "A",
+     "L"
+    ]
+   ],
+   "angle_deg": 3.97,
+   "parallel": false,
+   "p_parallel": 0.0005
+  },
+  {
+   "image": "game/034.png",
+   "diagram": "synthetic:extrap_000372",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "A",
+     "D"
+    ]
+   ],
+   "angle_deg": 2.83,
+   "parallel": true,
+   "p_parallel": 0.0016
+  },
+  {
+   "image": "game/035.png",
+   "diagram": "synthetic:extrap_000390",
+   "refs": [
+    [
+     "seg",
+     "G",
+     "H"
+    ],
+    [
+     "seg",
+     "N",
+     "Q"
+    ]
+   ],
+   "angle_deg": 2.73,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/036.png",
+   "diagram": "synthetic:extrap_000394",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "B",
+     "R"
+    ]
+   ],
+   "angle_deg": 3.56,
+   "parallel": true,
+   "p_parallel": 0.9988
+  },
+  {
+   "image": "game/037.png",
+   "diagram": "synthetic:extrap_000414",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "E"
+    ],
+    [
+     "seg",
+     "F",
+     "H"
+    ]
+   ],
+   "angle_deg": 4.96,
+   "parallel": false,
+   "p_parallel": 0.8918
+  },
+  {
+   "image": "game/038.png",
+   "diagram": "synthetic:extrap_000418",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "J"
+    ],
+    [
+     "seg",
+     "D",
+     "F"
+    ]
+   ],
+   "angle_deg": 2.7,
+   "parallel": true,
+   "p_parallel": 0.9997
+  },
+  {
+   "image": "game/039.png",
+   "diagram": "synthetic:extrap_000426",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "I"
+    ],
+    [
+     "seg",
+     "J",
+     "K"
+    ]
+   ],
+   "angle_deg": 2.89,
+   "parallel": true,
+   "p_parallel": 0.3141
+  },
+  {
+   "image": "game/040.png",
+   "diagram": "synthetic:extrap_000447",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "J"
+    ],
+    [
+     "seg",
+     "E",
+     "H"
+    ]
+   ],
+   "angle_deg": 4.62,
+   "parallel": false,
+   "p_parallel": 0.9797
+  },
+  {
+   "image": "game/041.png",
+   "diagram": "synthetic:extrap_000454",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "O"
+    ],
+    [
+     "seg",
+     "B",
+     "D"
+    ]
+   ],
+   "angle_deg": 3.21,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/042.png",
+   "diagram": "synthetic:extrap_000454",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "E"
+    ],
+    [
+     "seg",
+     "B",
+     "I"
+    ]
+   ],
+   "angle_deg": 2.54,
+   "parallel": false,
+   "p_parallel": 0.1082
+  },
+  {
+   "image": "game/043.png",
+   "diagram": "synthetic:extrap_000465",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "D"
+    ],
+    [
+     "seg",
+     "C",
+     "M"
+    ]
+   ],
+   "angle_deg": 5.13,
+   "parallel": false,
+   "p_parallel": 0.1037
+  },
+  {
+   "image": "game/044.png",
+   "diagram": "synthetic:extrap_000471",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "C",
+     "G"
+    ]
+   ],
+   "angle_deg": 4.3,
+   "parallel": false,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/045.png",
+   "diagram": "synthetic:extrap_000478",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "F",
+     "L"
+    ]
+   ],
+   "angle_deg": 2.78,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/046.png",
+   "diagram": "synthetic:extrap_000492",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "F"
+    ],
+    [
+     "seg",
+     "D",
+     "L"
+    ]
+   ],
+   "angle_deg": 5.09,
+   "parallel": false,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/047.png",
+   "diagram": "synthetic:extrap_000513",
+   "refs": [
+    [
+     "seg",
+     "F",
+     "G"
+    ],
+    [
+     "seg",
+     "I",
+     "J"
+    ]
+   ],
+   "angle_deg": 4.96,
+   "parallel": false,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/048.png",
+   "diagram": "synthetic:extrap_000516",
+   "refs": [
+    [
+     "seg",
+     "E",
+     "L"
+    ],
+    [
+     "seg",
+     "N",
+     "Q"
+    ]
+   ],
+   "angle_deg": 3.07,
+   "parallel": true,
+   "p_parallel": 0.9991
+  },
+  {
+   "image": "game/049.png",
+   "diagram": "synthetic:extrap_000524",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "C"
+    ],
+    [
+     "seg",
+     "F",
+     "G"
+    ]
+   ],
+   "angle_deg": 2.98,
+   "parallel": true,
+   "p_parallel": 0.0311
+  },
+  {
+   "image": "game/050.png",
+   "diagram": "synthetic:extrap_000536",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "J"
+    ],
+    [
+     "seg",
+     "H",
+     "K"
+    ]
+   ],
+   "angle_deg": 3.74,
+   "parallel": false,
+   "p_parallel": 0.0518
+  },
+  {
+   "image": "game/051.png",
+   "diagram": "synthetic:extrap_000547",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "L",
+     "O"
+    ]
+   ],
+   "angle_deg": 4.02,
+   "parallel": false,
+   "p_parallel": 0.0362
+  },
+  {
+   "image": "game/052.png",
+   "diagram": "synthetic:extrap_000547",
+   "refs": [
+    [
+     "seg",
+     "F",
+     "N"
+    ],
+    [
+     "seg",
+     "I",
+     "P"
+    ]
+   ],
+   "angle_deg": 4.66,
+   "parallel": false,
+   "p_parallel": 0.0876
+  },
+  {
+   "image": "game/053.png",
+   "diagram": "synthetic:extrap_000557",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "C",
+     "D"
+    ]
+   ],
+   "angle_deg": 4.61,
+   "parallel": false,
+   "p_parallel": 0.0023
+  },
+  {
+   "image": "game/054.png",
+   "diagram": "synthetic:extrap_000561",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "H",
+     "L"
+    ]
+   ],
+   "angle_deg": 4.42,
+   "parallel": false,
+   "p_parallel": 0.9998
+  },
+  {
+   "image": "game/055.png",
+   "diagram": "synthetic:extrap_000564",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "I"
+    ],
+    [
+     "seg",
+     "D",
+     "G"
+    ]
+   ],
+   "angle_deg": 3.19,
+   "parallel": true,
+   "p_parallel": 0.578
+  },
+  {
+   "image": "game/056.png",
+   "diagram": "synthetic:extrap_000568",
+   "refs": [
+    [
+     "seg",
+     "E",
+     "F"
+    ],
+    [
+     "seg",
+     "Q",
+     "R"
+    ]
+   ],
+   "angle_deg": 3.87,
+   "parallel": false,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/057.png",
+   "diagram": "synthetic:extrap_000579",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "D"
+    ],
+    [
+     "seg",
+     "E",
+     "F"
+    ]
+   ],
+   "angle_deg": 3.02,
+   "parallel": true,
+   "p_parallel": 0.023
+  },
+  {
+   "image": "game/058.png",
+   "diagram": "synthetic:extrap_000581",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "I",
+     "K"
+    ]
+   ],
+   "angle_deg": 4.66,
+   "parallel": false,
+   "p_parallel": 0.0
+  },
+  {
+   "image": "game/059.png",
+   "diagram": "synthetic:extrap_000591",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "K"
+    ],
+    [
+     "seg",
+     "J",
+     "K"
+    ]
+   ],
+   "angle_deg": 3.91,
+   "parallel": false,
+   "p_parallel": 0.0002
+  },
+  {
+   "image": "game/060.png",
+   "diagram": "synthetic:extrap_000599",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "C"
+    ],
+    [
+     "seg",
+     "B",
+     "K"
+    ]
+   ],
+   "angle_deg": 5.05,
+   "parallel": false,
+   "p_parallel": 0.0
+  },
+  {
+   "image": "game/061.png",
+   "diagram": "synthetic:extrap_000633",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "J"
+    ],
+    [
+     "seg",
+     "E",
+     "M"
+    ]
+   ],
+   "angle_deg": 2.59,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/062.png",
+   "diagram": "synthetic:extrap_000633",
+   "refs": [
+    [
+     "seg",
+     "H",
+     "I"
+    ],
+    [
+     "seg",
+     "J",
+     "M"
+    ]
+   ],
+   "angle_deg": 5.03,
+   "parallel": false,
+   "p_parallel": 0.9966
+  },
+  {
+   "image": "game/063.png",
+   "diagram": "synthetic:extrap_000638",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "H",
+     "J"
+    ]
+   ],
+   "angle_deg": 4.57,
+   "parallel": false,
+   "p_parallel": 0.1067
+  },
+  {
+   "image": "game/064.png",
+   "diagram": "synthetic:extrap_000643",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "D"
+    ],
+    [
+     "seg",
+     "M",
+     "N"
+    ]
+   ],
+   "angle_deg": 3.09,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/065.png",
+   "diagram": "synthetic:extrap_000645",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "E",
+     "F"
+    ]
+   ],
+   "angle_deg": 4.14,
+   "parallel": false,
+   "p_parallel": 0.0103
+  },
+  {
+   "image": "game/066.png",
+   "diagram": "synthetic:extrap_000645",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "N"
+    ],
+    [
+     "seg",
+     "E",
+     "P"
+    ]
+   ],
+   "angle_deg": 3.89,
+   "parallel": false,
+   "p_parallel": 0.0132
+  },
+  {
+   "image": "game/067.png",
+   "diagram": "synthetic:extrap_000647",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "H",
+     "I"
+    ]
+   ],
+   "angle_deg": 2.8,
+   "parallel": true,
+   "p_parallel": 0.8783
+  },
+  {
+   "image": "game/068.png",
+   "diagram": "synthetic:extrap_000651",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "E",
+     "O"
+    ]
+   ],
+   "angle_deg": 4.71,
+   "parallel": false,
+   "p_parallel": 0.2767
+  },
+  {
+   "image": "game/069.png",
+   "diagram": "synthetic:extrap_000662",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "G"
+    ],
+    [
+     "seg",
+     "E",
+     "M"
+    ]
+   ],
+   "angle_deg": 2.56,
+   "parallel": true,
+   "p_parallel": 0.9999
+  },
+  {
+   "image": "game/070.png",
+   "diagram": "synthetic:extrap_000665",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "J"
+    ],
+    [
+     "seg",
+     "I",
+     "N"
+    ]
+   ],
+   "angle_deg": 2.9,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/071.png",
+   "diagram": "synthetic:extrap_000687",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "F"
+    ],
+    [
+     "seg",
+     "C",
+     "I"
+    ]
+   ],
+   "angle_deg": 2.98,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/072.png",
+   "diagram": "synthetic:extrap_000719",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "A",
+     "K"
+    ]
+   ],
+   "angle_deg": 4.33,
+   "parallel": false,
+   "p_parallel": 0.9846
+  },
+  {
+   "image": "game/073.png",
+   "diagram": "synthetic:extrap_000727",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "J"
+    ],
+    [
+     "seg",
+     "F",
+     "O"
+    ]
+   ],
+   "angle_deg": 5.06,
+   "parallel": false,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/074.png",
+   "diagram": "synthetic:extrap_000728",
+   "refs": [
+    [
+     "seg",
+     "H",
+     "J"
+    ],
+    [
+     "seg",
+     "J",
+     "L"
+    ]
+   ],
+   "angle_deg": 4.15,
+   "parallel": false,
+   "p_parallel": 0.0
+  },
+  {
+   "image": "game/075.png",
+   "diagram": "synthetic:extrap_000730",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "N"
+    ],
+    [
+     "seg",
+     "E",
+     "P"
+    ]
+   ],
+   "angle_deg": 5.02,
+   "parallel": false,
+   "p_parallel": 0.0046
+  },
+  {
+   "image": "game/076.png",
+   "diagram": "synthetic:extrap_000735",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "A",
+     "D"
+    ]
+   ],
+   "angle_deg": 4.92,
+   "parallel": false,
+   "p_parallel": 0.0052
+  },
+  {
+   "image": "game/077.png",
+   "diagram": "synthetic:extrap_000735",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "C"
+    ],
+    [
+     "seg",
+     "M",
+     "N"
+    ]
+   ],
+   "angle_deg": 4.43,
+   "parallel": false,
+   "p_parallel": 0.0
+  },
+  {
+   "image": "game/078.png",
+   "diagram": "synthetic:extrap_000759",
+   "refs": [
+    [
+     "seg",
+     "F",
+     "I"
+    ],
+    [
+     "seg",
+     "F",
+     "J"
+    ]
+   ],
+   "angle_deg": 3.85,
+   "parallel": false,
+   "p_parallel": 0.0001
+  },
+  {
+   "image": "game/079.png",
+   "diagram": "synthetic:extrap_000769",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "E"
+    ],
+    [
+     "seg",
+     "A",
+     "I"
+    ]
+   ],
+   "angle_deg": 3.89,
+   "parallel": false,
+   "p_parallel": 0.0302
+  },
+  {
+   "image": "game/080.png",
+   "diagram": "synthetic:extrap_000803",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "C"
+    ],
+    [
+     "seg",
+     "E",
+     "F"
+    ]
+   ],
+   "angle_deg": 2.74,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/081.png",
+   "diagram": "synthetic:extrap_000812",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "D",
+     "F"
+    ]
+   ],
+   "angle_deg": 4.8,
+   "parallel": false,
+   "p_parallel": 0.9996
+  },
+  {
+   "image": "game/082.png",
+   "diagram": "synthetic:extrap_000826",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "J"
+    ],
+    [
+     "seg",
+     "H",
+     "I"
+    ]
+   ],
+   "angle_deg": 2.64,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/083.png",
+   "diagram": "synthetic:extrap_000827",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "D"
+    ],
+    [
+     "seg",
+     "M",
+     "N"
+    ]
+   ],
+   "angle_deg": 2.59,
+   "parallel": true,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/084.png",
+   "diagram": "synthetic:extrap_000837",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "G"
+    ],
+    [
+     "seg",
+     "C",
+     "M"
+    ]
+   ],
+   "angle_deg": 5.07,
+   "parallel": false,
+   "p_parallel": 0.849
+  },
+  {
+   "image": "game/085.png",
+   "diagram": "synthetic:extrap_000848",
+   "refs": [
+    [
+     "seg",
+     "F",
+     "J"
+    ],
+    [
+     "seg",
+     "I",
+     "J"
+    ]
+   ],
+   "angle_deg": 4.35,
+   "parallel": false,
+   "p_parallel": 0.9047
+  },
+  {
+   "image": "game/086.png",
+   "diagram": "synthetic:extrap_000853",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "C"
+    ],
+    [
+     "seg",
+     "A",
+     "L"
+    ]
+   ],
+   "angle_deg": 4.71,
+   "parallel": false,
+   "p_parallel": 0.0002
+  },
+  {
+   "image": "game/087.png",
+   "diagram": "synthetic:extrap_000858",
+   "refs": [
+    [
+     "seg",
+     "B",
+     "D"
+    ],
+    [
+     "seg",
+     "L",
+     "N"
+    ]
+   ],
+   "angle_deg": 4.4,
+   "parallel": false,
+   "p_parallel": 0.9939
+  },
+  {
+   "image": "game/088.png",
+   "diagram": "synthetic:extrap_000864",
+   "refs": [
+    [
+     "seg",
+     "E",
+     "F"
+    ],
+    [
+     "seg",
+     "J",
+     "K"
+    ]
+   ],
+   "angle_deg": 4.63,
+   "parallel": false,
+   "p_parallel": 0.6885
+  },
+  {
+   "image": "game/089.png",
+   "diagram": "synthetic:extrap_000865",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "D",
+     "L"
+    ]
+   ],
+   "angle_deg": 4.79,
+   "parallel": false,
+   "p_parallel": 0.0
+  },
+  {
+   "image": "game/090.png",
+   "diagram": "synthetic:extrap_000865",
+   "refs": [
+    [
+     "seg",
+     "G",
+     "H"
+    ],
+    [
+     "seg",
+     "L",
+     "M"
+    ]
+   ],
+   "angle_deg": 3.98,
+   "parallel": false,
+   "p_parallel": 1.0
+  },
+  {
+   "image": "game/091.png",
+   "diagram": "synthetic:extrap_000886",
+   "refs": [
+    [
+     "seg",
+     "F",
+     "L"
+    ],
+    [
+     "seg",
+     "J",
+     "K"
+    ]
+   ],
+   "angle_deg": 3.5,
+   "parallel": true,
+   "p_parallel": 0.0067
+  },
+  {
+   "image": "game/092.png",
+   "diagram": "synthetic:extrap_000896",
+   "refs": [
+    [
+     "seg",
+     "E",
+     "J"
+    ],
+    [
+     "seg",
+     "J",
+     "K"
+    ]
+   ],
+   "angle_deg": 2.51,
+   "parallel": true,
+   "p_parallel": 0.0159
+  },
+  {
+   "image": "game/093.png",
+   "diagram": "synthetic:extrap_000899",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "E"
+    ],
+    [
+     "seg",
+     "H",
+     "N"
+    ]
+   ],
+   "angle_deg": 3.98,
+   "parallel": false,
+   "p_parallel": 0.9999
+  },
+  {
+   "image": "game/094.png",
+   "diagram": "synthetic:extrap_000902",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "F"
+    ],
+    [
+     "seg",
+     "E",
+     "F"
+    ]
+   ],
+   "angle_deg": 2.95,
+   "parallel": true,
+   "p_parallel": 0.0839
+  },
+  {
+   "image": "game/095.png",
+   "diagram": "synthetic:extrap_000918",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "D",
+     "E"
+    ]
+   ],
+   "angle_deg": 4.71,
+   "parallel": false,
+   "p_parallel": 0.3191
+  },
+  {
+   "image": "game/096.png",
+   "diagram": "synthetic:extrap_000925",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "J"
+    ],
+    [
+     "seg",
+     "D",
+     "H"
+    ]
+   ],
+   "angle_deg": 2.72,
+   "parallel": true,
+   "p_parallel": 0.9999
+  },
+  {
+   "image": "game/097.png",
+   "diagram": "synthetic:extrap_000947",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "I"
+    ],
+    [
+     "seg",
+     "E",
+     "F"
+    ]
+   ],
+   "angle_deg": 4.17,
+   "parallel": false,
+   "p_parallel": 0.9993
+  },
+  {
+   "image": "game/098.png",
+   "diagram": "synthetic:extrap_000954",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "B"
+    ],
+    [
+     "seg",
+     "B",
+     "K"
+    ]
+   ],
+   "angle_deg": 4.07,
+   "parallel": false,
+   "p_parallel": 0.0169
+  },
+  {
+   "image": "game/099.png",
+   "diagram": "synthetic:extrap_000956",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "H"
+    ],
+    [
+     "seg",
+     "D",
+     "F"
+    ]
+   ],
+   "angle_deg": 3.9,
+   "parallel": false,
+   "p_parallel": 0.02
+  },
+  {
+   "image": "game/100.png",
+   "diagram": "synthetic:extrap_000976",
+   "refs": [
+    [
+     "seg",
+     "C",
+     "O"
+    ],
+    [
+     "seg",
+     "K",
+     "L"
+    ]
+   ],
+   "angle_deg": 3.75,
+   "parallel": false,
+   "p_parallel": 0.9995
+  },
+  {
+   "image": "game/101.png",
+   "diagram": "synthetic:extrap_000983",
+   "refs": [
+    [
+     "seg",
+     "D",
+     "J"
+    ],
+    [
+     "seg",
+     "E",
+     "N"
+    ]
+   ],
+   "angle_deg": 4.26,
+   "parallel": false,
+   "p_parallel": 0.78
+  },
+  {
+   "image": "game/102.png",
+   "diagram": "synthetic:extrap_000984",
+   "refs": [
+    [
+     "seg",
+     "F",
+     "G"
+    ],
+    [
+     "seg",
+     "K",
+     "L"
+    ]
+   ],
+   "angle_deg": 3.95,
+   "parallel": false,
+   "p_parallel": 0.0272
+  },
+  {
+   "image": "game/103.png",
+   "diagram": "synthetic:extrap_000993",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "D"
+    ],
+    [
+     "seg",
+     "I",
+     "J"
+    ]
+   ],
+   "angle_deg": 3.8,
+   "parallel": false,
+   "p_parallel": 0.0013
+  },
+  {
+   "image": "game/104.png",
+   "diagram": "synthetic:extrap_000995",
+   "refs": [
+    [
+     "seg",
+     "A",
+     "D"
+    ],
+    [
+     "seg",
+     "H",
+     "M"
+    ]
+   ],
+   "angle_deg": 4.58,
+   "parallel": false,
+   "p_parallel": 0.9984
+  }
+ ],
+ "summary": {
+  "n": 105,
+  "parallel": 40,
+  "model_correct": 66
+ }
+}
