@@ -27,8 +27,9 @@ every row of the results table still has a number.
 3. Open **Terminal** and run the line below; leave the window open. It keeps the Mac awake until
    you press Ctrl+C:
    ```bash
-   caffeinate -dims
+   caffeinate -ims
    ```
+   (`-ims` lets the screen turn off while the Mac stays awake; `-dims` would also keep the screen on.)
    (Running all night on the charger is fine for the Mac: the GPU work happens on Google's machine,
    and the laptop only keeps a browser tab open.)
 
@@ -46,7 +47,7 @@ every row of the results table still has a number.
 | `nvidia-smi` | shows `NVIDIA A100` |
 | Drive mount | allow access when asked |
 | clone / pull | the last line shows the newest commit (the one that added this guide) |
-| `pip install` | no red ERROR at the end (yellow warnings are fine) |
+| `pip install` | no failed install. A red "dependency conflicts" note about Colab's own packages (e.g. `google-adk` and `opentelemetry`) is harmless |
 | device info | `cuda`, A100 |
 | Data | `data version 1`, then sizes of about 3.1G and 355M (about 2 minutes; nothing is rebuilt) |
 | `models.backbone` | last line `facebook/dinov3-vitl16-pretrain-lvd1689m: OK` |
@@ -59,11 +60,14 @@ If any check differs, stop and send me the cell's output.
 ## 4. Start the queue
 
 In the **Full runs** cell change `RUN_FULL = False` to `RUN_FULL = True` and run it. It first prints
-`0 done, 13 pending of 13`, then starts the runs; each prints its progress (`epoch 1/2 ...`,
-`eval ...`) and the queue prints a line whenever a run finishes.
+`0 done, 13 pending of 13`, then one line when each run starts and one when it finishes. A run's own
+progress (`LP stage ...`, `epoch 1/2 ...` at the end of each epoch, `eval ...`) goes to its log on the
+VM's disk; to watch it, open Colab's **Terminal** (bottom left) and run
+`tail -f /content/veridiagram/runs/queue_logs/<run>.log` (Ctrl+C stops watching).
 
 Leave the tab open and the laptop awake. You can check progress from your phone in the Colab app
-or by looking at `MyDrive/geo-relations/runs/log.csv`.
+or by looking at `MyDrive/geo-relations/runs/log.csv` (one line per finished run; `status` must be `ok`:
+the queue's "done" only means the process ended).
 
 ## 5. If Colab disconnects
 

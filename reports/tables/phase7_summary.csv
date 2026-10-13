@@ -15,6 +15,14 @@ finetune,7.2 fine-tune (Part A: 0 synthetic),val,geometric,0 1 2,3,0.8763,0.0076
 finetune,7.2 fine-tune (Part A: 0 synthetic),geometry3k_test,geometric,0 1 2,3,0.8665,0.0071,0.8584,0.8715
 finetune,7.2 fine-tune (Part A: 0 synthetic),pgdp5k_heldout,geometric,0 1 2,3,0.8687,0.0079,0.8605,0.8762
 finetune,7.2 fine-tune (Part A: 0 synthetic),synth_extrap,geometric,0 1 2,3,0.6309,0.0167,0.6148,0.6482
+scaling_1k,7.9 Part A: 1k synthetic,val,asserted,0,1,0.629,,0.629,0.629
+scaling_1k,7.9 Part A: 1k synthetic,geometry3k_test,asserted,0,1,0.5437,,0.5437,0.5437
+scaling_1k,7.9 Part A: 1k synthetic,pgdp5k_heldout,asserted,0,1,0.5522,,0.5522,0.5522
+scaling_1k,7.9 Part A: 1k synthetic,synth_extrap,asserted,0,1,0.4327,,0.4327,0.4327
+scaling_1k,7.9 Part A: 1k synthetic,val,geometric,0,1,0.8709,,0.8709,0.8709
+scaling_1k,7.9 Part A: 1k synthetic,geometry3k_test,geometric,0,1,0.8761,,0.8761,0.8761
+scaling_1k,7.9 Part A: 1k synthetic,pgdp5k_heldout,geometric,0,1,0.8848,,0.8848,0.8848
+scaling_1k,7.9 Part A: 1k synthetic,synth_extrap,geometric,0,1,0.718,,0.718,0.718
 finetune_synth10k,7.3 fine-tune + 10k synthetic (Part A: 10k),val,asserted,0 1 2,3,0.6262,0.0021,0.624,0.6281
 finetune_synth10k,7.3 fine-tune + 10k synthetic (Part A: 10k),geometry3k_test,asserted,0 1 2,3,0.5423,0.0028,0.539,0.5441
 finetune_synth10k,7.3 fine-tune + 10k synthetic (Part A: 10k),pgdp5k_heldout,asserted,0 1 2,3,0.5467,0.0031,0.544,0.5501
@@ -23,6 +31,22 @@ finetune_synth10k,7.3 fine-tune + 10k synthetic (Part A: 10k),val,geometric,0 1 
 finetune_synth10k,7.3 fine-tune + 10k synthetic (Part A: 10k),geometry3k_test,geometric,0 1 2,3,0.8714,0.0099,0.8628,0.8822
 finetune_synth10k,7.3 fine-tune + 10k synthetic (Part A: 10k),pgdp5k_heldout,geometric,0 1 2,3,0.8846,0.0043,0.8818,0.8895
 finetune_synth10k,7.3 fine-tune + 10k synthetic (Part A: 10k),synth_extrap,geometric,0 1 2,3,0.7127,0.0094,0.702,0.7198
+scaling_50k,7.9 Part A: 50k synthetic,val,asserted,0 1 2,3,0.6281,0.0047,0.6233,0.6327
+scaling_50k,7.9 Part A: 50k synthetic,geometry3k_test,asserted,0 1 2,3,0.5378,0.006,0.5309,0.5416
+scaling_50k,7.9 Part A: 50k synthetic,pgdp5k_heldout,asserted,0 1 2,3,0.5412,0.0062,0.5341,0.5453
+scaling_50k,7.9 Part A: 50k synthetic,synth_extrap,asserted,0 1 2,3,0.4016,0.0095,0.3929,0.4117
+scaling_50k,7.9 Part A: 50k synthetic,val,geometric,0 1 2,3,0.8747,0.0043,0.8701,0.8786
+scaling_50k,7.9 Part A: 50k synthetic,geometry3k_test,geometric,0 1 2,3,0.8715,0.0041,0.8668,0.8742
+scaling_50k,7.9 Part A: 50k synthetic,pgdp5k_heldout,geometric,0 1 2,3,0.8822,0.0049,0.8765,0.8854
+scaling_50k,7.9 Part A: 50k synthetic,synth_extrap,geometric,0 1 2,3,0.707,0.0078,0.7021,0.716
+ablation_dinov2,7.5 DINOv2-L backbone,val,asserted,0,1,0.6434,,0.6434,0.6434
+ablation_dinov2,7.5 DINOv2-L backbone,geometry3k_test,asserted,0,1,0.5543,,0.5543,0.5543
+ablation_dinov2,7.5 DINOv2-L backbone,pgdp5k_heldout,asserted,0,1,0.5665,,0.5665,0.5665
+ablation_dinov2,7.5 DINOv2-L backbone,synth_extrap,asserted,0,1,0.4414,,0.4414,0.4414
+ablation_dinov2,7.5 DINOv2-L backbone,val,geometric,0,1,0.9231,,0.9231,0.9231
+ablation_dinov2,7.5 DINOv2-L backbone,geometry3k_test,geometric,0,1,0.9134,,0.9134,0.9134
+ablation_dinov2,7.5 DINOv2-L backbone,pgdp5k_heldout,geometric,0,1,0.9204,,0.9204,0.9204
+ablation_dinov2,7.5 DINOv2-L backbone,synth_extrap,geometric,0,1,0.754,,0.754,0.754
 ablation_res224,7.6 224 px,val,asserted,0,1,0.6237,,0.6237,0.6237
 ablation_res224,7.6 224 px,geometry3k_test,asserted,0,1,0.5268,,0.5268,0.5268
 ablation_res224,7.6 224 px,pgdp5k_heldout,asserted,0,1,0.5349,,0.5349,0.5349
@@ -39,3 +63,35 @@ ablation_noaug,7.7 no augmentation,val,geometric,0,1,0.8902,,0.8902,0.8902
 ablation_noaug,7.7 no augmentation,geometry3k_test,geometric,0,1,0.8683,,0.8683,0.8683
 ablation_noaug,7.7 no augmentation,pgdp5k_heldout,geometric,0,1,0.8697,,0.8697,0.8697
 ablation_noaug,7.7 no augmentation,synth_extrap,geometric,0,1,0.6325,,0.6325,0.6325
+ablation_nooverlay,7.8 no overlay (query as tokens),val,asserted,0,1,0.3422,,0.3422,0.3422
+ablation_nooverlay,7.8 no overlay (query as tokens),geometry3k_test,asserted,0,1,0.2813,,0.2813,0.2813
+ablation_nooverlay,7.8 no overlay (query as tokens),pgdp5k_heldout,asserted,0,1,0.2625,,0.2625,0.2625
+ablation_nooverlay,7.8 no overlay (query as tokens),synth_extrap,asserted,0,1,0.072,,0.072,0.072
+ablation_nooverlay,7.8 no overlay (query as tokens),val,geometric,0,1,0.4498,,0.4498,0.4498
+ablation_nooverlay,7.8 no overlay (query as tokens),geometry3k_test,geometric,0,1,0.4311,,0.4311,0.4311
+ablation_nooverlay,7.8 no overlay (query as tokens),pgdp5k_heldout,geometric,0,1,0.4295,,0.4295,0.4295
+ablation_nooverlay,7.8 no overlay (query as tokens),synth_extrap,geometric,0,1,0.137,,0.137,0.137
+selftrain_confidence,7.11 (a) confidence filter,val,asserted,0 1 2,3,0.637,0.0014,0.6356,0.6384
+selftrain_confidence,7.11 (a) confidence filter,geometry3k_test,asserted,0 1 2,3,0.5462,0.0042,0.5431,0.551
+selftrain_confidence,7.11 (a) confidence filter,pgdp5k_heldout,asserted,0 1 2,3,0.5521,0.0024,0.5504,0.5548
+selftrain_confidence,7.11 (a) confidence filter,synth_extrap,asserted,0 1 2,3,0.423,0.0077,0.4143,0.4289
+selftrain_confidence,7.11 (a) confidence filter,val,geometric,0 1 2,3,0.9032,0.0056,0.8976,0.9087
+selftrain_confidence,7.11 (a) confidence filter,geometry3k_test,geometric,0 1 2,3,0.8858,0.0025,0.8837,0.8885
+selftrain_confidence,7.11 (a) confidence filter,pgdp5k_heldout,geometric,0 1 2,3,0.8963,0.0028,0.8935,0.899
+selftrain_confidence,7.11 (a) confidence filter,synth_extrap,geometric,0 1 2,3,0.7373,0.0092,0.7271,0.7449
+selftrain_consistency,7.11 (b) confidence + consistency filter,val,asserted,0 1 2,3,0.6381,0.0033,0.6358,0.6419
+selftrain_consistency,7.11 (b) confidence + consistency filter,geometry3k_test,asserted,0 1 2,3,0.549,0.0027,0.5473,0.5521
+selftrain_consistency,7.11 (b) confidence + consistency filter,pgdp5k_heldout,asserted,0 1 2,3,0.5551,0.0021,0.5538,0.5575
+selftrain_consistency,7.11 (b) confidence + consistency filter,synth_extrap,asserted,0 1 2,3,0.4103,0.0078,0.4022,0.4177
+selftrain_consistency,7.11 (b) confidence + consistency filter,val,geometric,0 1 2,3,0.9074,0.0046,0.9021,0.9106
+selftrain_consistency,7.11 (b) confidence + consistency filter,geometry3k_test,geometric,0 1 2,3,0.8955,0.01,0.8855,0.9055
+selftrain_consistency,7.11 (b) confidence + consistency filter,pgdp5k_heldout,geometric,0 1 2,3,0.9031,0.0059,0.8964,0.9074
+selftrain_consistency,7.11 (b) confidence + consistency filter,synth_extrap,geometric,0 1 2,3,0.7236,0.0097,0.7131,0.7321
+selftrain_control,7.11 control: no pseudo-labels,val,asserted,0,1,0.6456,,0.6456,0.6456
+selftrain_control,7.11 control: no pseudo-labels,geometry3k_test,asserted,0,1,0.5577,,0.5577,0.5577
+selftrain_control,7.11 control: no pseudo-labels,pgdp5k_heldout,asserted,0,1,0.5669,,0.5669,0.5669
+selftrain_control,7.11 control: no pseudo-labels,synth_extrap,asserted,0,1,0.4181,,0.4181,0.4181
+selftrain_control,7.11 control: no pseudo-labels,val,geometric,0,1,0.929,,0.929,0.929
+selftrain_control,7.11 control: no pseudo-labels,geometry3k_test,geometric,0,1,0.9087,,0.9087,0.9087
+selftrain_control,7.11 control: no pseudo-labels,pgdp5k_heldout,geometric,0,1,0.9191,,0.9191,0.9191
+selftrain_control,7.11 control: no pseudo-labels,synth_extrap,geometric,0,1,0.7409,,0.7409,0.7409

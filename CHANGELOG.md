@@ -569,3 +569,29 @@ split; everything remaining on Colab)
   queue_phase7_part2.yaml), launcher cells for the teacher (unpacked from the lab archive on Drive,
   sha256-checked), the Phase 7 smoke gate and packing the results; `COLAB_GUIDE.md`.
 - Lab results imported into the local runs/ (gitignored) and runs/log.csv. Tests: 164 passed.
+
+## 2026-10-13 — Phase 7 complete (Colab batch: 13 runs, all ok)
+
+Found (geometric macro-F1, geometry3k_test / pgdp5k_heldout / synth_extrap; `reports/tables/phase7_summary.md`)
+- Colab A100: ~38-45 min per run (2x the lab's RTX 5000 Ada), 13 runs in ~8.5 h. The archive was
+  checked before import: status ok, two epochs, the expected backbone and exact prediction counts.
+- 7.9 Part A: 1k synthetic 0.876 / 0.885 / 0.718; 10k 0.871 / 0.885 / 0.713; 50k 0.872 ± 0.004 /
+  0.882 ± 0.005 / 0.707 ± 0.008 (0: 0.867 / 0.869 / 0.631). The held-out-source and extrapolation
+  gains are reached by 1k diagrams and flat after, at a fixed 80k-image budget with 50% synthetic.
+- 7.5 DINOv2-L (seed 0) 0.913 / 0.920 / 0.754, ~0.05 above DINOv3-L at the same recipe; one seed.
+- 7.8 no overlay (query as point-name tokens) 0.431 / 0.429 / 0.137: below the linear probe; the
+  highlight is what makes the task learnable.
+- 7.11 Part B (teacher finetune_synth10k_s2, 0.882 / 0.889 / 0.716): pool 2,037 diagrams; τ 0.9 keeps
+  18,252 pseudo-positives at precision 0.882 (equal_length 0.709, others 0.94-1.00); the consistency
+  filter flags 162 diagrams, kept precision 0.898, removed 0.798. Students: confidence 0.886 ± 0.003 /
+  0.896 ± 0.003 / 0.737 ± 0.009; consistency 0.895 ± 0.010 / 0.903 ± 0.006 / 0.724 ± 0.010; control
+  without pseudo-labels (seed 0) 0.909 / 0.919 / 0.741. The gain over the teacher is the extra
+  training; the pseudo-labels cost ~0.015-0.02 against the control (one control seed).
+- Not-to-scale subset (7 diagrams): no different from the full sets within its noise.
+
+Done
+- Colab runs imported into runs/ (finetune_s0-2 on Drive are failed Phase 6 attempts from
+  2026-10-10, not imported); `python -m analysis.phase7` regenerated every Phase 7 table and
+  reports/figures/scaling.png; plan 7.4, 7.5, 7.8, 7.9, 7.11, 7.12 ticked. COLAB_GUIDE.md corrected
+  (run progress is in /content/veridiagram/runs/queue_logs, not in the notebook cell; Colab's own
+  package conflict message is harmless; caffeinate without -d lets the screen sleep).
