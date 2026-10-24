@@ -44,3 +44,18 @@ def test_phase7_gate(tmp_path):
     (tmp_path / "smoke_selftrain_consistency_s0/metrics.json").write_text(json.dumps(
         {"status": "ok", "backbone_loaded": primary, "duration_s": 250, "pseudo_labels": {"train_rows": 40}}))
     assert all(ok for _, ok, _ in gate.check_smoke(cfg, 0, names))
+
+
+def test_eval_square_gate(tmp_path):
+    cfg = load_config(REPO_ROOT / "configs/base.yaml")
+    cfg["paths"]["runs"] = str(tmp_path)
+    primary = cfg["model"]["backbone"]
+    names = gate.GATES["eval_square"][1]
+    for mode in names:
+        _run(tmp_path, mode, primary, 120)
+    failed = [n for n, ok, _ in gate.check_smoke(cfg, 0, names) if not ok]
+    assert failed == ["sq_finetune: square padding", "sq_probe: square padding"]
+    for mode in names:
+        (tmp_path / f"smoke_{mode}_s0/metrics.json").write_text(json.dumps(
+            {"status": "ok", "backbone_loaded": primary, "duration_s": 120, "pad": "square"}))
+    assert all(ok for _, ok, _ in gate.check_smoke(cfg, 0, names))

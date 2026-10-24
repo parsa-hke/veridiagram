@@ -7,7 +7,9 @@ overlaid image is cached as PNG at <cache>/overlays/<settings hash>/<set>/<diagr
 items are then augmented (data.augment) and re-fitted to the long side. Finally the image is padded
 on the right/bottom with white to a multiple of `input.pad_to_multiple` (the patch size) and
 normalised with `input.mean` / `input.std`. `collate` pads a batch to its largest height and width
-with normalised white, so batches are (B, 3, H, W) with H, W <= 448 and multiples of 16.
+with normalised white, so batches are (B, 3, H, W) with H, W <= 448 and multiples of 16; with
+`square` (evaluation under `eval.pad: square`, plan §0.2 #10 note) every image is padded to
+448 x 448 instead, so its answer does not depend on its batch neighbours.
 
 meta per item: qid, diagram_id, set, split, kind, relation mask (applicability), refs, and with
 `model.query_input: tokens` the query as token indices (data.query_tokens, plan §7.8).
@@ -178,11 +180,15 @@ class QueryDataset(torch.utils.data.Dataset):
         return ((torch.ones(3, 1, 1) - self.mean) / self.std).view(3)
 
 
-def pad_batch(imgs, white: torch.Tensor) -> torch.Tensor:
+def pad_batch(imgs, white: torch.Tensor, square: int | None = None) -> torch.Tensor:
     """Stack (3, H, W) tensors, padding each to the batch's largest height and width with normalised
-    white (the batches of evaluation and of the website's server)."""
+    white (the batches of evaluation and of the website's server), or with `square` to square x square."""
     H = max(x.shape[1] for x in imgs)
     W = max(x.shape[2] for x in imgs)
+    if square:
+        if max(H, W) > square:
+            raise ValueError(f"image {H}x{W} larger than the square {square}")
+        H = W = square
     out = white.view(1, 3, 1, 1).repeat(len(imgs), 1, H, W)
     for k, x in enumerate(imgs):
         out[k, :, : x.shape[1], : x.shape[2]] = x
@@ -190,15 +196,16 @@ def pad_batch(imgs, white: torch.Tensor) -> torch.Tensor:
 
 
 class Collate:
-    """Pads a batch to its largest height/width with normalised white. A class, not a closure, so it
-    can be pickled into DataLoader worker processes on Windows (spawn)."""
+    """Pads a batch to its largest height/width (or to `square` x `square`) with normalised white. A
+    class, not a closure, so it can be pickled into DataLoader worker processes on Windows (spawn)."""
 
-    def __init__(self, white: torch.Tensor):
+    def __init__(self, white: torch.Tensor, square: int | None = None):
         self.white = white
+        self.square = square
 
     def __call__(self, batch):
         imgs, geo, asr, metas = zip(*batch)
-        out = pad_batch(imgs, self.white)
+        out = pad_batch(imgs, self.white, self.square)
         meta = {"mask": torch.stack([m["mask"] for m in metas]),
                 **{key: [m[key] for m in metas] for key in ("qid", "diagram_id", "set", "split", "kind", "refs")}}
         if "qtok" in metas[0]:
@@ -206,14 +213,24 @@ class Collate:
         return out, torch.stack(geo), torch.stack(asr), meta
 
 
-def make_collate(white: torch.Tensor) -> Collate:
-    return Collate(white)
+def make_collate(white: torch.Tensor, square: int | None = None) -> Collate:
+    return Collate(white, square)
+
+
+def eval_square(cfg: dict) -> int | None:
+    """`eval.pad`: batch (pad to the batch's largest image; every Phase 7 run) or square (every query
+    to long_side x long_side). Returns the square side, or None for batch padding."""
+    pad = cfg.get("eval", {}).get("pad", "batch")
+    if pad not in ("batch", "square"):
+        raise ValueError(f"eval.pad must be batch | square, got {pad!r}")
+    return cfg["input"]["long_side"] if pad == "square" else None
 
 
 def loader(ds: QueryDataset, batch_size: int, shuffle: bool, num_workers: int = 0,
-           generator: torch.Generator | None = None, sampler=None) -> torch.utils.data.DataLoader:
+           generator: torch.Generator | None = None, sampler=None,
+           square: int | None = None) -> torch.utils.data.DataLoader:
     return torch.utils.data.DataLoader(ds, batch_size=batch_size, shuffle=shuffle and sampler is None,
-                                       num_workers=num_workers, collate_fn=make_collate(ds.white()),
+                                       num_workers=num_workers, collate_fn=make_collate(ds.white(), square),
                                        persistent_workers=num_workers > 0, generator=generator, sampler=sampler)
 
 

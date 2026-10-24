@@ -1,0 +1,14 @@
+# Re-evaluation of a finished Phase 7 run with every query padded to long_side x long_side (plan §0.2
+# #10 note, 2026-10-20): Phase 7 evaluation padded each batch of 32 to its largest image and the pooled
+# feature averages the padding tokens, so a saved prediction depended on its batch neighbours.
+# The queue sets the run name and the source experiment, e.g.
+#   --set name=sq_finetune_synth10k --set eval.source_config=configs/finetune_synth10k.yaml --set seed=2
+# evaluates runs/finetune_synth10k_s2 (checkpoints/best.pt; probe_head.pt for a probe) into
+# runs/sq_finetune_synth10k_s2. Model, input and data settings come from the source config
+# (experiments/evaluate.py); the original run is left as it is.
+inherit: base.yaml
+name: sq_eval
+mode: evaluate
+eval:
+  pad: square
+  source_config: configs/finetune.yaml

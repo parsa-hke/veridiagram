@@ -2,6 +2,7 @@
 
     python -m experiments.gate smoke [--config X]    # plan §6.6
     python -m experiments.gate phase7 [--config X]   # smoke of the Phase 7 modes added later (7.8, Part B)
+    python -m experiments.gate eval_square [--config X]   # smoke of the square-padded re-evaluation
 
 smoke: the probe and fine-tune smoke runs (runs/smoke_probe_s<seed>, runs/smoke_finetune_s<seed>)
 must have status ok, have loaded the PRIMARY backbone (`model.backbone`, not the fallback),
@@ -9,6 +10,8 @@ finished in under 10 minutes each (`duration_s`), and written metrics.json, pred
 evaluation unit, and for the fine-tune checkpoints/best.pt. Prints one line per check and PASS/FAIL;
 exit code 0 only on PASS. phase7: the same checks for runs/smoke_ablation_nooverlay_s<seed> and
 runs/smoke_selftrain_consistency_s<seed>, plus pseudo-labels produced by the self-training smoke.
+eval_square: runs/smoke_sq_finetune_s<seed> and runs/smoke_sq_probe_s<seed> (configs/eval_square.yaml
+on the smoke fine-tune and probe of gate 6.6): the same checks, square padding, no checkpoint of their own.
 """
 
 from __future__ import annotations
@@ -22,7 +25,8 @@ from experiments.run import REPO_ROOT, load_config
 
 LIMIT_S = 600
 GATES = {"smoke": ("GATE 6.6 (smoke)", ("probe", "finetune")),
-         "phase7": ("GATE 7 (smoke of the 7.8 and Part B modes)", ("ablation_nooverlay", "selftrain_consistency"))}
+         "phase7": ("GATE 7 (smoke of the 7.8 and Part B modes)", ("ablation_nooverlay", "selftrain_consistency")),
+         "eval_square": ("GATE 7 (smoke of the square-padded re-evaluation)", ("sq_finetune", "sq_probe"))}
 
 
 def check_smoke(cfg: dict, seed: int = 0, names=GATES["smoke"][1]) -> list[tuple[str, bool, str]]:
@@ -44,7 +48,9 @@ def check_smoke(cfg: dict, seed: int = 0, names=GATES["smoke"][1]) -> list[tuple
         out.append((f"{mode}: under {LIMIT_S // 60} min", dur < LIMIT_S, f"{dur:.0f} s"))
         missing = [u for u in UNITS if u != "train" and not (d / "predictions" / f"{u}.npz").exists()]
         out.append((f"{mode}: predictions", not missing, "all units" if not missing else f"missing {missing}"))
-        if mode != "probe":
+        if mode.startswith("sq_"):
+            out.append((f"{mode}: square padding", m.get("pad") == "square", f"pad {m.get('pad')}, source {m.get('source_run')}"))
+        elif mode != "probe":
             out.append((f"{mode}: best.pt", (d / "checkpoints" / "best.pt").exists(), str(d / "checkpoints")))
         if mode.startswith("selftrain"):
             n = (m.get("pseudo_labels") or {}).get("train_rows", 0)

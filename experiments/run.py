@@ -129,6 +129,8 @@ def resolve_config(config: str | Path, smoke: bool = False, overrides: list[str]
     for path in overlays or []:
         cfg = apply_overlay(cfg, path)
     cfg = apply_overrides(cfg, overrides or [])
+    if smoke and not cfg["name"].startswith("smoke"):        # a --set name=... keeps smoke runs apart too
+        cfg["name"] = f"smoke_{cfg['name']}"
     if cfg.get("mode") not in DISPATCH:
         raise ValueError(f"unknown mode {cfg.get('mode')!r}; expected one of {sorted(DISPATCH)}")
     return cfg

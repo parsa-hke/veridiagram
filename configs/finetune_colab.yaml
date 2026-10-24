@@ -1,0 +1,6 @@
+# 7.2 retrained on Colab (2026-10-20): the same config as finetune.yaml (Geometry3K train only, LP-FT,
+# 2 x 40k images), 3 seeds. The lab did not keep the 7.2 checkpoints (only metrics and predictions),
+# and the square-padded re-evaluation (plan §0.2 #10 note) needs them. Its own evaluation uses the
+# original batch padding, so it also measures how far a retrain on an A100 moves the lab's numbers.
+inherit: finetune.yaml
+name: finetune_colab

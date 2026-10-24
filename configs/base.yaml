@@ -135,6 +135,10 @@ finetune:
 eval:
   checkpoint: null
   batch_size: 32
+  pad: batch                           # batch: pad to the batch's largest image (every Phase 7 run) | square: every query
+                                       # to long_side x long_side (answers independent of batch neighbours; §0.2 #10 note)
+  source_config: null                  # mode evaluate: re-evaluate the finished run of this config (experiments/evaluate.py)
+  source_run: null                     # default <source name>_s<seed>
   max_queries: {synth_extrap: 10000}   # evaluation cap per unit (evenly spaced; plan §0.2 #10)
   label_sets: [geometric, asserted]
   threshold: tune_on_val               # operating threshold per relation, tuned on val

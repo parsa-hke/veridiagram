@@ -34,7 +34,7 @@ import torch
 from torch import nn
 
 from analysis.metrics import evaluate
-from data.dataset import Collate, QueryDataset, loader
+from data.dataset import Collate, QueryDataset, eval_square, loader
 from data.queries import vocabulary
 from models.backbone import Backbone, load_backbone
 from models.common import (EMA, autocast, cosine_with_warmup, device_of, evaluate_units, log_epoch, predict,
@@ -171,7 +171,7 @@ def run(cfg: dict, run_dir: Path, backbone: Backbone | None = None) -> dict:
                 generator=gen, sampler=sampler)
     val_ds = QueryDataset(cfg, "val", train=False)
     val_dl = loader(val_ds, cfg["eval"].get("batch_size", f["batch_size"] * 2), shuffle=False,
-                    num_workers=cfg["data"]["num_workers"])
+                    num_workers=cfg["data"]["num_workers"], square=eval_square(cfg))
     pw = pos_weights(np.array([r["geo"] for r in ds.rows]), np.array([r["mask"] for r in ds.rows])).to(device)
 
     accum = max(1, f.get("grad_accum_steps", 1))

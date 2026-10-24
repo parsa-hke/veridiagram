@@ -22,7 +22,7 @@ import torch
 from torch import nn
 
 from analysis.metrics import evaluate
-from data.dataset import QueryDataset, loader
+from data.dataset import QueryDataset, eval_square, loader
 from data.queries import UNITS, vocabulary
 from experiments.run import get_device
 
@@ -116,7 +116,7 @@ def save_predictions(pred: dict, run_dir: Path, unit: str) -> None:
 def eval_loader(cfg: dict, unit: str):
     ds = QueryDataset(cfg, unit, train=False)
     return ds, loader(ds, cfg["eval"].get("batch_size", cfg["finetune"]["batch_size"] * 2), shuffle=False,
-                      num_workers=cfg["data"]["num_workers"])
+                      num_workers=cfg["data"]["num_workers"], square=eval_square(cfg))
 
 
 def evaluate_units(forward, cfg: dict, device: torch.device, run_dir: Path, units=None) -> dict:

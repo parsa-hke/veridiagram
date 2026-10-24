@@ -1,0 +1,23 @@
+# Phase 7, last Colab batch (2026-10-20; plan 7.11 and the §0.2 #10 note), one A100, one run at a time,
+# in file order. Restartable: finished runs (status ok in runs/log.csv) are skipped, an interrupted
+# fine-tune resumes from its last epoch.
+# Needs on Drive: the 13 Colab runs of queue_phase7_colab.yaml with their checkpoints, and from the lab
+# archives (the launcher's "Lab checkpoints" cell) finetune_synth10k_s0-2/checkpoints/best.pt and
+# probe_s0-2/probe_head.pt.
+jobs:
+  # 1. Part B control, seeds 1 and 2 (WEBSITE_PLAN.md §8.3), same as seed 0 in queue_phase7_colab.yaml
+  - {config: configs/selftrain_control.yaml, seeds: [1, 2]}
+  # 2. square-padded re-evaluation of every checkpoint that exists (sq_<experiment>_s<seed>)
+  - {config: configs/eval_square.yaml, seeds: [0, 1, 2], serial: true,
+     set: [name=sq_probe, eval.source_config=configs/probe.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0, 1, 2], set: [name=sq_finetune_synth10k, eval.source_config=configs/finetune_synth10k.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0], set: [name=sq_scaling_1k, eval.source_config=configs/scaling_1k.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0, 1, 2], set: [name=sq_scaling_50k, eval.source_config=configs/scaling_50k.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0], set: [name=sq_ablation_dinov2, eval.source_config=configs/ablation_dinov2.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0], set: [name=sq_ablation_nooverlay, eval.source_config=configs/ablation_nooverlay.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0, 1, 2], set: [name=sq_selftrain_confidence, eval.source_config=configs/selftrain_confidence.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0, 1, 2], set: [name=sq_selftrain_consistency, eval.source_config=configs/selftrain_consistency.yaml]}
+  - {config: configs/eval_square.yaml, seeds: [0, 1, 2], set: [name=sq_selftrain_control, eval.source_config=configs/selftrain_control.yaml]}
+  # 3. 7.2 retrained (the lab did not keep its checkpoints), then square-padded
+  - {config: configs/finetune_colab.yaml, seeds: [0, 1, 2]}
+  - {config: configs/eval_square.yaml, seeds: [0, 1, 2], set: [name=sq_finetune_colab, eval.source_config=configs/finetune_colab.yaml]}

@@ -2,12 +2,17 @@
 
 1. Frozen backbone, no augmentation: pooled features (CLS ++ mean patch) for every query of every
    unit, cached at <cache>/features/<backbone>/<overlay-settings hash>/<index file>.npz together
-   with their query ids (a cache whose ids do not match the current index is recomputed).
+   with their query ids (a cache whose ids do not match the current index is recomputed). With
+   `eval.pad: square` the evaluation units are padded to long_side x long_side and cached under
+   <overlay-settings hash>_square (the training features keep batch padding).
 2. Head only (LayerNorm -> Linear), AdamW (probe.lr, probe.weight_decay), masked BCE with census
    positive weights, up to probe.epochs epochs, early stopping on validation macro-F1 (geometric
    labels, threshold 0.5) with probe.early_stopping_patience.
 3. The best head is evaluated on val and the test units against both label sets; predictions are
    saved to <run_dir>/predictions/.
+
+`evaluate_head` (experiments.evaluate, plan §0.2 #10 note) re-evaluates a saved probe_head.pt on
+freshly extracted evaluation features.
 """
 
 from __future__ import annotations
@@ -20,7 +25,7 @@ import numpy as np
 import torch
 
 from analysis.metrics import evaluate
-from data.dataset import QueryDataset, loader, replace_or_discard
+from data.dataset import QueryDataset, eval_square, loader, replace_or_discard
 from data.queries import UNITS, index_path, vocabulary
 from experiments.run import REPO_ROOT
 from models.backbone import load_backbone
@@ -28,9 +33,15 @@ from models.common import autocast, device_of, log_epoch, metrics_for, save_pred
 from models.head import Head, masked_bce, pos_weights
 
 
+def feature_square(cfg: dict, ds: QueryDataset) -> int | None:
+    """Square side for this unit's features: evaluation units under `eval.pad: square`, else None."""
+    return None if ds.unit == "train" else eval_square(cfg)
+
+
 def feature_path(cfg: dict, backbone_name: str, ds: QueryDataset) -> Path:
     tag = backbone_name.replace("/", "__")
-    return (REPO_ROOT / cfg["paths"]["cache"] / "features" / tag / ds.cache_tag
+    pad = "_square" if feature_square(cfg, ds) else ""
+    return (REPO_ROOT / cfg["paths"]["cache"] / "features" / tag / (ds.cache_tag + pad)
             / (index_path(cfg, ds.unit).stem + ".npz"))
 
 
@@ -42,7 +53,8 @@ def extract(backbone, ds: QueryDataset, cfg: dict, device: torch.device) -> np.n
         z = np.load(path)
         if len(z["qid"]) == len(qids) and (z["qid"] == qids).all():
             return z["feats"].astype(np.float32)
-    dl = loader(ds, cfg["probe"].get("extract_batch_size", 32), shuffle=False, num_workers=cfg["data"]["num_workers"])
+    dl = loader(ds, cfg["probe"].get("extract_batch_size", 32), shuffle=False, num_workers=cfg["data"]["num_workers"],
+                square=feature_square(cfg, ds))
     feats, t0 = [], time.time()
     for x, *_ in dl:
         with autocast(device, cfg):
@@ -134,3 +146,31 @@ def run(cfg: dict, run_dir: Path, backbone=None) -> dict:
     return {"backbone": cfg["model"]["backbone"], "backbone_loaded": loaded, "backbone_info": load_info,
             "best_epoch": best_epoch, "epochs_run": last_epoch, "val_macro_f1": round(best, 4),
             "n_train": int(len(feats["train"])), "results": results, "wall_s": round(time.time() - t_start, 1)}
+
+
+def evaluate_head(cfg: dict, run_dir: Path, head_path: Path, backbone=None) -> dict:
+    """Evaluate a saved probe head (probe_head.pt) on features of the evaluation units extracted under
+    `cfg` (e.g. `eval.pad: square`); predictions to <run_dir>/predictions/."""
+    run_dir = Path(run_dir)
+    device = device_of(cfg)
+    vocab = vocabulary(cfg)
+    sd = torch.load(head_path, map_location="cpu", weights_only=False)
+    if sd["vocab"] != vocab:
+        raise ValueError(f"probe head vocabulary {sd['vocab']} differs from the config's {vocab}")
+    backbone = (backbone or load_backbone(cfg)).to(device).eval()
+    loaded, load_info = backbone.name, getattr(backbone, "load_info", {})
+    head = Head(sd["in_dim"], len(vocab), cfg["model"].get("head_dropout", 0.0))
+    head.load_state_dict(sd["head"])
+    head.to(device).eval()
+    results = {}
+    for unit in [u for u in UNITS if u != "train"]:
+        ds = QueryDataset(cfg, unit, train=False)
+        feats = extract(backbone, ds, cfg, device)
+        with torch.no_grad():
+            probs = torch.sigmoid(head(torch.tensor(feats, device=device))).cpu().numpy()
+        pred = {"probs": probs, **labels_of(ds)}
+        save_predictions(pred, run_dir, unit)
+        results[unit] = metrics_for(pred, vocab)
+        print(f"  {unit:16s} macro-F1 geometric {results[unit]['geometric']['macro_f1']:.3f}  "
+              f"asserted {results[unit]['asserted']['macro_f1']:.3f}", flush=True)
+    return {"backbone_loaded": loaded, "backbone_info": load_info, "results": results}

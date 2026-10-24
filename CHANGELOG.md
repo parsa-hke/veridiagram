@@ -906,3 +906,74 @@ Fixed
 - Tests: `src/demo/construct.test.ts` draws two segments and points at them through the real panel
   (fails on the old wiring, passes now); `test_cache_headers`. Checked in the browser with real
   clicks: two hand-drawn lines 4.3° apart, the Ruler "no" (tolerance 3.7°), the Eye 0.02.
+
+## 2026-10-18 — Week 4 workshop: research framing and proposal (content + design prompt)
+
+Done
+- `PROPOSAL_PLAN.md`: what the brief asks, how a pre-methodology proposal is written for a project
+  that already has results (no method, no Phase 7 numbers; dataset facts allowed as gap evidence).
+- Five base papers verified against the published versions: Inter-GPS (ACL 2021), PGDPNet (IJCAI
+  2022), PGPSNet (IJCAI 2023), AlphaGeometry (Nature 2024), MathVerse (ECCV 2024, pp. 169-186 via
+  Crossref). Supporting refs: GEOS, G-LLaVA (ICLR 2025), ViT, DINOv2 (TMLR 2024), DINOv3 (arXiv),
+  CLIP, ResNet.
+- `reports/proposal/proposal_content.md` (report text), `slides_content.md` (16 slides),
+  `design_prompt.md` (prompt for Claude Design; the user builds the .docx and .pptx there).
+
+Found
+- PGPSNet's reported results use clauses from the ground-truth diagram annotation, so they
+  assume perfect perception: a fourth leg of the gap (perception measured only indirectly).
+- PGDP5K's ICPR 2022 dataset paper has no proceedings record we could find; not cited.
+
+## 2026-10-20 — Phase 7, last Colab batch prepared: control seeds 1-2, square-padded re-evaluation, 7.2 retrained
+
+Decision (user, 2026-10-20; plan §0.2 #10 note and 7.2 edited first): re-evaluate every Phase 7
+checkpoint with each query padded to a fixed 448 x 448 square, keeping the original runs, and
+retrain 7.2 on Colab because its checkpoints no longer exist. **Numbers the report will use (fixed
+before any re-evaluation result): the square-padded evaluation for every experiment that has one
+(7.2 = `sq_finetune_colab`; probes keep their trained heads on square-padded features); 7.6 and 7.7
+keep the original batch padding and are compared with the original 7.2 under the same padding; the
+original numbers of every run and the per-run change go in an appendix table
+(`reports/tables/padding_effect.csv`).**
+
+Found
+- The queue entries for the Part B control seeds 1 and 2 (commit 0fd900f) are right: on the Colab
+  log they are the only pending runs of `queue_phase7_colab.yaml`, with the same command as seed 0.
+- Checkpoints that exist (Drive, read-only check, and the lab archives in `lab_results/`): the 13
+  Colab runs; `geo_ckpt_synth10k.tar` holds the three 7.3 checkpoints (s2 = the teacher's sha256);
+  `geo_results_20261012.tar.gz` holds the three probe heads (sha256 = the laptop copies). **The lab
+  never exported the 7.2, 7.6 and 7.7 checkpoints** (LAB_GUIDE E2 asked for two; the archive has the
+  three 7.3 ones); the `finetune_s0-2` folders on Drive are the failed Phase 6 attempts from 10-10
+  with no best.pt.
+- Cost of a re-evaluation, from the first Colab batch: `selftrain_control_s0` took 2,329 s of which
+  1,829 s were its two epochs, which leaves ~6-8 min to load and evaluate the 52,818 queries
+  (~140 queries/s, loader-bound; the lab took 726 s for the same on an RTX 5000 Ada). The rough
+  4.5 min per run assumed ~196/s. Whole batch: ~6.5 h, ~75-80 compute units.
+- `--smoke --set name=...` applied the name after the smoke rename, so a smoke run could have been
+  logged under a real run's name; smoke runs now always get the `smoke_` prefix.
+
+Done
+- `eval.pad: batch | square` (`configs/base.yaml`, default batch = every earlier run):
+  `data.dataset.pad_batch` / `Collate` / `loader` take a square side; evaluation loaders (final
+  evaluation, validation during fine-tuning, probe feature extraction of the evaluation units) use
+  it. Square-padded probe features are cached under `<overlay hash>_square`.
+- `experiments/evaluate.py`: `eval.source_config` re-evaluates the finished run of another
+  experiment (`<source name>_s<seed>`, best.pt, or probe_head.pt with fresh features via
+  `models.probe.evaluate_head`) under that experiment's own model / input / overlay / data settings;
+  the settings that define the model and the evaluation rows are compared with the source run's
+  saved config.yaml (a key added after the run must be at its base.yaml default). Checked locally for
+  all 19 source runs on this laptop: no difference.
+- `configs/eval_square.yaml`, `configs/finetune_colab.yaml`, `configs/queue_phase7_final.yaml`
+  (29 runs: control s1-2; 24 `sq_*` re-evaluations; `finetune_colab` x3); `python -m experiments.gate
+  eval_square`; launcher: a "Lab checkpoints" cell (7.3 x3, probe heads and their configs from the lab
+  archives, sha256-checked), the re-evaluation smoke and gate, the new queue, the results archive
+  `geo_results_colab_final.tar.gz`; `COLAB_GUIDE.md` rewritten for this batch.
+- `analysis.phase7`: the new experiments, `padding_effect.csv` (macro-F1 both ways, change, share of
+  decisions that flip, query ids checked against the original), a padding section in
+  `phase7_summary.md`, `reports/figures/scaling_square.png`. Unchanged output on the current runs.
+- Tests: `tests/test_eval_square.py` (padding, a tiny ViT whose answer changes with a bigger batch
+  neighbour under batch padding and not under the square, source configs, mismatch refusal, probe
+  feature paths, the padding table, the queue; 1.6 s), `test_eval_square_gate`. 203 passed, 1 skipped.
+
+Waiting for
+- The Colab batch (user), then the import, `python -m analysis.phase7`, `python -m web.export`, plan
+  7.11 with three control seeds.

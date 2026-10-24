@@ -12,6 +12,10 @@ predictions/<unit>.npz, and writes
                                         (geometry3k_test + pgdp5k_heldout pooled; 7 diagrams), both label sets
   reports/tables/selftrain_pseudo_labels.csv  7.11 post-hoc: pseudo-label precision per filter and relation
   reports/figures/scaling.png           7.9: macro-F1 against synthetic training size (0, 1k, 10k, 50k)
+  reports/tables/padding_effect.csv     §0.2 #10 note: every run with a square-padded re-evaluation
+                                        (sq_<run>) against its original batch-padded one, per unit:
+                                        macro-F1 both ways, the change, and the share of decisions that flip
+  reports/figures/scaling_square.png    7.9 from the square-padded re-evaluations (0 = finetune_colab)
 Predictions are aligned to diagrams by rebuilding each unit's evaluation rows (same index, same
 caps) and checking the query ids, so a stale prediction file is reported, not silently mismatched.
 Thresholds are 0.5 here; Phase 8 adds val-tuned thresholds, bootstrap CIs and ECE.
@@ -47,7 +51,15 @@ EXPERIMENTS = {
     "selftrain_confidence": ("7.11 (a) confidence filter", None),
     "selftrain_consistency": ("7.11 (b) confidence + consistency filter", None),
     "selftrain_control": ("7.11 control: no pseudo-labels", None),
+    "finetune_colab": ("7.2 fine-tune, retrained on Colab (same config)", None),
 }
+# §0.2 #10 note: square-padded re-evaluations sq_<experiment> of every experiment with a checkpoint
+SQUARE = "sq_"
+EXPERIMENTS.update({SQUARE + e: (f"{plan}, square padding", None) for e, (plan, _) in list(EXPERIMENTS.items())
+                    if e not in ("ablation_res224", "ablation_noaug")})
+SCALING_SIZES = {e: s for e, (_, s) in EXPERIMENTS.items() if s is not None}
+SCALING_SIZES_SQUARE = {"sq_finetune_colab": 0, "sq_scaling_1k": 1000, "sq_finetune_synth10k": 10000,
+                        "sq_scaling_50k": 50000}
 
 
 def latest_runs(runs: Path) -> dict[str, dict]:
@@ -191,9 +203,9 @@ SCALING_UNITS = [("pgdp5k_heldout", "PGDP5K held-out source"), ("synth_extrap", 
                  ("geometry3k_test", "Geometry3K test (in-distribution)")]
 
 
-def scaling_points(rows: list[dict]) -> list[dict]:
+def scaling_points(rows: list[dict], size_of: dict[str, int] | None = None) -> list[dict]:
     """7.9: geometric macro-F1 per unit and synthetic training size, over seeds."""
-    size_of = {e: s for e, (_, s) in EXPERIMENTS.items() if s is not None}
+    size_of = SCALING_SIZES if size_of is None else size_of
     pts = []
     for u, _ in SCALING_UNITS:
         for exp, size in sorted(size_of.items(), key=lambda kv: kv[1]):
@@ -209,12 +221,12 @@ def scaling_points(rows: list[dict]) -> list[dict]:
     return pts
 
 
-def scaling_figure(rows: list[dict], out: Path) -> list[dict]:
+def scaling_figure(rows: list[dict], out: Path, size_of: dict[str, int] | None = None, title: str = "") -> list[dict]:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    pts = scaling_points(rows)
+    pts = scaling_points(rows, size_of)
     fig, ax = plt.subplots(figsize=(6.4, 4.2))
     for (u, label), c in zip(SCALING_UNITS, ("C0", "C3", "C7")):
         up = [p for p in pts if p["unit"] == u]
@@ -228,7 +240,7 @@ def scaling_figure(rows: list[dict], out: Path) -> list[dict]:
     ax.set_xticks([300, 1000, 10000, 50000], ["0", "1k", "10k", "50k"])
     ax.set_xlabel("synthetic training diagrams (50% of every batch when > 0)")
     ax.set_ylabel("macro-F1 (geometric labels)")
-    ax.set_title("Part A: verifier-labelled synthetic data")
+    ax.set_title("Part A: verifier-labelled synthetic data" + title)
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8)
     fig.tight_layout()
@@ -236,6 +248,55 @@ def scaling_figure(rows: list[dict], out: Path) -> list[dict]:
     fig.savefig(out, dpi=150)
     plt.close(fig)
     return pts
+
+
+def padding_effect(runs: Path, latest: dict, vocab: list[str]) -> tuple[list[dict], list[str]]:
+    """§0.2 #10 note: each square-padded re-evaluation sq_<run> against the original <run>, per unit.
+    Decisions are (query, applicable relation) entries at threshold 0.5."""
+    out, problems = [], []
+    for sq in sorted(r for r in latest if r.startswith(SQUARE)):
+        orig = sq[len(SQUARE):]
+        if orig not in latest:
+            continue
+        ms = json.loads((runs / sq / "metrics.json").read_text())["results"]
+        mo = json.loads((runs / orig / "metrics.json").read_text())["results"]
+        name, seed = split_name(orig)
+        for unit in [u for u in UNITS if u in ms and u in mo]:
+            zs, zo = np.load(runs / sq / "predictions" / f"{unit}.npz"), np.load(runs / orig / "predictions" / f"{unit}.npz")
+            if len(zs["qid"]) != len(zo["qid"]) or (zs["qid"] != zo["qid"]).any():
+                problems.append(f"{sq}/{unit}: query ids differ from {orig}")
+                continue
+            m = zo["mask"] > 0
+            flips = (zs["probs"] > 0.5) != (zo["probs"] > 0.5)
+            row = {"run": orig, "experiment": name, "seed": seed, "unit": unit, "n_queries": int(len(zo["qid"])),
+                   "n_decisions": int(m.sum()), "decisions_changed": int((flips & m).sum()),
+                   "share_changed": round(float((flips & m).sum() / max(m.sum(), 1)), 4),
+                   "max_abs_dp": round(float(np.abs(zs["probs"] - zo["probs"])[m].max()), 4) if m.any() else None}
+            for ls in ("geometric", "asserted"):
+                b_, s_ = mo[unit][ls]["macro_f1"], ms[unit][ls]["macro_f1"]
+                row.update({f"{ls}_batch": b_, f"{ls}_square": s_, f"{ls}_change": round(s_ - b_, 4)})
+            out.append(row)
+    return out, problems
+
+
+def padding_markdown(rows: list[dict]) -> str:
+    """Mean change of geometric macro-F1 (square - batch) and share of decisions changed, per experiment and unit."""
+    if not rows:
+        return ""
+    lines = ["### Square vs batch padding (§0.2 #10 note): geometric macro-F1 change, mean over seeds "
+             "(share of decisions changed)", "",
+             "| experiment | seeds | " + " | ".join(UNITS) + " |", "|---|---|" + "---|" * len(UNITS)]
+    by = defaultdict(lambda: defaultdict(list))
+    for r in rows:
+        by[r["experiment"]][r["unit"]].append(r)
+    for exp in [e for e in EXPERIMENTS if e in by]:
+        cells = []
+        for u in UNITS:
+            g = by[exp].get(u, [])
+            cells.append("" if not g else f"{np.mean([r['geometric_change'] for r in g]):+.3f} "
+                         f"({100 * sum(r['decisions_changed'] for r in g) / sum(r['n_decisions'] for r in g):.1f}%)")
+        lines.append(f"| {exp} | {len(next(iter(by[exp].values())))} | " + " | ".join(cells) + " |")
+    return "\n".join(lines + [""])
 
 
 def write_csv(rows: list[dict], path: Path) -> None:
@@ -261,21 +322,28 @@ def main(argv: list[str] | None = None) -> int:
     write_csv(rows, tables / "phase7_runs.csv")
     summary = summarise(rows)
     write_csv(summary, tables / "phase7_summary.csv")
-    (tables / "phase7_summary.md").write_text(markdown(summary))
+    pad, pad_problems = padding_effect(runs, latest, vocab)
+    if pad:
+        write_csv(pad, tables / "padding_effect.csv")
+    (tables / "phase7_summary.md").write_text(markdown(summary) + ("\n" + padding_markdown(pad) if pad else ""))
     nts, problems = not_to_scale(runs, latest, cfg, vocab)
     write_csv(nts, tables / "not_to_scale_eval.csv")
     pl = pseudo_label_table(runs, latest, vocab)
     if pl:
         write_csv(pl, tables / "selftrain_pseudo_labels.csv")
     pts = scaling_figure(rows, figures / "scaling.png")
+    if any(r["experiment"] in SCALING_SIZES_SQUARE for r in rows):
+        scaling_figure(rows, figures / "scaling_square.png", SCALING_SIZES_SQUARE, " (square padding)")
     print(markdown(summary))
+    print(padding_markdown(pad))
     print("7.9 scaling points:", ", ".join(f"{p['unit']}@{p['synthetic']}: {p['mean']} ({p['n_seeds']} seeds)" for p in pts))
     missing = [e for e in EXPERIMENTS if not any(r["experiment"] == e for r in rows)]
     print("experiments without results:", ", ".join(missing) or "none")
-    for p in problems:
+    for p in problems + pad_problems:
         print("WARNING:", p)
     print(f"-> {tables}/phase7_*.{{csv,md}}, not_to_scale_eval.csv"
-          + (", selftrain_pseudo_labels.csv" if pl else "") + f", {figures}/scaling.png")
+          + (", selftrain_pseudo_labels.csv" if pl else "") + (", padding_effect.csv" if pad else "")
+          + f", {figures}/scaling.png")
     return 0
 
 
