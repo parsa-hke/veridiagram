@@ -1,7 +1,7 @@
 {
  "_export": {
   "schema": 1,
-  "commit": "aa15bb1"
+  "commit": "02c3cd1"
  },
  "relations": [
   "parallel",
@@ -35,6 +35,9 @@
   "ablation_noaug_s0",
   "ablation_nooverlay_s0",
   "ablation_res224_s0",
+  "finetune_colab_s0",
+  "finetune_colab_s1",
+  "finetune_colab_s2",
   "finetune_s0",
   "finetune_s1",
   "finetune_s2",
@@ -54,7 +57,33 @@
   "selftrain_consistency_s0",
   "selftrain_consistency_s1",
   "selftrain_consistency_s2",
-  "selftrain_control_s0"
+  "selftrain_control_s0",
+  "selftrain_control_s1",
+  "selftrain_control_s2",
+  "sq_ablation_dinov2_s0",
+  "sq_ablation_nooverlay_s0",
+  "sq_finetune_colab_s0",
+  "sq_finetune_colab_s1",
+  "sq_finetune_colab_s2",
+  "sq_finetune_synth10k_s0",
+  "sq_finetune_synth10k_s1",
+  "sq_finetune_synth10k_s2",
+  "sq_probe_s0",
+  "sq_probe_s1",
+  "sq_probe_s2",
+  "sq_scaling_1k_s0",
+  "sq_scaling_50k_s0",
+  "sq_scaling_50k_s1",
+  "sq_scaling_50k_s2",
+  "sq_selftrain_confidence_s0",
+  "sq_selftrain_confidence_s1",
+  "sq_selftrain_confidence_s2",
+  "sq_selftrain_consistency_s0",
+  "sq_selftrain_consistency_s1",
+  "sq_selftrain_consistency_s2",
+  "sq_selftrain_control_s0",
+  "sq_selftrain_control_s1",
+  "sq_selftrain_control_s2"
  ],
  "experiments": {
   "probe": {
@@ -4334,83 +4363,1295 @@
   "selftrain_control": {
    "plan": "7.11 control: no pseudo-labels",
    "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.9219,
+      "sd": 0.0063,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.929,
+       0.9195,
+       0.9172
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9626,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.967,
+        "sd": 0.0035,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7507,
+        "sd": 0.0055,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9971,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8852,
+        "sd": 0.0294,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9688,
+        "sd": 0.0108,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6464,
+      "sd": 0.0011,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.6456,
+       0.6477,
+       0.646
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5149,
+        "sd": 0.0055,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7246,
+        "sd": 0.0068,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0524,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9971,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9432,
+        "sd": 0.0108,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.9033,
+      "sd": 0.005,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9087,
+       0.8988,
+       0.9024
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9706,
+        "sd": 0.0065,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9381,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7308,
+        "sd": 0.0086,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.999,
+        "sd": 0.0017,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8355,
+        "sd": 0.0339,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9458,
+        "sd": 0.014,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5611,
+      "sd": 0.0032,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5577,
+       0.5616,
+       0.5641
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1638,
+        "sd": 0.0031,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.629,
+        "sd": 0.0089,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0759,
+        "sd": 0.0018,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.999,
+        "sd": 0.0017,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9378,
+        "sd": 0.0147,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.9143,
+      "sd": 0.0049,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9191,
+       0.9094,
+       0.9144
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9799,
+        "sd": 0.0074,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9278,
+        "sd": 0.007,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7338,
+        "sd": 0.009,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9958,
+        "sd": 0.0018,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8911,
+        "sd": 0.022,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9576,
+        "sd": 0.0094,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5677,
+      "sd": 0.0014,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5669,
+       0.5669,
+       0.5694
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2163,
+        "sd": 0.0045,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5414,
+        "sd": 0.0068,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.1443,
+        "sd": 0.0041,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9958,
+        "sd": 0.0018,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9409,
+        "sd": 0.0104,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.7344,
+      "sd": 0.0072,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.7409,
+       0.7356,
+       0.7267
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.841,
+        "sd": 0.0285,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7801,
+        "sd": 0.0013,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6753,
+        "sd": 0.0046,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.8862,
+        "sd": 0.0183,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7115,
+        "sd": 0.0435,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.5123,
+        "sd": 0.0326,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.4254,
+      "sd": 0.009,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.4181,
+       0.4355,
+       0.4227
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.535,
+        "sd": 0.0363,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.3865,
+        "sd": 0.0272,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0904,
+        "sd": 0.0027,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.5903,
+        "sd": 0.0097,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.5955,
+        "sd": 0.0397,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.3551,
+        "sd": 0.0553,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "finetune_colab": {
+   "plan": "7.2 fine-tune, retrained on Colab (same config)",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.8778,
+      "sd": 0.0071,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8703,
+       0.8845,
+       0.8785
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9649,
+        "sd": 0.0043,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9449,
+        "sd": 0.0039,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.657,
+        "sd": 0.0044,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9895,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7938,
+        "sd": 0.0194,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9166,
+        "sd": 0.0265,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6302,
+      "sd": 0.004,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.6256,
+       0.6325,
+       0.6325
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5155,
+        "sd": 0.0042,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7101,
+        "sd": 0.0055,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.045,
+        "sd": 0.0015,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9895,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.891,
+        "sd": 0.0264,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.8676,
+      "sd": 0.0072,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8594,
+       0.8703,
+       0.8731
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9655,
+        "sd": 0.0019,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9181,
+        "sd": 0.0041,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6448,
+        "sd": 0.003,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9965,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7867,
+        "sd": 0.017,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.894,
+        "sd": 0.0259,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.543,
+      "sd": 0.0067,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5355,
+       0.5448,
+       0.5486
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1614,
+        "sd": 0.0025,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6115,
+        "sd": 0.0055,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0651,
+        "sd": 0.0006,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9965,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8803,
+        "sd": 0.031,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.8692,
+      "sd": 0.008,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8612,
+       0.8694,
+       0.8771
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9761,
+        "sd": 0.0014,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.8982,
+        "sd": 0.0054,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6441,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9951,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8217,
+        "sd": 0.0098,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8801,
+        "sd": 0.0339,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5466,
+      "sd": 0.0089,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5369,
+       0.5486,
+       0.5543
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2148,
+        "sd": 0.003,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5285,
+        "sd": 0.0095,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.1193,
+        "sd": 0.0005,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9951,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8752,
+        "sd": 0.0404,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.6295,
+      "sd": 0.0175,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.6116,
+       0.6465,
+       0.6304
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.7851,
+        "sd": 0.0269,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6427,
+        "sd": 0.0122,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.4945,
+        "sd": 0.0059,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9294,
+        "sd": 0.0131,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.601,
+        "sd": 0.07,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.3244,
+        "sd": 0.0262,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.3824,
+      "sd": 0.0178,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.3681,
+       0.4024,
+       0.3767
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5143,
+        "sd": 0.025,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.2874,
+        "sd": 0.0133,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0561,
+        "sd": 0.005,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.6648,
+        "sd": 0.014,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.5026,
+        "sd": 0.0527,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.2692,
+        "sd": 0.0368,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "sq_probe": {
+   "plan": "7.1 linear probe, square padding",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.5882,
+      "sd": 0.0038,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.587,
+       0.5925,
+       0.5852
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5525,
+        "sd": 0.0139,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5602,
+        "sd": 0.0148,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.3908,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9295,
+        "sd": 0.0018,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.507,
+        "sd": 0.0274,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.5894,
+        "sd": 0.0551,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.469,
+      "sd": 0.0072,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.4631,
+       0.477,
+       0.4668
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.3546,
+        "sd": 0.039,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.4491,
+        "sd": 0.0162,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0338,
+        "sd": 0.0023,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9295,
+        "sd": 0.0018,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.5779,
+        "sd": 0.0563,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.5768,
+      "sd": 0.0124,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5736,
+       0.5904,
+       0.5663
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5357,
+        "sd": 0.0144,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5764,
+        "sd": 0.0132,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.3917,
+        "sd": 0.0086,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9173,
+        "sd": 0.006,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.5164,
+        "sd": 0.0084,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.5232,
+        "sd": 0.0493,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.3971,
+      "sd": 0.0124,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.3897,
+       0.4114,
+       0.3902
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1065,
+        "sd": 0.0133,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.3991,
+        "sd": 0.0142,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.052,
+        "sd": 0.0079,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9173,
+        "sd": 0.006,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.5105,
+        "sd": 0.0498,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.517,
+      "sd": 0.0037,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.521,
+       0.5162,
+       0.5137
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.3913,
+        "sd": 0.0073,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5043,
+        "sd": 0.002,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.3827,
+        "sd": 0.0034,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.8768,
+        "sd": 0.0054,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.4732,
+        "sd": 0.0421,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.4736,
+        "sd": 0.0488,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.3551,
+      "sd": 0.0098,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.3551,
+       0.3649,
+       0.3454
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.0668,
+        "sd": 0.0025,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.2913,
+        "sd": 0.0021,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0666,
+        "sd": 0.0038,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.8768,
+        "sd": 0.0054,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.474,
+        "sd": 0.05,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.1829,
+      "sd": 0.0103,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.1822,
+       0.1935,
+       0.1729
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2076,
+        "sd": 0.0039,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.1344,
+        "sd": 0.0041,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.199,
+        "sd": 0.0092,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.3986,
+        "sd": 0.0152,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0111,
+        "sd": 0.0192,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.1465,
+        "sd": 0.0335,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.1156,
+      "sd": 0.0109,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.1101,
+       0.1282,
+       0.1085
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1215,
+        "sd": 0.0039,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.08,
+        "sd": 0.0041,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.02,
+        "sd": 0.0004,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.3444,
+        "sd": 0.0084,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0133,
+        "sd": 0.0231,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.1143,
+        "sd": 0.0431,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "sq_scaling_1k": {
+   "plan": "7.9 Part A: 1k synthetic, square padding",
+   "seeds": [
     0
    ],
    "units": {
     "val": {
      "geometric": {
-      "mean": 0.929,
+      "mean": 0.8734,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.929
+       0.8734
       ],
       "n_queries": 6227,
       "per_relation": {
        "parallel": {
-        "mean": 0.9635,
+        "mean": 0.9699,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.963,
+        "mean": 0.939,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.757,
+        "mean": 0.6696,
         "sd": null,
         "n_seeds": 1
        },
        "on_circle": {
-        "mean": 1.0,
+        "mean": 0.9943,
         "sd": null,
         "n_seeds": 1
        },
        "tangent": {
-        "mean": 0.9189,
+        "mean": 0.764,
         "sd": null,
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.9716,
+        "mean": 0.9039,
         "sd": null,
         "n_seeds": 1
        }
       }
      },
      "asserted": {
-      "mean": 0.6456,
+      "mean": 0.6302,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.6456
+       0.6302
       ],
       "n_queries": 6227,
       "per_relation": {
        "parallel": {
-        "mean": 0.5118,
+        "mean": 0.5215,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.7175,
+        "mean": 0.7053,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.0528,
+        "mean": 0.0474,
         "sd": null,
         "n_seeds": 1
        },
        "on_circle": {
-        "mean": 1.0,
+        "mean": 0.9943,
         "sd": null,
         "n_seeds": 1
        },
@@ -4420,7 +5661,7 @@
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.9459,
+        "mean": 0.8824,
         "sd": null,
         "n_seeds": 1
        }
@@ -4429,29 +5670,29 @@
     },
     "geometry3k_test": {
      "geometric": {
-      "mean": 0.9087,
+      "mean": 0.8792,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.9087
+       0.8792
       ],
       "n_queries": 11319,
       "per_relation": {
        "parallel": {
-        "mean": 0.9744,
+        "mean": 0.9725,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.9337,
+        "mean": 0.9121,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.74,
+        "mean": 0.6865,
         "sd": null,
         "n_seeds": 1
        },
@@ -4461,41 +5702,41 @@
         "n_seeds": 1
        },
        "tangent": {
-        "mean": 0.8738,
+        "mean": 0.8089,
         "sd": null,
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.9305,
+        "mean": 0.8951,
         "sd": null,
         "n_seeds": 1
        }
       }
      },
      "asserted": {
-      "mean": 0.5577,
+      "mean": 0.5402,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.5577
+       0.5402
       ],
       "n_queries": 11319,
       "per_relation": {
        "parallel": {
-        "mean": 0.1649,
+        "mean": 0.1637,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.6233,
+        "mean": 0.6009,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.078,
+        "mean": 0.0663,
         "sd": null,
         "n_seeds": 1
        },
@@ -4510,7 +5751,7 @@
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.9221,
+        "mean": 0.87,
         "sd": null,
         "n_seeds": 1
        }
@@ -4519,29 +5760,29 @@
     },
     "pgdp5k_heldout": {
      "geometric": {
-      "mean": 0.9191,
+      "mean": 0.8899,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.9191
+       0.8899
       ],
       "n_queries": 25272,
       "per_relation": {
        "parallel": {
-        "mean": 0.9839,
+        "mean": 0.9827,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.9286,
+        "mean": 0.8949,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.7421,
+        "mean": 0.6873,
         "sd": null,
         "n_seeds": 1
        },
@@ -4551,41 +5792,41 @@
         "n_seeds": 1
        },
        "tangent": {
-        "mean": 0.9163,
+        "mean": 0.8653,
         "sd": null,
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.9471,
+        "mean": 0.9126,
         "sd": null,
         "n_seeds": 1
        }
       }
      },
      "asserted": {
-      "mean": 0.5669,
+      "mean": 0.5516,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.5669
+       0.5516
       ],
       "n_queries": 25272,
       "per_relation": {
        "parallel": {
-        "mean": 0.2192,
+        "mean": 0.2184,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.5393,
+        "mean": 0.5138,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.149,
+        "mean": 0.1287,
         "sd": null,
         "n_seeds": 1
        },
@@ -4600,7 +5841,7 @@
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.9303,
+        "mean": 0.9002,
         "sd": null,
         "n_seeds": 1
        }
@@ -4609,88 +5850,88 @@
     },
     "synth_extrap": {
      "geometric": {
-      "mean": 0.7409,
+      "mean": 0.718,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.7409
+       0.718
       ],
       "n_queries": 10000,
       "per_relation": {
        "parallel": {
-        "mean": 0.8529,
+        "mean": 0.861,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.7795,
+        "mean": 0.7213,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.6792,
+        "mean": 0.5803,
         "sd": null,
         "n_seeds": 1
        },
        "on_circle": {
-        "mean": 0.902,
+        "mean": 0.9252,
         "sd": null,
         "n_seeds": 1
        },
        "tangent": {
-        "mean": 0.7536,
+        "mean": 0.8209,
         "sd": null,
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.478,
+        "mean": 0.3993,
         "sd": null,
         "n_seeds": 1
        }
       }
      },
      "asserted": {
-      "mean": 0.4181,
+      "mean": 0.4327,
       "sd": null,
       "n_seeds": 1,
       "seeds": [
        0
       ],
       "values": [
-       0.4181
+       0.4327
       ],
       "n_queries": 10000,
       "per_relation": {
        "parallel": {
-        "mean": 0.5325,
+        "mean": 0.5843,
         "sd": null,
         "n_seeds": 1
        },
        "perpendicular": {
-        "mean": 0.3587,
+        "mean": 0.4024,
         "sd": null,
         "n_seeds": 1
        },
        "equal_length": {
-        "mean": 0.0935,
+        "mean": 0.0747,
         "sd": null,
         "n_seeds": 1
        },
        "on_circle": {
-        "mean": 0.6,
+        "mean": 0.6316,
         "sd": null,
         "n_seeds": 1
        },
        "tangent": {
-        "mean": 0.625,
+        "mean": 0.6935,
         "sd": null,
         "n_seeds": 1
        },
        "collinear": {
-        "mean": 0.2991,
+        "mean": 0.2099,
         "sd": null,
         "n_seeds": 1
        }
@@ -4700,6 +5941,3170 @@
    },
    "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
    "n_seeds": 1
+  },
+  "sq_finetune_synth10k": {
+   "plan": "7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.8802,
+      "sd": 0.0077,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8732,
+       0.8788,
+       0.8885
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9631,
+        "sd": 0.0052,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9443,
+        "sd": 0.0022,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6993,
+        "sd": 0.0066,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9952,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7804,
+        "sd": 0.0407,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8987,
+        "sd": 0.0077,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6282,
+      "sd": 0.0028,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.631,
+       0.6255,
+       0.6282
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5168,
+        "sd": 0.0023,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7056,
+        "sd": 0.0067,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0491,
+        "sd": 0.0021,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9952,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8745,
+        "sd": 0.0101,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.8788,
+      "sd": 0.0076,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8721,
+       0.8773,
+       0.887
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9697,
+        "sd": 0.0049,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.918,
+        "sd": 0.0054,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7027,
+        "sd": 0.0059,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9995,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7876,
+        "sd": 0.0393,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8952,
+        "sd": 0.007,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5399,
+      "sd": 0.0033,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5416,
+       0.5361,
+       0.542
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1623,
+        "sd": 0.0014,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6011,
+        "sd": 0.0058,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0626,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9995,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8739,
+        "sd": 0.0084,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.8916,
+      "sd": 0.0039,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8888,
+       0.89,
+       0.896
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9826,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.903,
+        "sd": 0.0049,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7014,
+        "sd": 0.0035,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9972,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8596,
+        "sd": 0.0231,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9056,
+        "sd": 0.0102,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5474,
+      "sd": 0.0033,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5505,
+       0.5439,
+       0.5478
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.216,
+        "sd": 0.0004,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5092,
+        "sd": 0.003,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.1249,
+        "sd": 0.0022,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9972,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8899,
+        "sd": 0.0146,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.7129,
+      "sd": 0.0095,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.7023,
+       0.7207,
+       0.7158
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.8265,
+        "sd": 0.0094,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7514,
+        "sd": 0.0109,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.61,
+        "sd": 0.0012,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.927,
+        "sd": 0.007,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.816,
+        "sd": 0.0244,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.3467,
+        "sd": 0.0309,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.4026,
+      "sd": 0.0057,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.399,
+       0.4092,
+       0.3996
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5059,
+        "sd": 0.0141,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.3473,
+        "sd": 0.0014,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0771,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.6373,
+        "sd": 0.0113,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.6859,
+        "sd": 0.0066,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.1621,
+        "sd": 0.0201,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "sq_scaling_50k": {
+   "plan": "7.9 Part A: 50k synthetic, square padding",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.8803,
+      "sd": 0.0084,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8816,
+       0.8713,
+       0.888
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9599,
+        "sd": 0.0024,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9349,
+        "sd": 0.0015,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6831,
+        "sd": 0.0156,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9943,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7986,
+        "sd": 0.0181,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.911,
+        "sd": 0.0261,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6286,
+      "sd": 0.0082,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.635,
+       0.6193,
+       0.6315
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5207,
+        "sd": 0.0045,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6975,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.045,
+        "sd": 0.0045,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9943,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8853,
+        "sd": 0.0261,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.8768,
+      "sd": 0.0085,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8823,
+       0.867,
+       0.8812
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9697,
+        "sd": 0.0087,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9137,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6965,
+        "sd": 0.0099,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.998,
+        "sd": 0.0034,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.81,
+        "sd": 0.0037,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8733,
+        "sd": 0.0389,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5334,
+      "sd": 0.01,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.54,
+       0.5219,
+       0.5383
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1625,
+        "sd": 0.002,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5943,
+        "sd": 0.0021,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0608,
+        "sd": 0.0014,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.998,
+        "sd": 0.0034,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8513,
+        "sd": 0.0435,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.8893,
+      "sd": 0.0078,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.894,
+       0.8803,
+       0.8937
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9836,
+        "sd": 0.0008,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.8961,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6899,
+        "sd": 0.0063,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9937,
+        "sd": 0.0056,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8826,
+        "sd": 0.0047,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8901,
+        "sd": 0.0334,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5414,
+      "sd": 0.009,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5463,
+       0.5311,
+       0.5469
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2162,
+        "sd": 0.0008,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5038,
+        "sd": 0.0024,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.12,
+        "sd": 0.0037,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9937,
+        "sd": 0.0056,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8735,
+        "sd": 0.0357,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.707,
+      "sd": 0.0078,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.7028,
+       0.716,
+       0.7021
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.8308,
+        "sd": 0.0203,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7432,
+        "sd": 0.0122,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.5866,
+        "sd": 0.002,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9299,
+        "sd": 0.0139,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7826,
+        "sd": 0.012,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.3686,
+        "sd": 0.0246,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.4016,
+      "sd": 0.0095,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.4002,
+       0.4117,
+       0.3929
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5161,
+        "sd": 0.0271,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.3448,
+        "sd": 0.0205,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0725,
+        "sd": 0.0014,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.632,
+        "sd": 0.0189,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.6617,
+        "sd": 0.0133,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.1824,
+        "sd": 0.0202,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "sq_ablation_dinov2": {
+   "plan": "7.5 DINOv2-L backbone, square padding",
+   "seeds": [
+    0
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.9401,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.9401
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9764,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.974,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.8139,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 1.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.9296,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.9467,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6494,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.6494
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5411,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.7223,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.0626,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 1.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.9211,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.9302,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.9302
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.987,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.9502,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.8418,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 1.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.8792,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.9227,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5519,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.5519
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1688,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.6199,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.0843,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 1.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.8863,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.9397,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.9397
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9919,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.9514,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.8172,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.9958,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.9345,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.9477,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5677,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.5677
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2204,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.5363,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.1553,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.9958,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.931,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.754,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.754
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.8437,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.7972,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.683,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.8947,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.7481,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.5573,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.4414,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.4414
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5413,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.3592,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.0937,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.5882,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.6281,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.4378,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov2-large",
+   "n_seeds": 1
+  },
+  "sq_ablation_nooverlay": {
+   "plan": "7.8 no overlay (query as tokens), square padding",
+   "seeds": [
+    0
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.4581,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.4581
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.3333,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.4801,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.3213,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.8693,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.5116,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.2331,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.3397,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.3397
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.201,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.3793,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.0148,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.8693,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.2342,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.426,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.426
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.3262,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.4713,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.3447,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.8416,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.3789,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.1935,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.2807,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.2807
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.0264,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.3172,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.0372,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.8416,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.1812,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.4297,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.4297
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.3506,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.4306,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.3513,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.7928,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.4787,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.1742,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.2614,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.2614
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.0411,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.25,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.0601,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.7928,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.163,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.137,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.137
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.0877,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.0544,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.202,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.2383,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.1873,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.0522,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.072,
+      "sd": null,
+      "n_seeds": 1,
+      "seeds": [
+       0
+      ],
+      "values": [
+       0.072
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.0408,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "perpendicular": {
+        "mean": 0.0468,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "equal_length": {
+        "mean": 0.0146,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "on_circle": {
+        "mean": 0.1319,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "tangent": {
+        "mean": 0.179,
+        "sd": null,
+        "n_seeds": 1
+       },
+       "collinear": {
+        "mean": 0.019,
+        "sd": null,
+        "n_seeds": 1
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 1
+  },
+  "sq_selftrain_confidence": {
+   "plan": "7.11 (a) confidence filter, square padding",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.9094,
+      "sd": 0.0068,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9159,
+       0.9099,
+       0.9023
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9614,
+        "sd": 0.0081,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9514,
+        "sd": 0.0007,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7468,
+        "sd": 0.0136,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9971,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8712,
+        "sd": 0.0316,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9283,
+        "sd": 0.0068,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.637,
+      "sd": 0.0014,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.6386,
+       0.6366,
+       0.6359
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5228,
+        "sd": 0.0015,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7108,
+        "sd": 0.0035,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0518,
+        "sd": 0.0023,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9971,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9026,
+        "sd": 0.0068,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.8979,
+      "sd": 0.0015,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8988,
+       0.8962,
+       0.8987
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9764,
+        "sd": 0.0034,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9261,
+        "sd": 0.0064,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7587,
+        "sd": 0.0075,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9985,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.827,
+        "sd": 0.0156,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9005,
+        "sd": 0.0083,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.545,
+      "sd": 0.0034,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5426,
+       0.5435,
+       0.5488
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1641,
+        "sd": 0.0025,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6077,
+        "sd": 0.0074,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0738,
+        "sd": 0.0047,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9985,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8808,
+        "sd": 0.0078,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.9064,
+      "sd": 0.0027,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.909,
+       0.9065,
+       0.9036
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9814,
+        "sd": 0.0021,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9117,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7353,
+        "sd": 0.0133,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9972,
+        "sd": 0.0006,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8936,
+        "sd": 0.0165,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9189,
+        "sd": 0.008,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5529,
+      "sd": 0.0023,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5555,
+       0.5514,
+       0.5518
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2157,
+        "sd": 0.0014,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5156,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.1327,
+        "sd": 0.0053,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9972,
+        "sd": 0.0006,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9032,
+        "sd": 0.0112,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.7373,
+      "sd": 0.0092,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.7271,
+       0.7398,
+       0.7449
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.8419,
+        "sd": 0.0088,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7819,
+        "sd": 0.0086,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6479,
+        "sd": 0.0272,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9175,
+        "sd": 0.0493,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7514,
+        "sd": 0.0174,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.483,
+        "sd": 0.0404,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.423,
+      "sd": 0.0077,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.4143,
+       0.4257,
+       0.4289
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5387,
+        "sd": 0.0237,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.3825,
+        "sd": 0.0267,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0835,
+        "sd": 0.0062,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.6179,
+        "sd": 0.0474,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.619,
+        "sd": 0.0144,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.2963,
+        "sd": 0.0472,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "sq_selftrain_consistency": {
+   "plan": "7.11 (b) confidence + consistency filter, square padding",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.9148,
+      "sd": 0.0042,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9114,
+       0.9195,
+       0.9134
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9658,
+        "sd": 0.0093,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9534,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7512,
+        "sd": 0.0238,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9962,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8872,
+        "sd": 0.0445,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9349,
+        "sd": 0.0142,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6389,
+      "sd": 0.0025,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.6388,
+       0.6415,
+       0.6365
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5236,
+        "sd": 0.0024,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7099,
+        "sd": 0.0025,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0558,
+        "sd": 0.0022,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9962,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9092,
+        "sd": 0.0143,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.9068,
+      "sd": 0.0062,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9004,
+       0.9073,
+       0.9127
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9767,
+        "sd": 0.0049,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9336,
+        "sd": 0.0056,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.765,
+        "sd": 0.0117,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.999,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8582,
+        "sd": 0.0535,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9083,
+        "sd": 0.0111,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5477,
+      "sd": 0.0036,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5467,
+       0.5517,
+       0.5446
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.165,
+        "sd": 0.0027,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6121,
+        "sd": 0.0028,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0758,
+        "sd": 0.0024,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.999,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8864,
+        "sd": 0.0158,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.9124,
+      "sd": 0.0047,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9084,
+       0.9176,
+       0.9111
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9836,
+        "sd": 0.0012,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9203,
+        "sd": 0.0059,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7481,
+        "sd": 0.0126,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9965,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.9047,
+        "sd": 0.0252,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.921,
+        "sd": 0.0125,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5559,
+      "sd": 0.0022,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5563,
+       0.5579,
+       0.5535
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2172,
+        "sd": 0.0008,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5225,
+        "sd": 0.0007,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.1376,
+        "sd": 0.0046,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9965,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9057,
+        "sd": 0.0135,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.7236,
+      "sd": 0.0097,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.7256,
+       0.7321,
+       0.7131
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.848,
+        "sd": 0.0071,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7701,
+        "sd": 0.0202,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6449,
+        "sd": 0.016,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.8907,
+        "sd": 0.056,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7474,
+        "sd": 0.0667,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.4403,
+        "sd": 0.0484,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.4103,
+      "sd": 0.0078,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.4109,
+       0.4177,
+       0.4022
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5476,
+        "sd": 0.0069,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.359,
+        "sd": 0.0203,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0819,
+        "sd": 0.0038,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.591,
+        "sd": 0.0475,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.641,
+        "sd": 0.0507,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.2411,
+        "sd": 0.0349,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "sq_selftrain_control": {
+   "plan": "7.11 control: no pseudo-labels, square padding",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.9272,
+      "sd": 0.0074,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9356,
+       0.9221,
+       0.9238
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9679,
+        "sd": 0.0082,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9667,
+        "sd": 0.0048,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7878,
+        "sd": 0.0055,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9971,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8815,
+        "sd": 0.0324,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9618,
+        "sd": 0.0078,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6479,
+      "sd": 0.0005,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.6485,
+       0.6477,
+       0.6476
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5198,
+        "sd": 0.0061,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.727,
+        "sd": 0.0073,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0597,
+        "sd": 0.0027,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9971,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9362,
+        "sd": 0.0078,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.9155,
+      "sd": 0.0053,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.9216,
+       0.9122,
+       0.9126
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9756,
+        "sd": 0.0043,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9432,
+        "sd": 0.0077,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.8017,
+        "sd": 0.0077,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9985,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8362,
+        "sd": 0.0375,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9375,
+        "sd": 0.0109,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5611,
+      "sd": 0.0025,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5583,
+       0.563,
+       0.5621
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1659,
+        "sd": 0.003,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6314,
+        "sd": 0.009,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0796,
+        "sd": 0.0019,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9985,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9302,
+        "sd": 0.0162,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.9239,
+      "sd": 0.0032,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.927,
+       0.9207,
+       0.9239
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9817,
+        "sd": 0.0086,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9327,
+        "sd": 0.0049,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.7865,
+        "sd": 0.0061,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9961,
+        "sd": 0.0012,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8941,
+        "sd": 0.0183,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9521,
+        "sd": 0.0086,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5693,
+      "sd": 0.0015,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5681,
+       0.5689,
+       0.571
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2173,
+        "sd": 0.0049,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.544,
+        "sd": 0.0074,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.153,
+        "sd": 0.0051,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9961,
+        "sd": 0.0012,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9362,
+        "sd": 0.0103,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.7344,
+      "sd": 0.0072,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.7409,
+       0.7356,
+       0.7267
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.841,
+        "sd": 0.0285,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7801,
+        "sd": 0.0013,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6753,
+        "sd": 0.0046,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.8862,
+        "sd": 0.0183,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7115,
+        "sd": 0.0435,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.5123,
+        "sd": 0.0326,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.4254,
+      "sd": 0.009,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.4181,
+       0.4355,
+       0.4227
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.535,
+        "sd": 0.0363,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.3865,
+        "sd": 0.0272,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0904,
+        "sd": 0.0027,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.5903,
+        "sd": 0.0097,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.5955,
+        "sd": 0.0397,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.3551,
+        "sd": 0.0553,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
+  },
+  "sq_finetune_colab": {
+   "plan": "7.2 fine-tune, retrained on Colab (same config), square padding",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "units": {
+    "val": {
+     "geometric": {
+      "mean": 0.8821,
+      "sd": 0.004,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8821,
+       0.8861,
+       0.8782
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.965,
+        "sd": 0.0029,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9445,
+        "sd": 0.0058,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.672,
+        "sd": 0.0056,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9905,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7998,
+        "sd": 0.0216,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.9208,
+        "sd": 0.0214,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.6336,
+      "sd": 0.0034,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.63,
+       0.6367,
+       0.634
+      ],
+      "n_queries": 6227,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5218,
+        "sd": 0.0026,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.7106,
+        "sd": 0.0058,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0483,
+        "sd": 0.003,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9905,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8966,
+        "sd": 0.0232,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "geometry3k_test": {
+     "geometric": {
+      "mean": 0.8723,
+      "sd": 0.0077,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.8635,
+       0.8765,
+       0.877
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9678,
+        "sd": 0.0037,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.9204,
+        "sd": 0.0024,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6765,
+        "sd": 0.0042,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9965,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.7908,
+        "sd": 0.0181,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.882,
+        "sd": 0.0221,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5426,
+      "sd": 0.0053,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5366,
+       0.5465,
+       0.5446
+      ],
+      "n_queries": 11319,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.1635,
+        "sd": 0.0027,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6142,
+        "sd": 0.0061,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0684,
+        "sd": 0.0025,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9965,
+        "sd": 0.0009,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8704,
+        "sd": 0.0255,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "pgdp5k_heldout": {
+     "geometric": {
+      "mean": 0.874,
+      "sd": 0.0076,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.866,
+       0.8749,
+       0.8811
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.9776,
+        "sd": 0.0018,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.8988,
+        "sd": 0.007,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.6723,
+        "sd": 0.0062,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9951,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.8199,
+        "sd": 0.0096,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8805,
+        "sd": 0.0319,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.5484,
+      "sd": 0.0082,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.5392,
+       0.5512,
+       0.5548
+      ],
+      "n_queries": 25272,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.2163,
+        "sd": 0.003,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.5292,
+        "sd": 0.0111,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.1254,
+        "sd": 0.0012,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9951,
+        "sd": 0.0016,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.8759,
+        "sd": 0.0364,
+        "n_seeds": 3
+       }
+      }
+     }
+    },
+    "synth_extrap": {
+     "geometric": {
+      "mean": 0.6295,
+      "sd": 0.0175,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.6116,
+       0.6465,
+       0.6304
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.7851,
+        "sd": 0.0269,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.6427,
+        "sd": 0.0122,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.4945,
+        "sd": 0.0059,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.9294,
+        "sd": 0.0131,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.601,
+        "sd": 0.07,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.3244,
+        "sd": 0.0262,
+        "n_seeds": 3
+       }
+      }
+     },
+     "asserted": {
+      "mean": 0.3824,
+      "sd": 0.0178,
+      "n_seeds": 3,
+      "seeds": [
+       0,
+       1,
+       2
+      ],
+      "values": [
+       0.3681,
+       0.4024,
+       0.3767
+      ],
+      "n_queries": 10000,
+      "per_relation": {
+       "parallel": {
+        "mean": 0.5143,
+        "sd": 0.025,
+        "n_seeds": 3
+       },
+       "perpendicular": {
+        "mean": 0.2874,
+        "sd": 0.0133,
+        "n_seeds": 3
+       },
+       "equal_length": {
+        "mean": 0.0561,
+        "sd": 0.005,
+        "n_seeds": 3
+       },
+       "on_circle": {
+        "mean": 0.6648,
+        "sd": 0.014,
+        "n_seeds": 3
+       },
+       "tangent": {
+        "mean": 0.5026,
+        "sd": 0.0527,
+        "n_seeds": 3
+       },
+       "collinear": {
+        "mean": 0.2692,
+        "sd": 0.0368,
+        "n_seeds": 3
+       }
+      }
+     }
+    }
+   },
+   "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+   "n_seeds": 3
   }
  },
  "not_to_scale": {
@@ -4763,6 +9168,22 @@
     "mean": 0.5961,
     "sd": null,
     "n_seeds": 1,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "finetune_colab": {
+   "geometric": {
+    "mean": 0.8599,
+    "sd": 0.0172,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5884,
+    "sd": 0.0057,
+    "n_seeds": 3,
     "n_queries": 353,
     "n_diagrams": 7
    }
@@ -4881,16 +9302,176 @@
   },
   "selftrain_control": {
    "geometric": {
-    "mean": 0.8922,
+    "mean": 0.8933,
+    "sd": 0.0067,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5842,
+    "sd": 0.0148,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_ablation_dinov2": {
+   "geometric": {
+    "mean": 0.9238,
     "sd": null,
     "n_seeds": 1,
     "n_queries": 353,
     "n_diagrams": 7
    },
    "asserted": {
-    "mean": 0.598,
+    "mean": 0.5618,
     "sd": null,
     "n_seeds": 1,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_ablation_nooverlay": {
+   "geometric": {
+    "mean": 0.1033,
+    "sd": null,
+    "n_seeds": 1,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.0784,
+    "sd": null,
+    "n_seeds": 1,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_finetune_colab": {
+   "geometric": {
+    "mean": 0.8654,
+    "sd": 0.0205,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5905,
+    "sd": 0.0061,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_finetune_synth10k": {
+   "geometric": {
+    "mean": 0.882,
+    "sd": 0.0047,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5808,
+    "sd": 0.0077,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_probe": {
+   "geometric": {
+    "mean": 0.4812,
+    "sd": 0.0603,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.341,
+    "sd": 0.0526,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_scaling_1k": {
+   "geometric": {
+    "mean": 0.8588,
+    "sd": null,
+    "n_seeds": 1,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5867,
+    "sd": null,
+    "n_seeds": 1,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_scaling_50k": {
+   "geometric": {
+    "mean": 0.8732,
+    "sd": 0.005,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.584,
+    "sd": 0.004,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_selftrain_confidence": {
+   "geometric": {
+    "mean": 0.8862,
+    "sd": 0.0057,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5887,
+    "sd": 0.006,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_selftrain_consistency": {
+   "geometric": {
+    "mean": 0.8937,
+    "sd": 0.007,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5955,
+    "sd": 0.0011,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   }
+  },
+  "sq_selftrain_control": {
+   "geometric": {
+    "mean": 0.9107,
+    "sd": 0.0025,
+    "n_seeds": 3,
+    "n_queries": 353,
+    "n_diagrams": 7
+   },
+   "asserted": {
+    "mean": 0.5969,
+    "sd": 0.0061,
+    "n_seeds": 3,
     "n_queries": 353,
     "n_diagrams": 7
    }

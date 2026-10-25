@@ -975,5 +975,44 @@ Done
   feature paths, the padding table, the queue; 1.6 s), `test_eval_square_gate`. 203 passed, 1 skipped.
 
 Waiting for
-- The Colab batch (user), then the import, `python -m analysis.phase7`, `python -m web.export`, plan
-  7.11 with three control seeds.
+- ~~The Colab batch (user), then the import, `python -m analysis.phase7`, `python -m web.export`, plan
+  7.11 with three control seeds.~~ Done 2026-10-25, next entry.
+
+## 2026-10-25 — Phase 7 closed: last Colab batch imported (29 runs), square-padded numbers, 7.2 reproduced
+
+Done
+- The final Colab batch (`queue_phase7_final.yaml`, A100, 29 runs, all `ok`, ~6.5 h) imported from
+  `geo_results_colab_final.tar.gz` after checks: status ok, both epochs in every fine-tune's history,
+  the expected backbone (DINOv2-L only for its ablation), exact prediction counts (11,319 / 25,272 /
+  10,000 / 6,227 per unit), and every `sq_*` prediction file aligned query-for-query with its
+  original. runs/log.csv 27 -> 56 rows (53 real runs + smokes). `python -m analysis.phase7` and
+  `python -m web.export` regenerated the tables, `scaling.png`, `scaling_square.png`,
+  `padding_effect.csv` and the website data. Plan 7.2, 7.11 and the §0.2 #10 note updated.
+
+Found (geometric macro-F1, geometry3k_test / pgdp5k_heldout / synth_extrap)
+- **7.2 reproduces on Colab**: `finetune_colab` 0.868 ± 0.007 / 0.869 ± 0.008 / 0.629 ± 0.018
+  against the lab's 0.867 ± 0.007 / 0.869 ± 0.008 / 0.631 ± 0.017 (same config, other GPU).
+- **Padding effect** (`padding_effect.csv`): square padding flips 1.3-2.9% of decisions on the real
+  test sets and 0% on synth_extrap (synthetic images are square already, so the two paddings are
+  identical there; the 10k-synthetic runs flip 0.06-0.1% through val-chosen thresholds). Every
+  fine-tune gains on the real sets: +0.004 to +0.009 (7.2, Part A), +0.010 to +0.015 (Part B
+  students and control), +0.017 to +0.019 (DINOv2-L). The probes lose 0.012-0.019 on
+  geometry3k_test: their heads were fit on batch-padded features. The no-overlay ablation is
+  unchanged (0.426 / 0.430 / 0.137). No conclusion changes.
+- **Report numbers (square-padded)**: probe 0.577 ± 0.012 / 0.517 ± 0.004 / 0.183 ± 0.010;
+  7.2 0.872 ± 0.008 / 0.874 ± 0.008 / 0.629 ± 0.018; Part A 1k 0.879 / 0.890 / 0.718, 10k
+  0.879 ± 0.008 / 0.892 ± 0.004 / 0.713 ± 0.009, 50k 0.877 ± 0.009 / 0.889 ± 0.008 / 0.707 ± 0.008;
+  DINOv2-L 0.930 / 0.940 / 0.754; Part B confidence 0.898 ± 0.002 / 0.906 ± 0.003 / 0.737 ± 0.009,
+  consistency 0.907 ± 0.006 / 0.912 ± 0.005 / 0.724 ± 0.010, control 0.915 ± 0.005 / 0.924 ± 0.003 /
+  0.734 ± 0.007. 7.6 (224 px) 0.855 / 0.861 / 0.609 and 7.7 (no augmentation) 0.868 / 0.870 / 0.632
+  stay batch-padded, against the batch-padded 7.2 0.867 / 0.869 / 0.631.
+- **Part B with three control seeds**: the control (continued training, no pseudo-labels) beats both
+  students on the real test sets by 0.01-0.02, more than 2 sd; consistency beats confidence by
+  0.006-0.009 (1-2 sd); on synth_extrap the three are within noise. The pseudo-labels at this budget
+  cost accuracy; the consistency filter recovers part of the cost, as its higher pseudo-label
+  precision (0.898 vs 0.882) predicted.
+- `analysis.phase7` warns "experiments without results: sq_finetune": the lab 7.2 checkpoints do
+  not exist, so that re-evaluation was never queued; expected.
+
+Phase 7 is complete. Next: Phase 8 (8.1 ECE and bootstrap CIs, 8.2 headline table, 8.4 error
+analysis, 8.5 attention maps, 8.6 figures) on the square-padded runs.

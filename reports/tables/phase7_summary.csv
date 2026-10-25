@@ -87,11 +87,99 @@ selftrain_consistency,7.11 (b) confidence + consistency filter,val,geometric,0 1
 selftrain_consistency,7.11 (b) confidence + consistency filter,geometry3k_test,geometric,0 1 2,3,0.8955,0.01,0.8855,0.9055
 selftrain_consistency,7.11 (b) confidence + consistency filter,pgdp5k_heldout,geometric,0 1 2,3,0.9031,0.0059,0.8964,0.9074
 selftrain_consistency,7.11 (b) confidence + consistency filter,synth_extrap,geometric,0 1 2,3,0.7236,0.0097,0.7131,0.7321
-selftrain_control,7.11 control: no pseudo-labels,val,asserted,0,1,0.6456,,0.6456,0.6456
-selftrain_control,7.11 control: no pseudo-labels,geometry3k_test,asserted,0,1,0.5577,,0.5577,0.5577
-selftrain_control,7.11 control: no pseudo-labels,pgdp5k_heldout,asserted,0,1,0.5669,,0.5669,0.5669
-selftrain_control,7.11 control: no pseudo-labels,synth_extrap,asserted,0,1,0.4181,,0.4181,0.4181
-selftrain_control,7.11 control: no pseudo-labels,val,geometric,0,1,0.929,,0.929,0.929
-selftrain_control,7.11 control: no pseudo-labels,geometry3k_test,geometric,0,1,0.9087,,0.9087,0.9087
-selftrain_control,7.11 control: no pseudo-labels,pgdp5k_heldout,geometric,0,1,0.9191,,0.9191,0.9191
-selftrain_control,7.11 control: no pseudo-labels,synth_extrap,geometric,0,1,0.7409,,0.7409,0.7409
+selftrain_control,7.11 control: no pseudo-labels,val,asserted,0 1 2,3,0.6464,0.0011,0.6456,0.6477
+selftrain_control,7.11 control: no pseudo-labels,geometry3k_test,asserted,0 1 2,3,0.5611,0.0032,0.5577,0.5641
+selftrain_control,7.11 control: no pseudo-labels,pgdp5k_heldout,asserted,0 1 2,3,0.5677,0.0014,0.5669,0.5694
+selftrain_control,7.11 control: no pseudo-labels,synth_extrap,asserted,0 1 2,3,0.4254,0.009,0.4181,0.4355
+selftrain_control,7.11 control: no pseudo-labels,val,geometric,0 1 2,3,0.9219,0.0063,0.9172,0.929
+selftrain_control,7.11 control: no pseudo-labels,geometry3k_test,geometric,0 1 2,3,0.9033,0.005,0.8988,0.9087
+selftrain_control,7.11 control: no pseudo-labels,pgdp5k_heldout,geometric,0 1 2,3,0.9143,0.0049,0.9094,0.9191
+selftrain_control,7.11 control: no pseudo-labels,synth_extrap,geometric,0 1 2,3,0.7344,0.0072,0.7267,0.7409
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",val,asserted,0 1 2,3,0.6302,0.004,0.6256,0.6325
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",geometry3k_test,asserted,0 1 2,3,0.543,0.0067,0.5355,0.5486
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",pgdp5k_heldout,asserted,0 1 2,3,0.5466,0.0089,0.5369,0.5543
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",synth_extrap,asserted,0 1 2,3,0.3824,0.0178,0.3681,0.4024
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",val,geometric,0 1 2,3,0.8778,0.0071,0.8703,0.8845
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",geometry3k_test,geometric,0 1 2,3,0.8676,0.0072,0.8594,0.8731
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",pgdp5k_heldout,geometric,0 1 2,3,0.8692,0.008,0.8612,0.8771
+finetune_colab,"7.2 fine-tune, retrained on Colab (same config)",synth_extrap,geometric,0 1 2,3,0.6295,0.0175,0.6116,0.6465
+sq_probe,"7.1 linear probe, square padding",val,asserted,0 1 2,3,0.469,0.0072,0.4631,0.477
+sq_probe,"7.1 linear probe, square padding",geometry3k_test,asserted,0 1 2,3,0.3971,0.0124,0.3897,0.4114
+sq_probe,"7.1 linear probe, square padding",pgdp5k_heldout,asserted,0 1 2,3,0.3551,0.0098,0.3454,0.3649
+sq_probe,"7.1 linear probe, square padding",synth_extrap,asserted,0 1 2,3,0.1156,0.0109,0.1085,0.1282
+sq_probe,"7.1 linear probe, square padding",val,geometric,0 1 2,3,0.5882,0.0038,0.5852,0.5925
+sq_probe,"7.1 linear probe, square padding",geometry3k_test,geometric,0 1 2,3,0.5768,0.0124,0.5663,0.5904
+sq_probe,"7.1 linear probe, square padding",pgdp5k_heldout,geometric,0 1 2,3,0.517,0.0037,0.5137,0.521
+sq_probe,"7.1 linear probe, square padding",synth_extrap,geometric,0 1 2,3,0.1829,0.0103,0.1729,0.1935
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",val,asserted,0,1,0.6302,,0.6302,0.6302
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",geometry3k_test,asserted,0,1,0.5402,,0.5402,0.5402
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",pgdp5k_heldout,asserted,0,1,0.5516,,0.5516,0.5516
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",synth_extrap,asserted,0,1,0.4327,,0.4327,0.4327
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",val,geometric,0,1,0.8734,,0.8734,0.8734
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",geometry3k_test,geometric,0,1,0.8792,,0.8792,0.8792
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",pgdp5k_heldout,geometric,0,1,0.8899,,0.8899,0.8899
+sq_scaling_1k,"7.9 Part A: 1k synthetic, square padding",synth_extrap,geometric,0,1,0.718,,0.718,0.718
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",val,asserted,0 1 2,3,0.6282,0.0028,0.6255,0.631
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",geometry3k_test,asserted,0 1 2,3,0.5399,0.0033,0.5361,0.542
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",pgdp5k_heldout,asserted,0 1 2,3,0.5474,0.0033,0.5439,0.5505
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",synth_extrap,asserted,0 1 2,3,0.4026,0.0057,0.399,0.4092
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",val,geometric,0 1 2,3,0.8802,0.0077,0.8732,0.8885
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",geometry3k_test,geometric,0 1 2,3,0.8788,0.0076,0.8721,0.887
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",pgdp5k_heldout,geometric,0 1 2,3,0.8916,0.0039,0.8888,0.896
+sq_finetune_synth10k,"7.3 fine-tune + 10k synthetic (Part A: 10k), square padding",synth_extrap,geometric,0 1 2,3,0.7129,0.0095,0.7023,0.7207
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",val,asserted,0 1 2,3,0.6286,0.0082,0.6193,0.635
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",geometry3k_test,asserted,0 1 2,3,0.5334,0.01,0.5219,0.54
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",pgdp5k_heldout,asserted,0 1 2,3,0.5414,0.009,0.5311,0.5469
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",synth_extrap,asserted,0 1 2,3,0.4016,0.0095,0.3929,0.4117
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",val,geometric,0 1 2,3,0.8803,0.0084,0.8713,0.888
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",geometry3k_test,geometric,0 1 2,3,0.8768,0.0085,0.867,0.8823
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",pgdp5k_heldout,geometric,0 1 2,3,0.8893,0.0078,0.8803,0.894
+sq_scaling_50k,"7.9 Part A: 50k synthetic, square padding",synth_extrap,geometric,0 1 2,3,0.707,0.0078,0.7021,0.716
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",val,asserted,0,1,0.6494,,0.6494,0.6494
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",geometry3k_test,asserted,0,1,0.5519,,0.5519,0.5519
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",pgdp5k_heldout,asserted,0,1,0.5677,,0.5677,0.5677
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",synth_extrap,asserted,0,1,0.4414,,0.4414,0.4414
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",val,geometric,0,1,0.9401,,0.9401,0.9401
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",geometry3k_test,geometric,0,1,0.9302,,0.9302,0.9302
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",pgdp5k_heldout,geometric,0,1,0.9397,,0.9397,0.9397
+sq_ablation_dinov2,"7.5 DINOv2-L backbone, square padding",synth_extrap,geometric,0,1,0.754,,0.754,0.754
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",val,asserted,0,1,0.3397,,0.3397,0.3397
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",geometry3k_test,asserted,0,1,0.2807,,0.2807,0.2807
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",pgdp5k_heldout,asserted,0,1,0.2614,,0.2614,0.2614
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",synth_extrap,asserted,0,1,0.072,,0.072,0.072
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",val,geometric,0,1,0.4581,,0.4581,0.4581
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",geometry3k_test,geometric,0,1,0.426,,0.426,0.426
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",pgdp5k_heldout,geometric,0,1,0.4297,,0.4297,0.4297
+sq_ablation_nooverlay,"7.8 no overlay (query as tokens), square padding",synth_extrap,geometric,0,1,0.137,,0.137,0.137
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",val,asserted,0 1 2,3,0.637,0.0014,0.6359,0.6386
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",geometry3k_test,asserted,0 1 2,3,0.545,0.0034,0.5426,0.5488
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",pgdp5k_heldout,asserted,0 1 2,3,0.5529,0.0023,0.5514,0.5555
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",synth_extrap,asserted,0 1 2,3,0.423,0.0077,0.4143,0.4289
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",val,geometric,0 1 2,3,0.9094,0.0068,0.9023,0.9159
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",geometry3k_test,geometric,0 1 2,3,0.8979,0.0015,0.8962,0.8988
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",pgdp5k_heldout,geometric,0 1 2,3,0.9064,0.0027,0.9036,0.909
+sq_selftrain_confidence,"7.11 (a) confidence filter, square padding",synth_extrap,geometric,0 1 2,3,0.7373,0.0092,0.7271,0.7449
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",val,asserted,0 1 2,3,0.6389,0.0025,0.6365,0.6415
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",geometry3k_test,asserted,0 1 2,3,0.5477,0.0036,0.5446,0.5517
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",pgdp5k_heldout,asserted,0 1 2,3,0.5559,0.0022,0.5535,0.5579
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",synth_extrap,asserted,0 1 2,3,0.4103,0.0078,0.4022,0.4177
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",val,geometric,0 1 2,3,0.9148,0.0042,0.9114,0.9195
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",geometry3k_test,geometric,0 1 2,3,0.9068,0.0062,0.9004,0.9127
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",pgdp5k_heldout,geometric,0 1 2,3,0.9124,0.0047,0.9084,0.9176
+sq_selftrain_consistency,"7.11 (b) confidence + consistency filter, square padding",synth_extrap,geometric,0 1 2,3,0.7236,0.0097,0.7131,0.7321
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",val,asserted,0 1 2,3,0.6479,0.0005,0.6476,0.6485
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",geometry3k_test,asserted,0 1 2,3,0.5611,0.0025,0.5583,0.563
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",pgdp5k_heldout,asserted,0 1 2,3,0.5693,0.0015,0.5681,0.571
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",synth_extrap,asserted,0 1 2,3,0.4254,0.009,0.4181,0.4355
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",val,geometric,0 1 2,3,0.9272,0.0074,0.9221,0.9356
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",geometry3k_test,geometric,0 1 2,3,0.9155,0.0053,0.9122,0.9216
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",pgdp5k_heldout,geometric,0 1 2,3,0.9239,0.0032,0.9207,0.927
+sq_selftrain_control,"7.11 control: no pseudo-labels, square padding",synth_extrap,geometric,0 1 2,3,0.7344,0.0072,0.7267,0.7409
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",val,asserted,0 1 2,3,0.6336,0.0034,0.63,0.6367
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",geometry3k_test,asserted,0 1 2,3,0.5426,0.0053,0.5366,0.5465
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",pgdp5k_heldout,asserted,0 1 2,3,0.5484,0.0082,0.5392,0.5548
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",synth_extrap,asserted,0 1 2,3,0.3824,0.0178,0.3681,0.4024
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",val,geometric,0 1 2,3,0.8821,0.004,0.8782,0.8861
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",geometry3k_test,geometric,0 1 2,3,0.8723,0.0077,0.8635,0.877
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",pgdp5k_heldout,geometric,0 1 2,3,0.874,0.0076,0.866,0.8811
+sq_finetune_colab,"7.2 fine-tune, retrained on Colab (same config), square padding",synth_extrap,geometric,0 1 2,3,0.6295,0.0175,0.6116,0.6465
