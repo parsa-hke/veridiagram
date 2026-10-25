@@ -1098,3 +1098,38 @@ Found (7.2 = sq_finetune_colab; geometry3k_test / pgdp5k_heldout / synth_extrap)
   the network reads reliably. On_circle ~1.0 everywhere. On synth_extrap collinear drops to 0.15 at
   0.5-1x: the collinear tolerance (1.19% of the diagonal) is about 6 px on a 448 px rendering of a
   12-20-point figure, at the resolution limit; the same relation is 0.96-0.97 on real diagrams.
+
+## 2026-10-25 — Phase 8.5: attention maps
+
+Done
+- `analysis/attention_maps.py`: loads `runs/<run>/checkpoints/best.pt` with eager attention (the only
+  implementation that returns weights), feeds each query exactly as the square-padded evaluation did
+  (probabilities reproduce `sq_<run>`; a mismatch > 0.05 is printed), computes the last-layer CLS
+  attention and the attention rollout (Abnar & Zeldes 2020; 0.5 A + 0.5 I per layer), renormalised
+  over the patch tokens, and classifies every patch of the square view as highlight (the overlay's own
+  pixel mask), ink, blank or padding. Selection: the most confident right positives and the most
+  confident wrong decisions, round robin over relations, no query twice. Writes ten
+  `reports/figures/attention_<correct|wrong>_<k>_<relation>.png` (view, last layer, rollout),
+  `attention_grid.png` (the ten last-layer maps), `reports/tables/attention_stats.csv` (10 shown + 60
+  random queries) and `attention_summary.csv`. 31 s on the M5 (MPS) for 70 queries. Default run
+  `finetune_synth10k_s2` (7.3, the Part B teacher; the 7.2 checkpoints were not kept), unit
+  geometry3k_test. `models.backbone.tiny_backbone(eager=True)` for the tests;
+  `tests/test_attention_maps.py` (rollout identities, patch classes and shares, selection, a tiny
+  DINOv3 end to end, figures, summary; 1.5 s). README and plan 8.5 updated.
+
+Found
+- **The model attends to the highlighted primitives.** Last-layer CLS attention: 62% of it on the 5%
+  of patches the overlay touches (16x uniform), 27% on the rest of the ink (2.3x), 9% on blank paper
+  (0.2x), 2% on the padding (0.1x; 30% of the patches). Correct and wrong decisions look alike (61% vs
+  67% on the highlight), so the errors are not cases of looking elsewhere. The rollout is diffuse (9%
+  on the highlight, 23% on the padding), as it tends to be after 24 layers; kept as the secondary map.
+- The five most confident wrong decisions on geometry3k_test: parallel and perpendicular between
+  segments of two separate figures drawn side by side (verifier-true by coordinates, never a
+  textbook relation; the model says no), an equal_length pair at the tolerance edge (0.70 threshold,
+  p 0.01), a tangent at an endpoint (p 0.33), a collinear triple across two figures. Material for 8.3
+  (which "errors" are the labels').
+- A qid hashes the query's kind and point names only, so the same qid recurs across diagrams that
+  reuse letters (geometry3k_test: 4,289 unique among 11,319 rows; none repeats within a diagram). The
+  pair (diagram, qid) is unique and prediction files are positional, which every analysis script
+  relies on; the first draft of the attention script keyed on qid alone and read the wrong rows for
+  4 of 10 queries until the positional check caught it.

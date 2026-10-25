@@ -104,16 +104,18 @@ def load_backbone(cfg: dict) -> Backbone:
     raise RuntimeError(f"no backbone could be loaded: {tried}")
 
 
-def tiny_backbone(kind: str = "dinov3", hidden: int = 32, layers: int = 2) -> Backbone:
-    """Randomly initialised small model for tests (no download)."""
+def tiny_backbone(kind: str = "dinov3", hidden: int = 32, layers: int = 2, eager: bool = False) -> Backbone:
+    """Randomly initialised small model for tests (no download). `eager`: the attention implementation
+    that can return attention weights (analysis.attention_maps)."""
+    extra = {"attn_implementation": "eager"} if eager else {}
     if kind == "dinov3":
         from transformers import DINOv3ViTConfig, DINOv3ViTModel
         m = DINOv3ViTModel(DINOv3ViTConfig(hidden_size=hidden, num_hidden_layers=layers, num_attention_heads=2,
-                                           intermediate_size=2 * hidden, num_register_tokens=4, patch_size=16))
+                                           intermediate_size=2 * hidden, num_register_tokens=4, patch_size=16, **extra))
     else:
         from transformers import Dinov2Config, Dinov2Model
         m = Dinov2Model(Dinov2Config(hidden_size=hidden, num_hidden_layers=layers, num_attention_heads=2,
-                                     intermediate_size=2 * hidden, patch_size=14, image_size=64))
+                                     intermediate_size=2 * hidden, patch_size=14, image_size=64, **extra))
     return Backbone(m, f"tiny-{kind}")
 
 
