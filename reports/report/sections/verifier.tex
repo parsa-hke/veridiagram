@@ -1,0 +1,8 @@
+\section{Verifier}
+\label{sec:verifier}
+
+Everything so far leans on the ruler, so we owe the reader its calibration. Each check returns a scale-free \emph{margin} ($|\sin\theta|$ for \rel{parallel}, $|\cos\theta|$ for \rel{perpendicular}, relative length difference, relative radial error, distance over the diagram's diagonal for \rel{collinear}); a relation holds when the margin is within a fixed tolerance.
+
+The tolerances were first read from the data, as the valley between the asserted and unasserted modes of the margin distribution on the training split. Then we tested the ruler against a human. A gold set of \nGoldRoundOne{} queries, judged by eye without seeing the annotation and oversampled close to the tolerances, had a pre-registered gate of \goldCeilingPct\% false positives and false negatives. Round one failed it (FP \pctGoldRoundOneFP\%, FN \pctGoldRoundOneFN\%): a human reader tolerates more than the histograms suggest, so the angle tolerance became \tolParallelDeg$^\circ$ and the length tolerance \tolEqualLengthPct\%. Since round one had shaped those values, we judged the gate on a second, independent round of \nGoldRoundTwo{} queries and a blind re-check, re-weighted to the population: FP \pctGoldRoundTwoAdjFP\%, FN \pctGoldRoundTwoAdjFN\% once \nGoldAdjudicated{} labelling slips had been adjudicated on the record. A diagram whose asserted relation fails by a wide margin is flagged \emph{not to scale}.
+
+The ruler now agrees with a careful reader; what it cannot do is judge: lines \tolParallelDeg$^\circ$ apart are parallel to it and a degree further not, and two triangles drawn side by side whose edges happen to align are parallel to it although no teacher would say so.

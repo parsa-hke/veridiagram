@@ -1,0 +1,179 @@
+% References for the methodology report. Every entry was checked against the published paper
+% (Week 4 entries on 2026-10-18, methodology entries on 2026-10-25); see CHANGELOG.md.
+
+% ---------------------------------------------------------------- Week 4 base papers and support
+@inproceedings{lu2021intergps,
+  author    = {Pan Lu and Ran Gong and Shibiao Jiang and Liang Qiu and Siyuan Huang and Xiaodan Liang and Song-Chun Zhu},
+  title     = {{Inter-GPS}: Interpretable Geometry Problem Solving with Formal Language and Symbolic Reasoning},
+  booktitle = {Proc. 59th Annu. Meeting Assoc. Comput. Linguistics and 11th Int. Joint Conf. Natural Lang. Process. (ACL-IJCNLP)},
+  year      = {2021},
+  pages     = {6774--6786},
+  doi       = {10.18653/v1/2021.acl-long.528}
+}
+@inproceedings{zhang2022pgdp,
+  author    = {Ming-Liang Zhang and Fei Yin and Yi-Han Hao and Cheng-Lin Liu},
+  title     = {Plane Geometry Diagram Parsing},
+  booktitle = {Proc. 31st Int. Joint Conf. Artif. Intell. (IJCAI)},
+  year      = {2022},
+  pages     = {1636--1643},
+  doi       = {10.24963/ijcai.2022/228}
+}
+@inproceedings{zhang2023pgps,
+  author    = {Ming-Liang Zhang and Fei Yin and Cheng-Lin Liu},
+  title     = {A Multi-Modal Neural Geometric Solver with Textual Clauses Parsed from Diagram},
+  booktitle = {Proc. 32nd Int. Joint Conf. Artif. Intell. (IJCAI)},
+  year      = {2023},
+  pages     = {3374--3382},
+  doi       = {10.24963/ijcai.2023/376}
+}
+@article{trinh2024alphageometry,
+  author  = {Trieu H. Trinh and Yuhuai Wu and Quoc V. Le and He He and Thang Luong},
+  title   = {Solving Olympiad Geometry without Human Demonstrations},
+  journal = {Nature},
+  volume  = {625},
+  number  = {7995},
+  pages   = {476--482},
+  year    = {2024},
+  doi     = {10.1038/s41586-023-06747-5}
+}
+@inproceedings{seo2015geos,
+  author    = {Minjoon Seo and Hannaneh Hajishirzi and Ali Farhadi and Oren Etzioni and Clint Malcolm},
+  title     = {Solving Geometry Problems: Combining Text and Diagram Interpretation},
+  booktitle = {Proc. Conf. Empirical Methods Natural Lang. Process. (EMNLP)},
+  year      = {2015},
+  pages     = {1466--1476},
+  doi       = {10.18653/v1/D15-1171}
+}
+@inproceedings{dosovitskiy2021vit,
+  author    = {Alexey Dosovitskiy and Lucas Beyer and Alexander Kolesnikov and Dirk Weissenborn and Xiaohua Zhai and Thomas Unterthiner and Mostafa Dehghani and Matthias Minderer and Georg Heigold and Sylvain Gelly and Jakob Uszkoreit and Neil Houlsby},
+  title     = {An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
+  booktitle = {Proc. Int. Conf. Learn. Represent. (ICLR)},
+  year      = {2021}
+}
+@article{oquab2024dinov2,
+  author  = {Maxime Oquab and Timoth{\'e}e Darcet and Th{\'e}o Moutakanni and Huy V. Vo and Marc Szafraniec and Vasil Khalidov and Pierre Fernandez and Daniel Haziza and Francisco Massa and Alaaeldin El-Nouby and others},
+  title   = {{DINOv2}: Learning Robust Visual Features without Supervision},
+  journal = {Trans. Mach. Learn. Res.},
+  year    = {2024}
+}
+@misc{simeoni2025dinov3,
+  author = {Oriane Sim{\'e}oni and Huy V. Vo and Maximilian Seitzer and Federico Baldassarre and Maxime Oquab and Cijo Jose and Vasil Khalidov and Marc Szafraniec and Seungeun Yi and Micha{\"e}l Ramamonjisoa and others},
+  title  = {{DINOv3}},
+  howpublished = {arXiv:2508.10104},
+  year   = {2025}
+}
+@inproceedings{radford2021clip,
+  author    = {Alec Radford and Jong Wook Kim and Chris Hallacy and Aditya Ramesh and Gabriel Goh and Sandhini Agarwal and Girish Sastry and Amanda Askell and Pamela Mishkin and Jack Clark and Gretchen Krueger and Ilya Sutskever},
+  title     = {Learning Transferable Visual Models From Natural Language Supervision},
+  booktitle = {Proc. 38th Int. Conf. Mach. Learn. (ICML), PMLR vol. 139},
+  year      = {2021},
+  pages     = {8748--8763}
+}
+@inproceedings{he2016resnet,
+  author    = {Kaiming He and Xiangyu Zhang and Shaoqing Ren and Jian Sun},
+  title     = {Deep Residual Learning for Image Recognition},
+  booktitle = {Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR)},
+  year      = {2016},
+  pages     = {770--778},
+  doi       = {10.1109/CVPR.2016.90}
+}
+
+% ---------------------------------------------------------------- methodology
+@inproceedings{kumar2022lpft,
+  author    = {Ananya Kumar and Aditi Raghunathan and Robbie Jones and Tengyu Ma and Percy Liang},
+  title     = {Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution},
+  booktitle = {Proc. Int. Conf. Learn. Represent. (ICLR)},
+  year      = {2022}
+}
+@inproceedings{loshchilov2019adamw,
+  author    = {Ilya Loshchilov and Frank Hutter},
+  title     = {Decoupled Weight Decay Regularization},
+  booktitle = {Proc. Int. Conf. Learn. Represent. (ICLR)},
+  year      = {2019}
+}
+@inproceedings{loshchilov2017sgdr,
+  author    = {Ilya Loshchilov and Frank Hutter},
+  title     = {{SGDR}: Stochastic Gradient Descent with Warm Restarts},
+  booktitle = {Proc. Int. Conf. Learn. Represent. (ICLR)},
+  year      = {2017}
+}
+@inproceedings{howard2018ulmfit,
+  author    = {Jeremy Howard and Sebastian Ruder},
+  title     = {Universal Language Model Fine-tuning for Text Classification},
+  booktitle = {Proc. 56th Annu. Meeting Assoc. Comput. Linguistics (ACL)},
+  year      = {2018},
+  pages     = {328--339},
+  doi       = {10.18653/v1/P18-1031}
+}
+@article{polyak1992averaging,
+  author  = {Boris T. Polyak and Anatoli B. Juditsky},
+  title   = {Acceleration of Stochastic Approximation by Averaging},
+  journal = {SIAM J. Control Optim.},
+  volume  = {30},
+  number  = {4},
+  pages   = {838--855},
+  year    = {1992},
+  doi     = {10.1137/0330046}
+}
+@inproceedings{micikevicius2018amp,
+  author    = {Paulius Micikevicius and Sharan Narang and Jonah Alben and Gregory Diamos and Erich Elsen and David Garcia and Boris Ginsburg and Michael Houston and Oleksii Kuchaiev and Ganesh Venkatesh and Hao Wu},
+  title     = {Mixed Precision Training},
+  booktitle = {Proc. Int. Conf. Learn. Represent. (ICLR)},
+  year      = {2018}
+}
+@misc{chen2016checkpointing,
+  author = {Tianqi Chen and Bing Xu and Chiyuan Zhang and Carlos Guestrin},
+  title  = {Training Deep Nets with Sublinear Memory Cost},
+  howpublished = {arXiv:1604.06174},
+  year   = {2016}
+}
+@inproceedings{darcet2024registers,
+  author    = {Timoth{\'e}e Darcet and Maxime Oquab and Julien Mairal and Piotr Bojanowski},
+  title     = {Vision Transformers Need Registers},
+  booktitle = {Proc. Int. Conf. Learn. Represent. (ICLR)},
+  year      = {2024}
+}
+@inproceedings{guo2017calibration,
+  author    = {Chuan Guo and Geoff Pleiss and Yu Sun and Kilian Q. Weinberger},
+  title     = {On Calibration of Modern Neural Networks},
+  booktitle = {Proc. 34th Int. Conf. Mach. Learn. (ICML), PMLR vol. 70},
+  year      = {2017},
+  pages     = {1321--1330}
+}
+@inproceedings{xie2020noisystudent,
+  author    = {Qizhe Xie and Minh-Thang Luong and Eduard Hovy and Quoc V. Le},
+  title     = {Self-Training with Noisy Student Improves {ImageNet} Classification},
+  booktitle = {Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR)},
+  year      = {2020},
+  pages     = {10684--10695},
+  doi       = {10.1109/CVPR42600.2020.01070}
+}
+@book{efron1993bootstrap,
+  author    = {Bradley Efron and Robert J. Tibshirani},
+  title     = {An Introduction to the Bootstrap},
+  publisher = {Chapman \& Hall},
+  address   = {New York, NY, USA},
+  year      = {1993}
+}
+
+% ---------------------------------------------------------------- technical report (verified 2026-10-25)
+@misc{zhang2024formalgeo,
+  author = {Xiaokai Zhang and Na Zhu and Yiming He and Jia Zou and Qike Huang and Xiaoxiao Jin and Yanjun Guo and Chenyang Mao and Yang Li and Zhe Zhu and Dengfeng Yue and Fangzhen Zhu and Yifan Wang and Yiwen Huang and Runan Wang and Cheng Qin and Zhenbing Zeng and Shaorong Xie and Xiangfeng Luo and Tuo Leng},
+  title  = {{FormalGeo}: An Extensible Formalized Framework for {Olympiad} Geometric Problem Solving},
+  howpublished = {arXiv:2310.18021},
+  year   = {2024}
+}
+@inproceedings{xia2025geox,
+  author    = {Renqiu Xia and Mingsheng Li and Hancheng Ye and Wenjie Wu and Hongbin Zhou and Jiakang Yuan and Tianshuo Peng and Xinyu Cai and Xiangchao Yan and Bin Wang and Conghui He and Botian Shi and Tao Chen and Junchi Yan and Bo Zhang},
+  title     = {{GeoX}: Geometric Problem Solving Through Unified Formalized Vision-Language Pre-training},
+  booktitle = {Proc. Int. Conf. Learn. Represent. (ICLR)},
+  year      = {2025}
+}
+@inproceedings{abnar2020rollout,
+  author    = {Samira Abnar and Willem Zuidema},
+  title     = {Quantifying Attention Flow in Transformers},
+  booktitle = {Proc. 58th Annu. Meeting Assoc. Comput. Linguistics (ACL)},
+  year      = {2020},
+  pages     = {4190--4197},
+  doi       = {10.18653/v1/2020.acl-main.385}
+}

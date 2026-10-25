@@ -1,0 +1,24 @@
+stage,step,command,status,seconds,note
+data,loader and coordinate checks,python -m data.sanity,ok,2.2,"coordinate_sanity.csv, g3k_vs_pgdp5k_coords.csv, loader_check_*.png, image_sizes.png"
+data,source overlap,python -m data.overlap,ok,35.8,source_overlap.csv
+data,relation census,python -m data.census,ok,2.3,relation_census.csv
+data,highlight colour check,python -m data.colour_check,ok,5.6,highlight_colour_check.csv
+data,tolerance calibration,python -m verifier.tolerance,ok,2.1,"tolerance_calibration.csv, tolerance_*.png (configs/base.yaml untouched)"
+data,asserted vs geometric audit,python -m verifier.audit,ok,12.9,"audit_*.csv, audit_*_{asserted_not_geometric,geometric_not_asserted}.png, not_to_scale.csv"
+data,gold-set scores,python -m verifier.gold score,ok,1.0,"verifier_audit.csv, verifier_recheck.csv"
+data,synthetic verifier check,python -m data.synthetic.check,ok,38.4,"synthetic_verifier_check.csv, synthetic_examples.png"
+data,dataset examples,python -m data.dataset --config configs/smoke.yaml --examples,ok,6.1,dataset_examples.png
+analysis,Phase 7 tables,python -m analysis.phase7,ok,1.4,"phase7_*.{csv,md}, padding_effect.csv, not_to_scale_eval.csv, selftrain_pseudo_labels.csv, scaling*.png"
+analysis,"CIs, ECE, tuned thresholds",python -m analysis.phase8,ok,27.9,"phase8_metrics.csv, phase8_summary.{csv,md}"
+analysis,headline table,python -m analysis.headline_table,ok,1.2,"headline_table.{csv,md}"
+analysis,error analysis,python -m analysis.error_analysis,ok,1.8,"error_analysis.{csv,md}, error_margin.csv, error_margin.png, error_breakdowns.png"
+analysis,both label sets,python -m analysis.asserted_vs_geometric,ok,1.4,"asserted_vs_geometric.{csv,md}, label_disagreement.csv, audit_examples_model.png"
+analysis,attention maps,python -m analysis.attention_maps,ok,29.9,"attention_stats.csv, attention_summary.csv, attention_*.png"
+analysis,per-relation bars and manifest,python -m analysis.figures,ok,0.1,"per_relation_f1.png, headline_table.png, reports/figures/README.md"
+report,methodology numbers,python -m scripts.methodology_numbers,ok,0.0,reports/methodology/numbers.tex
+report,methodology figures,python -m scripts.methodology_figures,ok,0.6,reports/methodology/figures/
+report,methodology zip,python -m scripts.methodology_zip,ok,0.0,reports/methodology/*.zip
+report,report numbers,python -m scripts.report_numbers,ok,0.0,reports/report/numbers.tex
+report,report figures,python -m scripts.report_figures,ok,0.0,reports/report/figures/
+report,report zip,python -m scripts.report_zip,ok,0.0,reports/Report_7744547.zip
+report,report word count,python -m scripts.report_wordcount,ok,0.1,"(prints; exit 1 above 2,500)"

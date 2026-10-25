@@ -1173,3 +1173,109 @@ Found (7.2, geometry3k_test / pgdp5k_heldout)
 
 Phase 8 is complete. Next: Phase 9, the report (`reports/report.md`, numbers copied from
 `reports/tables/` by a script), then Phase 10.
+
+## 2026-10-25 — Phase 9: the technical report (9.1–9.4)
+
+Done
+- `reports/report/`: the LaTeX report (`main.tex` with the methodology preamble: article, 12 pt, A4,
+  1-inch margins, Times, IEEEtran.bst; `sections/*.tex`, one per section plus the GenAI
+  acknowledgement and an appendix; `refs.bib`; `numbers.tex` generated; `figures/` copied;
+  `README.md` with the compile instructions). Compiles with tectonic 0.17 (11 pages); Overleaf zip
+  `reports/Report_7744547.zip` from `scripts/report_zip.py`.
+- `scripts/report_numbers.py` (on top of `methodology_numbers.collect()`): 1,603 macros from
+  `phase8_summary.csv` (macro-F1 at tuned thresholds and 0.5, CIs, sd, ECE, per-relation F1, a
+  combined `\ci<exp><unit>` for the table), `padding_effect.csv`, `headline_table.csv`,
+  `label_disagreement.csv`, `error_analysis.csv`, `error_margin.csv`, `not_to_scale_eval.csv`,
+  `attention_summary.csv`, `selftrain_pseudo_labels.csv`, plus derived gains and gaps; `--check`.
+  `scripts/report_figures.py` copies the six report figures; `scripts/report_wordcount.py` counts the
+  compiled PDF from the Introduction to the end of the Conclusion (captions and tables included;
+  title page, GenAI statement, references and appendix excluded) and exits 1 above 2,500.
+- `tests/test_report.py` (1.8 s including the tectonic compile): numbers.tex regenerates
+  identically; every macro used is defined; sections in order; every \cite key exists and every
+  refs.bib entry is cited; every \input and figure exists and is copied by the script; no typed
+  decimal, thousands-separated or percentage number in a sentence that uses a macro; word count
+  from the sources and from the compiled PDF.
+- References: 24, numeric in order of first appearance. Added and verified FormalGeo
+  (arXiv:2310.18021, v6 2024, Xiaokai Zhang … Tuo Leng), GeoX (ICLR 2025, Renqiu Xia et al.) and
+  attention rollout (Abnar & Zuidema, ACL 2020, pp. 4190–4197; the plan's "Zeldes" was a slip).
+  Dropped the methodology entries the report does not cite (G-LLaVA, MathVerse, Pineau, datasheets,
+  model cards).
+- Plan 9.1–9.4 ticked.
+
+Found
+- The word budget is the binding constraint: the first full draft was 3,629 words by the PDF count
+  (the main table alone is ~130 words, six captions ~80). Cut to 2,476 by removing the cheaper
+  ablations' own paragraph (folded into Part A), the per-figure not-to-scale numbers (now in the
+  ethics section), the optimiser hyper-parameters (the config file has them) and the calibration
+  sentence; the CI format in Table 1 is "mean [lo–hi]".
+- Early drafts of the word counter and the typed-number test treated `\%` as a LaTeX comment and
+  silently dropped the rest of every line containing a percentage; fixed with a negative lookbehind.
+- A 6-gram comparison against `reports/proposal/proposal_content.md` and
+  `reports/methodology/sections/*.tex` found 49 shared phrases in the first draft (verifier gold-set
+  story, ethics provisions, dataset audit); all rewritten, zero shared 6-grams remain. Every section
+  passes `check_ai_tells.py` with no errors or warnings.
+- The square-padding change is +0.000 for one run on one unit (scaling_50k s1, geometry3k_test),
+  which is why the appendix text says "+0.000 to +0.019".
+
+Next: the user's review of each section's text; Phase 10 (README, fresh-clone smoke, walkthrough
+notebook, release tag).
+
+## 2026-10-25 — Phase 10.1: README and one-command reproduction
+
+Done
+- `scripts/reproduce.py`: every table and figure in one command. 23 steps in dependency order,
+  three stages: data (data.sanity, overlap, census, colour_check, verifier.tolerance without
+  `--write-config`, verifier.audit, verifier.gold score, data.synthetic.check, data.dataset
+  `--examples`), analysis (analysis.phase7, phase8, headline_table, error_analysis,
+  asserted_vs_geometric, attention_maps, figures) and report (numbers, figures and zips of both
+  LaTeX reports, the word count). Each step runs in-process and is timed; a step whose inputs are
+  missing (no data/processed, no runs/, no checkpoint) is skipped with the reason; the run stops at
+  the first failure; `--list`, `--stages`, `--quiet`. Timings to `reports/tables/reproduce_timings.csv`.
+  Test `tests/test_reproduce.py` (every module importable with a main, stage order, skip, stop on
+  failure, timings file, mains without arguments; 0.1 s).
+- README: "Reproducing the project in four commands" (setup, data, the three Phase 7 queues in order,
+  reproduce), a runtime table per step, what is not in the repository (data and runs/ sizes; the one
+  kept checkpoint), and the hardware table with the UOWD lab GPUs added. Plan 10.1 ticked.
+
+Found
+- The whole reproduction takes 2.8 min on the M5 (slowest: synthetic verifier check 38 s, source
+  overlap 36 s, attention maps 30 s, bootstrap CIs 28 s). The full test suite runs in 27 s.
+- Training, from runs/log.csv: 53 runs, 23.9 GPU-hours; a fine-tune takes 74 min on the lab's RTX 5000
+  Ada and 41 min on a Colab A100, a square-padded re-evaluation 7 min, a probe 7 min.
+- Every committed table regenerates byte for byte except `tolerance_calibration.csv`: in the
+  equal_length row, `n_not_asserted` 56,225 -> 47,975, `youden_threshold` 0.07108 -> 0.06432 and
+  `not_asserted_within` 0.077 -> 0.087. The table was committed on 2026-10-10 (Phase 3) and the
+  candidate segment pairs it counts changed in Phase 5 (nested sub-segments of one drawn line are no
+  longer candidates). The chosen tolerance (knee 2.32%) and every other row are identical; the
+  tolerances are fixed in plan §0.2 #5 and are not re-calibrated, and no number in either report
+  comes from the changed columns (both numbers.tex files regenerate unchanged). The regenerated table
+  is kept. `tolerance_all.png` and `tolerance_equal_length.png` change with it; `dataset_examples.png`
+  also differs from the committed copy but is now deterministic (two runs give the same bytes), so
+  the committed copy predates a later code change (not traced).
+- First run crashed at `scripts.methodology_figures`: three report scripts take `main()` without
+  arguments; the runner now checks the signature.
+- Note for the methodology report (already submitted): its zip was rebuilt by the report stage and
+  now carries the regenerated `tolerance_all.png`; the submitted PDF is unchanged.
+
+## 2026-10-25 — Phase 10.2: fresh-clone test passed
+
+Done
+- Cloned `https://github.com/parsa-hke/veridiagram` (`main` = da29eea, the last commit) into an
+  empty directory; new virtualenv with the system-independent route of the README (`python3.11 -m
+  venv` + `pip install -r requirements.txt`; uv is not on this machine's PATH); `python -m
+  data.prepare --download`; `python -m pytest`; probe and fine-tune smoke runs; `python -m
+  experiments.gate smoke`. README "Fresh-clone check" section, runtime table updated with these
+  measurements; plan 10.2 ticked.
+
+Found
+- Everything passes: pytest 226 passed, 5 skipped, 0 failed (91 s); GATE 6.6 PASS with DINOv3 loaded
+  on MPS, probe 187 s, fine-tune 399 s (both under the 10-minute gate; the Phase 6 local fine-tune
+  smoke took 724 s, with the DINOv2-L fallback, so the gate was then timed on Colab).
+- The download links still resolve and every archive matches its recorded SHA-256 (34 s).
+- Data build 393 s: build 10 s, overlap 33 s, splits and census 2 s, synthetic pools 203 s, labels
+  91 s, queries 9 s. All 33 files it writes under data/processed/ are byte-identical to the
+  originals, so the positional prediction files in runs/ line up with a rebuilt index.
+- Not covered: the pip and Hugging Face caches were shared with the existing checkout (no cold
+  install, no DINOv3 download), and the clone is the last commit, so the uncommitted Phase 9/10.1
+  work (report, reproduce script and their tests) is not in it. Re-run after the commit.
+

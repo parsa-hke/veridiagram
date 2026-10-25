@@ -1,0 +1,31 @@
+\appendix
+\section{Threshold 0.5 and the padding correction}
+\label{sec:appendix}
+
+Phase 7 evaluated each batch of 32 queries padded to its largest image, and because the pooled feature averages every patch token, padding included, a saved decision depended on its batch neighbours. Every checkpoint was re-evaluated with each query padded alone to a \inputLongSide{} px square; Table~\ref{tab:padding} gives both the fixed-threshold scores and the change, which flips \padChangedMinPct--\padChangedMaxPct\% of decisions on the real test sets and moves macro-F1 by \padGainMin{} to \padGainMax{} for the fine-tunes. The probes lose a little because their heads were fitted on batch-padded features. The 224 px and no-augmentation ablations had no checkpoint and keep their batch-padded scores, as does the batch-padded fine-tune they are compared with.
+
+\begin{table}[htbp]
+  \centering\small
+  \caption{Geometric macro-F1 at threshold \thresholdFixed{} (square padding) and the change from batch to square padding (share of decisions that flipped), on Geometry3K test / PGDP5K held-out / synthetic extrapolation.}
+  \label{tab:padding}
+  \begin{tabular}{@{}l l l l@{}}
+    \toprule
+    Experiment & Geometry3K test & PGDP5K held-out & Extrapolation \\
+    \midrule
+    Linear probe & \fProbeIdHalf{} (\padDeltaProbeId, \padChangedProbeId\%) & \fProbeHoHalf{} (\padDeltaProbeHo, \padChangedProbeHo\%) & \fProbeExHalf{} (\padDeltaProbeEx) \\
+    Fine-tune, real only & \fFtIdHalf{} (\padDeltaFtId, \padChangedFtId\%) & \fFtHoHalf{} (\padDeltaFtHo, \padChangedFtHo\%) & \fFtExHalf{} (\padDeltaFtEx) \\
+    + 1k synthetic & \fSynOneKIdHalf{} (\padDeltaSynOneKId, \padChangedSynOneKId\%) & \fSynOneKHoHalf{} (\padDeltaSynOneKHo, \padChangedSynOneKHo\%) & \fSynOneKExHalf{} (\padDeltaSynOneKEx) \\
+    + 10k synthetic & \fSynTenKIdHalf{} (\padDeltaSynTenKId, \padChangedSynTenKId\%) & \fSynTenKHoHalf{} (\padDeltaSynTenKHo, \padChangedSynTenKHo\%) & \fSynTenKExHalf{} (\padDeltaSynTenKEx) \\
+    + 50k synthetic & \fSynFiftyKIdHalf{} (\padDeltaSynFiftyKId, \padChangedSynFiftyKId\%) & \fSynFiftyKHoHalf{} (\padDeltaSynFiftyKHo, \padChangedSynFiftyKHo\%) & \fSynFiftyKExHalf{} (\padDeltaSynFiftyKEx) \\
+    DINOv2-L & \fDinovIdHalf{} (\padDeltaDinovId, \padChangedDinovId\%) & \fDinovHoHalf{} (\padDeltaDinovHo, \padChangedDinovHo\%) & \fDinovExHalf{} (\padDeltaDinovEx) \\
+    No highlight & \fNoOverlayIdHalf{} (\padDeltaNoOverlayId, \padChangedNoOverlayId\%) & \fNoOverlayHoHalf{} (\padDeltaNoOverlayHo, \padChangedNoOverlayHo\%) & \fNoOverlayExHalf{} (\padDeltaNoOverlayEx) \\
+    Self-training, confidence & \fStConfIdHalf{} (\padDeltaStConfId, \padChangedStConfId\%) & \fStConfHoHalf{} (\padDeltaStConfHo, \padChangedStConfHo\%) & \fStConfExHalf{} (\padDeltaStConfEx) \\
+    Self-training, consistency & \fStConsIdHalf{} (\padDeltaStConsId, \padChangedStConsId\%) & \fStConsHoHalf{} (\padDeltaStConsHo, \padChangedStConsHo\%) & \fStConsExHalf{} (\padDeltaStConsEx) \\
+    Control, no pseudo-labels & \fStControlIdHalf{} (\padDeltaStControlId, \padChangedStControlId\%) & \fStControlHoHalf{} (\padDeltaStControlHo, \padChangedStControlHo\%) & \fStControlExHalf{} (\padDeltaStControlEx) \\
+    \midrule
+    Fine-tune, batch padding & \fFtBatchIdHalf & \fFtBatchHoHalf & \fFtBatchExHalf \\
+    \quad 224 px & \fResLowIdHalf & \fResLowHoHalf & \fResLowExHalf \\
+    \quad no augmentation & \fNoAugIdHalf & \fNoAugHoHalf & \fNoAugExHalf \\
+    \bottomrule
+  \end{tabular}
+\end{table}

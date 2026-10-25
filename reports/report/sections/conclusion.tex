@@ -1,0 +1,4 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+A fine-tuned DINOv3 reads most of the geometry a diagram contains when a coordinate verifier judges, \fFtHo{} macro-F1 on a source it never saw, and it reads the drawing rather than the marks. The highlight makes the task learnable, and the model fails where the ruler is itself a poor judge or the segment is too short to resolve. Verifier-labelled synthetic data buys out-of-distribution accuracy cheaply and saturates by a thousand diagrams; self-training on real scans did not beat training longer. The limits: one seed for the ablations, \nNtsTestDiagrams{} not-to-scale diagrams, a padding correction applied after the fact, and a backbone swap that beat every data intervention. Next, the model's own detected primitives handed to the verifier, so it can audit a page nobody annotated.
