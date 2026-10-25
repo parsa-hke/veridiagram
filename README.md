@@ -90,7 +90,9 @@ Download and layout: [data/README.md](data/README.md). After the raw files are i
 python -m experiments.run --config configs/ablation_nooverlay.yaml        # 7.8: query as point-name tokens, no highlight
 python -m experiments.run --config configs/selftrain_consistency.yaml     # 7.11: Part B student (also _confidence, _control)
 python -m experiments.gate phase7                                         # smoke gate of those modes
-python -m analysis.phase7                                                 # tables, not-to-scale subset, scaling.png
+python -m analysis.phase7                                                 # tables, not-to-scale subset, scaling.png, padding effect
+python -m analysis.phase8                                                 # 8.1: bootstrap CIs, ECE, val-tuned thresholds, per-relation F1
+python -m analysis.headline_table                                         # 8.2: queries solved by probe only / fine-tune only / both / neither
 ```
 
 Part B (`experiments/selftrain.py`) uses the best 7.3 run as teacher (`selftrain.teacher_run`),

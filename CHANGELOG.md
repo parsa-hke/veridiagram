@@ -1016,3 +1016,49 @@ Found (geometric macro-F1, geometry3k_test / pgdp5k_heldout / synth_extrap)
 
 Phase 7 is complete. Next: Phase 8 (8.1 ECE and bootstrap CIs, 8.2 headline table, 8.4 error
 analysis, 8.5 attention maps, 8.6 figures) on the square-padded runs.
+
+## 2026-10-25 — Phase 8.1 and 8.2: CIs, ECE, val-tuned thresholds, headline table
+
+Done
+- `analysis/metrics.py`: ECE (15 bins; calibration of the positive-class probability over applicable
+  entries, pooled and per relation), `tune_thresholds` (per-relation F1-maximising threshold on
+  validation predictions, grid 0.01-0.99, ties to 0.5), diagram-level bootstrap (per-diagram confusion
+  counts resampled with a multinomial weight vector, so 1,000 resamples are one matrix product; the
+  statistic may be the mean over seeds, with diagrams resampled jointly). `analysis/phase8.py` writes
+  `reports/tables/phase8_metrics.csv` (636 rows: run x unit x label set x operating point, with CIs,
+  ECE, per-relation P/R/F1 and CIs, thresholds), `phase8_summary.csv` (seeds pooled) and
+  `phase8_summary.md` (the report set: `sq_*` plus the batch-padded 7.6, 7.7 and `finetune`). 28 s for
+  53 runs. `analysis/headline_table.py` (8.2) writes `headline_table.{csv,md}`. Tests
+  `tests/test_phase8.py` (calibrated vs inverted ECE, a hand-computed ECE, threshold recovery, CI
+  brackets the point and narrows with 10x the diagrams, two identical seeds give the single-run CI,
+  relation without positives excluded, the two tables on fake runs, stale predictions reported; 0.8 s).
+  README and plan layout updated; `analysis.phase8` registered in `tests/test_skeleton.py`.
+
+Found (geometric macro-F1, geometry3k_test / pgdp5k_heldout / synth_extrap, seed-mean [95% CI over diagrams])
+- Val-tuned thresholds: +0.01-0.02 on the real test sets and +0.03-0.05 on synth_extrap over 0.5, for
+  every fine-tune; the chosen thresholds sit mostly between 0.7 and 0.99 (the positive-weighted BCE
+  makes the models over-predict positives). The probe gains on pgdp5k_heldout (0.517 -> 0.537) and
+  loses slightly on geometry3k_test (0.577 -> 0.569).
+- Report set at tuned thresholds: probe 0.569 [0.522, 0.606] / 0.537 [0.503, 0.567] / 0.182;
+  7.2 0.886 [0.867, 0.902] / 0.894 [0.884, 0.903] / 0.658 [0.634, 0.678]; Part A 10k 0.906 / 0.912 /
+  0.764, 50k 0.905 / 0.911 / 0.757; DINOv2-L 0.940 / 0.947 / 0.769; no overlay 0.462 / 0.443 / 0.129;
+  Part B confidence 0.915 / 0.924 / 0.755, consistency 0.925 / 0.928 / 0.758, control 0.929 / 0.933 /
+  0.772. CI half-widths ~0.015-0.02 (geometry3k_test, 370 diagrams), ~0.01 (pgdp5k_heldout, 660),
+  ~0.02 (synth_extrap); the seed sd is below the CI for every fine-tune, so the test sets, not the
+  seeds, bound the precision of the comparisons.
+- Part B revisited: at tuned thresholds the control leads the consistency student by only
+  0.004-0.005 on the real sets (CIs overlap, ~1 sd) and the confidence student by 0.009-0.014; at 0.5
+  the gaps were 0.01-0.02. Part of the pseudo-labels' apparent cost was calibration. The ranking
+  control > consistency > confidence holds under both operating points.
+- ECE: probe 0.13-0.20 (its probabilities are poor), fine-tunes 0.02-0.07, no overlay 0.22-0.46,
+  Part B control best calibrated (0.023 / 0.026 / 0.035); synthetic data does not improve calibration
+  on the real sets (10k: 0.046 / 0.047 vs 7.2's 0.035 / 0.042) but does on synth_extrap.
+- Headline table (8.2, probe vs 7.2, tuned thresholds): geometry3k_test both 67.2%, fine-tune only
+  22.6%, probe only 3.5%, neither 6.7%; pgdp5k_heldout 55.7 / 33.0 / 2.9 / 8.4; synth_extrap 70.1 /
+  19.4 / 3.7 / 6.8. The fine-tune's gain is concentrated in equal_length (23-39% of its decisions are
+  fine-tune only; 9-10% neither) and perpendicular (12-14%); parallel, on_circle and collinear are
+  mostly solved by both.
+
+To decide for the report: the Phase 8 tables give both operating points; plan 8.2 names the val-tuned
+one. Suggested: headline on val-tuned thresholds (Phase 8 tables), with the 0.5 numbers (Phase 7
+tables) in the appendix next to the padding table.
