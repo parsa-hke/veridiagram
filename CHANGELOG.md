@@ -1133,3 +1133,43 @@ Found
   pair (diagram, qid) is unique and prediction files are positional, which every analysis script
   relies on; the first draft of the attention script keyed on qid alone and read the wrong rows for
   4 of 10 queries until the positional check caught it.
+
+## 2026-10-25 — Phase 8.3 and 8.6: both label sets, the figure set; Phase 8 complete
+
+Done
+- `analysis/asserted_vs_geometric.py` (8.3): per experiment (seeds pooled, val-tuned thresholds) and
+  test unit, macro-F1 and per-relation F1 against geometric and asserted labels side by side
+  (`asserted_vs_geometric.csv`); the four label cells per relation (agree-positive, agree-negative,
+  asserted-only, geometric-only) with the model's positive rate in each and the attribution of its
+  errors (`label_disagreement.csv`; errors against asserted labels where the model sides with the
+  verifier = the labels' errors; errors against geometric labels where it sides with the mark);
+  `asserted_vs_geometric.md`; `reports/figures/audit_examples_model.png` (the clearest
+  disagreements on geometry3k_test with margin and the model's probability, drawn with
+  data.visualize.draw_query). 2 s.
+- `analysis/figures.py` (8.6): `per_relation_f1.png` (report-set experiments x relations x test
+  sets with bootstrap CIs, from phase8_summary.csv), `headline_table.png` (stacked shares from
+  headline_table.csv) and the manifest `reports/figures/README.md` (figure, file, present,
+  regenerating command) covering the plan's list; all present.
+- Tests `tests/test_phase8_figures.py` (cells, attribution with a verifier-following and a
+  mark-following model, example order, pooled analysis, markdown, both figures, manifest; ~2 s);
+  the two modules registered in test_skeleton; README and plan updated.
+
+Found (7.2, geometry3k_test / pgdp5k_heldout)
+- The asserted-vs-geometric gap (0.886 / 0.894 vs 0.569 / 0.574) is almost entirely unmarked true
+  relations: 7,107 / 16,251 geometric-only entries (10% of the applicable ones) against 30 / 99
+  asserted-only ones. The test annotations come from PGDP5K, whose labels are the drawn marks, so a
+  relation nobody marked is "false" in the asserted set however the figure is drawn.
+- The model reads unmarked relations from the drawing: positive rate 0.78 / 0.81 in the
+  geometric-only cell (parallel 0.97-0.98, perpendicular 0.83-0.88, tangent 0.86-0.87, equal_length
+  0.68-0.74), except collinear (0.26-0.32: an unmarked point on a line is mostly missed; those are
+  points that lie on a line's extension by coordinates without being drawn on it).
+- Attribution: 74% / 70% of the model's errors against asserted labels are decisions where it sides
+  with the verifier (the labels' errors under the gold-set authority); 45% / 36% of its errors
+  against geometric labels are decisions where it sides with the human mark (it read the tick marks or
+  the right-angle symbol rather than measuring), mostly equal_length (1,246 of 2,759 on
+  geometry3k_test). The examples figure shows both: an equal_length asserted by tick marks at 6.7x
+  the tolerance that the model also calls equal (p 0.97), and an asserted collinear triple at 11x the
+  tolerance that it rejects (p 0.00).
+
+Phase 8 is complete. Next: Phase 9, the report (`reports/report.md`, numbers copied from
+`reports/tables/` by a script), then Phase 10.

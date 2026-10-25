@@ -95,6 +95,8 @@ python -m analysis.phase8                                                 # 8.1:
 python -m analysis.headline_table                                         # 8.2: queries solved by probe only / fine-tune only / both / neither
 python -m analysis.error_analysis                                         # 8.4: F1 by points, segment length, source, not-to-scale; accuracy vs verifier margin
 python -m analysis.attention_maps                                         # 8.5: attention maps of 5 correct + 5 wrong decisions, attention on the highlight (needs a checkpoint)
+python -m analysis.asserted_vs_geometric                                  # 8.3: both label sets side by side, label disagreement cells, audit examples with the model's answer
+python -m analysis.figures                                                # 8.6: per-relation F1 bars, headline figure, reports/figures/README.md (the figure manifest)
 ```
 
 Part B (`experiments/selftrain.py`) uses the best 7.3 run as teacher (`selftrain.teacher_run`),
