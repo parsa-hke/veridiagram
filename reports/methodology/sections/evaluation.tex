@@ -1,0 +1,42 @@
+\section{Evaluation Metrics and Analysis Plan}
+\label{sec:evaluation}
+
+\subsection{Metrics}
+
+Table~\ref{tab:metrics} lists the metrics and why each fits the objective. The primary metric is \textbf{macro-F1} over the six relations: per relation, precision and recall are computed from the thresholded predictions of all applicable queries, F1 is their harmonic mean, and the macro average weights every relation equally. This is the right aggregate for the research question because the relations are very unequally frequent (\rel{tangent} has no asserted positives at all, \rel{collinear} thousands) and a micro-averaged or accuracy-style score would be dominated by the common ones and by the negatives. Per-relation precision, recall and F1 are reported with it, because the hypotheses concern perception of specific relations and a macro average can hide a failure on one of them.
+
+\begin{table}[tbp]
+  \centering\small
+  \caption{Metrics and their role.}
+  \label{tab:metrics}
+  \begin{tabularx}{\textwidth}{@{}l Y@{}}
+    \toprule
+    Metric & Role \\
+    \midrule
+    Macro-F1 over six relations & Primary outcome; weights rare relations equally with common ones \\
+    Per-relation precision, recall, F1 & Locates which relations are perceived and which are not \\
+    Mean $\pm$ s.d.\ over \nSeeds{} seeds & Run-to-run variation; the yardstick for \Hzero \\
+    Bootstrap \ciLevelPct\% CI over diagrams (\bootstrapResamples{} resamples) \cite{efron1993bootstrap} & Sampling uncertainty that respects the clustering of queries within a diagram \\
+    Expected calibration error, \eceBins{} bins \cite{guo2017calibration} & Whether the probabilities can be trusted downstream (grading, tutoring) \\
+    Pseudo-label precision (Part B) & Whether a filter removed wrong labels; measured after unsealing \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The operating threshold for each relation is tuned on the validation split and frozen; a fixed threshold of 0.5 is reported alongside so that the tuning itself can be inspected. Expected calibration error with \eceBins{} bins \cite{guo2017calibration} is reported because the intended uses of the model (Section~\ref{sec:ethics}) act on its confidence, not only on its decision.
+
+\subsection{Evaluation sets and label sets}
+
+Every model is evaluated on four units, each against both label sets: the in-distribution test split (\nFiguresTest{} figures, \nQueriesGeometryTest{} queries), the held-out source (\nHeldoutFigures{} figures, \nQueriesPgdpHeldout{} queries), the synthetic extrapolation set (\synthExtrapSize{} diagrams of \synthExtrapPointsMin--\synthExtrapPointsMax{} points; \extrapEvalCap{} of its \nQueriesSynthExtrap{} queries, evenly spaced), and the not-to-scale subset of the two real test units. Evaluation units keep the natural positive-to-negative ratio. The geometric-label score is the headline; the asserted-label score is reported next to it in every table.
+
+\subsection{Uncertainty}
+
+Two sources of variation are reported separately. Run-to-run variation is the standard deviation over the \nSeeds{} seeds. Sampling variation is a \ciLevelPct\% confidence interval from \bootstrapResamples{} bootstrap resamples drawn over \emph{diagrams}, not queries \cite{efron1993bootstrap}, because the queries of one diagram share its image and are not independent; resampling queries would understate the interval.
+
+\subsection{Decision rules for the hypotheses}
+
+\Hone{} is supported if, on both the held-out source and the extrapolation set, the mean macro-F1 of the synthetic-data condition exceeds that of the real-only condition by more than the larger of the two seed standard deviations, and the bootstrap intervals of the two conditions do not overlap; it is supported in part if this holds on one of the two sets. \Hzero{} is retained if the difference on both sets is within the seed standard deviation. \Htwo{} is supported if the asserted-label macro-F1 is below the geometric-label macro-F1 by more than the seed standard deviation on the real test units and the audit attributes the majority of the disagreements to queries that are geometrically true but unmarked, which the stored margins and the two label vectors make countable per query.
+
+\subsection{Analysis plan}
+
+Beyond the hypothesis tests, the analysis is fixed in advance. (i) A headline table counts, per evaluation unit, the queries solved by the probe only, by the fine-tune only, by both and by neither, at the validation-tuned thresholds. (ii) Error analysis breaks F1 down by relation, by source, by the number of points in the diagram, by segment length, by the not-to-scale flag and, for the training unit, by augmentation condition; and it plots F1 against the verifier margin, to show whether the model fails near the tolerance (where the label itself is marginal) or far from it (a genuine perception error). (iii) Attention maps (attention rollout or last-layer CLS attention) are produced for ten diagrams, five correct and five wrong, to see whether the model attends to the highlighted primitives and to the printed marks or elsewhere. (iv) The not-to-scale subset is reported as its own category; because it is small, it supports no claim on its own. (v) For the self-training extension, the precision of the kept and of the removed pseudo-labels under each filter is computed after unsealing. Every table and figure is regenerated by a script from the stored predictions, so the analysis is reproducible from the run directories alone.

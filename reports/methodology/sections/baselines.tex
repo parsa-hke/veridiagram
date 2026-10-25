@@ -1,0 +1,44 @@
+\section{Baseline Methods or Comparative Models}
+\label{sec:baselines}
+
+A result is only interpretable against what simpler or alternative systems achieve under the same conditions. Table~\ref{tab:comparisons} lists every comparison in the study and what each one isolates.
+
+\begin{table}[tbp]
+  \centering\small
+  \caption{Comparisons. ``Budget'' means the same probe stage and \ftTotalImages{} fine-tune images; one-seed comparisons are design checks, three-seed ones support the hypotheses.}
+  \label{tab:comparisons}
+  \begin{tabularx}{\textwidth}{@{}>{\hsize=.9\hsize}Y >{\hsize=1.1\hsize}Y >{\raggedright\arraybackslash}p{2.1cm}@{}}
+    \toprule
+    Comparison & What it isolates & Seeds \\
+    \midrule
+    Linear probe on frozen DINOv3 features & What the pre-trained features already encode about relations; the floor for fine-tuning & \nSeeds \\
+    Fine-tune on real data only & The control of \Hone{}/\Hzero: same budget, no synthetic data & \nSeeds \\
+    Fine-tune with \scalingSizes{} synthetic diagrams & The effect of verifier-labelled data and of its amount & \nSeeds{} at 0 and 50,000; 1 between \\
+    Self-training: confidence filter vs.\ confidence + consistency vs.\ no pseudo-labels & Whether pseudo-labels on real unlabelled diagrams help, and whether a deductive filter removes wrong ones & \nSeeds{} (1 for the control) \\
+    Query as tokens (no overlay) & Whether the highlight overlay is what makes the task learnable & 1 \\
+    DINOv2 ViT-L/14 backbone & Backbone family at the same recipe & 1 \\
+    224 px input & Whether resolution matters for thin strokes and marks & 1 \\
+    No augmentation & The value of relation-preserving augmentation & 1 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{The baseline: a linear probe}
+
+The baseline is a linear classifier on the frozen pooled features of the same backbone, trained with AdamW at learning rate $\probeLR$ for up to \probeEpochs{} epochs with early stopping on validation macro-F1. It answers a question that any fine-tuning result presupposes: how much of the task is already solved by the pre-trained representation. It also gives the headline analysis its two categories, queries solved by the probe only, by the fine-tune only, by both, or by neither.
+
+\subsection{The control: real data only}
+
+\Hone{} compares two training conditions, so the essential comparison is the fine-tune on real data alone against the fine-tune with synthetic data added. The comparison is fair because the two conditions share the backbone, the recipe, the seeds, the number of training images and, through the \ftRealFractionPct\%-real batch composition, the exposure to real data; the only difference is whether the other half of each batch is more real data (drawn again) or synthetic data. Varying the synthetic set size at a fixed budget then shows whether more synthetic diversity helps.
+
+\subsection{Comparative models}
+
+The \emph{query-as-tokens} model (Section~\ref{sec:model}) tests the central design decision: if it performs far below a model that receives the highlight, the overlay is doing the work. The \emph{DINOv2-L} run tests whether the choice of backbone family changes the picture, at an identical recipe. The \emph{224 px} run tests the resolution argument of Section~\ref{sec:model}, and the \emph{no augmentation} run the value of the augmentation policy. These four are run with one seed each because they are design checks whose expected effects are large relative to seed variation; if an observed difference were within the seed spread of the three-seed runs, it would be reported as inconclusive rather than as a finding.
+
+\subsection{Self-training comparison}
+
+The extension to real unlabelled diagrams follows the teacher--student scheme of self-training \cite{xie2020noisystudent} and compares two ways of filtering a teacher's pseudo-labels on the PGPS9K pool. The teacher is the best model of the synthetic-data condition by validation macro-F1; a pseudo-label is kept when the teacher's confidence exceeds $\tau=\selftrainTau$ (either way: a confident negative is kept as a negative, other entries are masked out). The \emph{consistency} filter additionally computes the deductive closure of the kept relations per diagram, with the rules that parallelism is transitive, that a line perpendicular to one of two parallel lines is perpendicular to the other, that two lines perpendicular to a third are parallel, and that length equality is transitive, and drops a diagram whose closure contains a contradiction, either a pair deduced to be both parallel and perpendicular or a deduced fact that the teacher confidently denied. Students start from the teacher's weights and continue for the same budget with half of each batch pseudo-labelled; a \emph{control} student continues for the same budget with no pseudo-labels, so that the effect of the extra training is separated from the effect of the pseudo-labels. Pseudo-label precision under each filter is measured post hoc by unsealing the pool's own annotations and coordinates, which is the evidence for whether the consistency filter removed wrong labels.
+
+\subsection{Why no prior benchmark is used as a baseline}
+
+Published diagram parsers \cite{lu2021intergps,zhang2022pgdp} are scored against human marks, and multimodal models are scored through problem answers \cite{zhang2024mathverse}; neither measures the quantity this study measures, so a number copied from those papers would compare different things. The asserted-label score of the proposed model, reported next to its geometric-label score, is the closest fair contact with that literature, and the \Htwo{} analysis makes the difference between the two references explicit.

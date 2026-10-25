@@ -1,0 +1,51 @@
+\section{Training Strategy and Experimental Setup}
+\label{sec:training}
+
+\subsection{Fine-tuning strategy: linear probe, then fine-tune}
+
+Every fine-tuned model is trained in two stages (LP-FT) \cite{kumar2022lpft}. First, frozen features are extracted for \ftLPQueries{} training queries and the head alone is fitted on them for up to \ftLPEpochs{} epochs. Then the whole network, head and backbone, is fine-tuned for \ftEpochs{} epochs of \ftEpochImages{} images each, drawn with replacement from the training queries, that is \ftTotalImages{} images per run. Kumar et~al.\ show that fitting the head first prevents the random head from distorting the pre-trained features at the start of fine-tuning and improves out-of-distribution accuracy, which is exactly the regime of the held-out source and the extrapolation set. The fixed image budget, rather than a fixed number of epochs, is what makes the training conditions of Section~\ref{sec:design} comparable: a run with 50,000 synthetic diagrams sees the same number of images as a run with none.
+
+When synthetic diagrams are part of the training set, every batch draws \ftRealFractionPct\% of its queries from the real training unit and the rest from the synthetic unit, so that the conditions also share the same exposure to real data; the synthetic set size then changes only the diversity of the synthetic half.
+
+\subsection{Optimisation settings}
+
+Table~\ref{tab:config} lists the full configuration. The optimiser is AdamW \cite{loshchilov2019adamw} with weight decay \ftWeightDecay. The head learning rate is $\ftHeadLR$ and the backbone's top layer is $\ftBackboneLR$, decayed layer-wise by a factor of \ftLLRD{} from the last block downward \cite{howard2018ulmfit}, so that the earliest layers, which hold generic edge and stroke features, move least. The schedule is cosine \cite{loshchilov2017sgdr} with a warm-up of \ftWarmupEpochs{} epochs. Batches of \ftBatch{} images are processed in \ftAmpDtype{} mixed precision \cite{micikevicius2018amp}. An exponential moving average of the weights with decay \ftEMA{} \cite{polyak1992averaging} is kept, with its own warm-up, and the checkpoint written as the run's model is the EMA weights at the epoch with the best validation macro-F1; a resumable checkpoint is also written every epoch because cloud sessions can disconnect.
+
+\begin{table}[tbp]
+  \centering\small
+  \caption{Training configuration (from the project's single configuration file).}
+  \label{tab:config}
+  \begin{tabular}{@{}l l@{}}
+    \toprule
+    Setting & Value \\
+    \midrule
+    Backbone / fallback & DINOv3 ViT-L/16 / DINOv2 ViT-L/14 \\
+    Input & long side \inputLongSide{} px, aspect preserved, padded to a multiple of \inputPadMultiple \\
+    Probe stage & \ftLPQueries{} queries, up to \ftLPEpochs{} epochs on frozen features \\
+    Fine-tune budget & \ftEpochs{} epochs $\times$ \ftEpochImages{} images $=$ \ftTotalImages{} images \\
+    Real / synthetic share per batch & \ftRealFractionPct\% / \ftRealFractionPct\% (when synthetic data is used) \\
+    Optimiser & AdamW, weight decay \ftWeightDecay \\
+    Learning rates & head $\ftHeadLR$; backbone $\ftBackboneLR$, layer-wise decay \ftLLRD \\
+    Schedule & cosine, warm-up \ftWarmupEpochs{} epochs \\
+    Batch size & \ftBatch \\
+    Precision & \ftAmpDtype{} mixed precision; gradient checkpointing on \\
+    Weight averaging & EMA, decay \ftEMA \\
+    Model selection & best validation macro-F1 (EMA weights) \\
+    Loss & masked BCE, positive weights capped at \posWeightCap \\
+    Negatives (training) & at most \noneRatio$\times$ the positives per query kind \\
+    Augmentation & as in Section~\ref{sec:preprocessing}, training only \\
+    Linear probe (baseline) & AdamW, lr $\probeLR$, \probeEpochs{} epochs, batch \probeBatch, early stop after \probePatience \\
+    Seeds & \seedList{} (\nSeeds{} per reported number) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Validation approach}
+
+The validation split (\nFiguresVal{} figures, disjoint by figure from everything else) serves three purposes and no other: checkpoint selection by macro-F1 against the geometric labels, the operating threshold per relation, which is tuned on validation and then frozen, and early stopping in the probe stage. No test set is consulted during training or model selection. Every reported number is the mean and standard deviation over \nSeeds{} seeds (\seedList); the seed drives weight initialisation of the head, data order, augmentation and the query sampling, while the query index itself is fixed across seeds so that the conditions see the same queries.
+
+\subsection{Computing environment and feasibility}
+
+The pipeline runs on three kinds of machine with the same code and configuration: a local Apple-silicon laptop for development, tests, the data build, the verifier, synthetic generation and smoke runs; a university laboratory with \benchGPUs{} \benchGPU{} GPUs; and Google Colab (A100) for the remaining runs. A benchmark measured on the laboratory GPUs gives \benchTrainImgPerS{} training images per second and \benchEvalImgPerS{} evaluation images per second at \inputLongSide{} px with a peak memory of \benchPeakMemGB{} GB (\benchTrainImgPerSLow{} training images per second at 224 px). At that rate the fine-tune stage of one run takes about \ftHoursPerRun{} GPU-hour, plus the probe stage and the evaluation of four units, so a complete run is of the order of 1.5--2 GPU-hours and the whole experimental programme of Section~\ref{sec:baselines} (24 runs) fits in a few laboratory sessions or a day of Colab. The fixed-budget design was adopted for this reason: a plan with 30 epochs over the largest synthetic set would have needed about 1,400 GPU-hours, beyond what a shared classroom machine offers.
+
+Before any full run, a smoke configuration (50 diagrams, one epoch) must complete the probe and the fine-tune end to end and write a metrics file; the gate is that it does so in under ten minutes on a GPU. Runs are launched by one entry point from a configuration file, queued one per GPU, and resumed from their last checkpoint if interrupted. Every run writes its configuration, a per-epoch history, a metrics file with every test unit against both label sets, and the predictions themselves, and appends one line to a run log with the configuration hash, seed and best epoch.

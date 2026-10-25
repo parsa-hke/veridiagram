@@ -1,0 +1,29 @@
+{
+  "benchmark": {
+    "gpu": "NVIDIA RTX 5000 Ada Generation",
+    "n_gpus": 4,
+    "rates": {
+      "224": {
+        "eval_img_per_s": 491.5,
+        "peak_mem_gb": 4.7,
+        "train_img_per_s": 64.9
+      },
+      "448": {
+        "eval_img_per_s": 98.5,
+        "peak_mem_gb": 5.5,
+        "train_img_per_s": 22.5
+      }
+    },
+    "train_queries": 37846
+  },
+  "geometry3k_test_overlap": {
+    "share_figure_with_trainval": 327,
+    "test_images": 601
+  },
+  "index_sizes": {
+    "geometry3k_test": 11319,
+    "pgdp5k_heldout": 25272,
+    "pgps9k_pool": 66019,
+    "synth_extrap": 60000
+  }
+}

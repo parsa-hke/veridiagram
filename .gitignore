@@ -30,3 +30,7 @@ build/
 verifier/gold/label*.html
 # Machine-specific preview config
 .claude/launch.json
+
+# Overleaf zips of the LaTeX reports (python -m scripts.methodology_zip / report_zip)
+reports/*.zip
+reports/*/*.zip
