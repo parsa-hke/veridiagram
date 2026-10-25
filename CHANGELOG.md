@@ -1062,3 +1062,39 @@ Found (geometric macro-F1, geometry3k_test / pgdp5k_heldout / synth_extrap, seed
 To decide for the report: the Phase 8 tables give both operating points; plan 8.2 names the val-tuned
 one. Suggested: headline on val-tuned thresholds (Phase 8 tables), with the 0.5 numbers (Phase 7
 tables) in the appendix next to the padding table.
+
+## 2026-10-25 — Phase 8.4: error analysis
+
+Done
+- `analysis/error_analysis.py`: per experiment (seeds pooled, geometric labels, each run's val-tuned
+  thresholds) and test unit, macro-F1 and per-relation F1 by number of points, by the shortest queried
+  segment relative to the diagram's bounding-box diagonal (pt_circle queries have no segment), by
+  annotation source, by the not-to-scale flag, plus per-relation P/R/F1; and the share of correct
+  decisions per relation against the verifier margin in units of the tolerance (7 bins; <= 1 is a
+  geometric positive). Writes `reports/tables/error_analysis.{csv,md}`, `error_margin.csv`,
+  `reports/figures/error_margin.png` (accuracy vs margin, one panel per unit) and
+  `error_breakdowns.png` (macro-F1 by points and by segment length). 2.3 s for five experiments. The
+  augmentation condition in the plan's list is the 7.7 training ablation and is not a test-query
+  property. Tests `tests/test_error_analysis.py` (segments from refs, bins, features, a perfect
+  predictor gives accuracy 1 in every margin bin and positives exactly below the tolerance, breakdown
+  sums, pooled seeds, figures, stale validation predictions reported; ~1 s). README updated.
+
+Found (7.2 = sq_finetune_colab; geometry3k_test / pgdp5k_heldout / synth_extrap)
+- Segment length is the strongest factor: macro-F1 0.67 / 0.74 / 0.35 when the shortest queried
+  segment is under 10% of the diagonal, 0.57 / 0.69 / 0.56 at 10-20%, 0.81 / 0.81 / 0.61 at 20-35%,
+  0.88 / 0.89 / 0.64 above. Collinear collapses on short lines (F1 0.00 on 9 and 0.21 on 24 positives
+  at 10-20%); equal_length is the weakest relation at every length (0.26-0.72).
+- Diagram size: flat 0.86-0.90 up to 12 points on Geometry3K, 0.80 at 13-16 (900 decisions);
+  PGDP5K 0.92 at <= 4 points down to 0.81 at 17-20; synth_extrap 0.62-0.68 across 12-20 points, so
+  the extrapolation gap is not a smooth function of the point count but a shift (more, shorter
+  segments per image).
+- Source: the 12 Geometry3K-annotated test figures score 0.908 against 0.886 for the PGDP5K-annotated
+  ones (1,359 decisions; within noise). Not to scale: 0.885 vs 0.886 (3 figures) and 0.834 vs 0.894
+  (4 figures): too few diagrams for a claim, as 7.4 said.
+- Margin: the model fails where the verifier's label is decided by a hair. Parallel: 0.98 of decisions
+  right under 0.25x the tolerance, 0.76 at 0.5-1x, 0.54 at 1-1.5x, 1.00 beyond 2x. Perpendicular 0.96 ->
+  0.56 -> 0.84 -> 0.65 -> 0.95. Equal_length is poor across a wide band (0.52-0.72 from 0.5x to 2x)
+  and only 0.80 right even for clear positives under 0.25x: a 10% length difference is not something
+  the network reads reliably. On_circle ~1.0 everywhere. On synth_extrap collinear drops to 0.15 at
+  0.5-1x: the collinear tolerance (1.19% of the diagonal) is about 6 px on a 448 px rendering of a
+  12-20-point figure, at the resolution limit; the same relation is 0.96-0.97 on real diagrams.

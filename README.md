@@ -93,6 +93,7 @@ python -m experiments.gate phase7                                         # smok
 python -m analysis.phase7                                                 # tables, not-to-scale subset, scaling.png, padding effect
 python -m analysis.phase8                                                 # 8.1: bootstrap CIs, ECE, val-tuned thresholds, per-relation F1
 python -m analysis.headline_table                                         # 8.2: queries solved by probe only / fine-tune only / both / neither
+python -m analysis.error_analysis                                         # 8.4: F1 by points, segment length, source, not-to-scale; accuracy vs verifier margin
 ```
 
 Part B (`experiments/selftrain.py`) uses the best 7.3 run as teacher (`selftrain.teacher_run`),

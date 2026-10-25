@@ -1,0 +1,631 @@
+experiment,unit,seeds,relation,bin,bin_lo,n,positives,accuracy
+sq_finetune_colab,geometry3k_test,0 1 2,parallel,"[0, 0.25)",0.0,1380,1365,0.9761
+sq_finetune_colab,geometry3k_test,0 1 2,parallel,"[0.25, 0.5)",0.25,81,78,0.8889
+sq_finetune_colab,geometry3k_test,0 1 2,parallel,"[0.5, 1)",0.5,63,63,0.7619
+sq_finetune_colab,geometry3k_test,0 1 2,parallel,"[1, 1.5)",1.0,54,0,0.537
+sq_finetune_colab,geometry3k_test,0 1 2,parallel,"[1.5, 2)",1.5,87,0,0.8736
+sq_finetune_colab,geometry3k_test,0 1 2,parallel,"[2, 4)",2.0,204,0,1.0
+sq_finetune_colab,geometry3k_test,0 1 2,parallel,"[4, inf)",4.0,15666,0,0.9994
+sq_finetune_colab,geometry3k_test,0 1 2,perpendicular,"[0, 0.25)",0.0,2556,2556,0.9644
+sq_finetune_colab,geometry3k_test,0 1 2,perpendicular,"[0.25, 0.5)",0.25,225,225,0.8756
+sq_finetune_colab,geometry3k_test,0 1 2,perpendicular,"[0.5, 1)",0.5,234,234,0.5556
+sq_finetune_colab,geometry3k_test,0 1 2,perpendicular,"[1, 1.5)",1.0,156,0,0.8397
+sq_finetune_colab,geometry3k_test,0 1 2,perpendicular,"[1.5, 2)",1.5,276,0,0.6522
+sq_finetune_colab,geometry3k_test,0 1 2,perpendicular,"[2, 4)",2.0,1035,0,0.9469
+sq_finetune_colab,geometry3k_test,0 1 2,perpendicular,"[4, inf)",4.0,13053,0,0.9975
+sq_finetune_colab,geometry3k_test,0 1 2,equal_length,"[0, 0.25)",0.0,2364,2364,0.7961
+sq_finetune_colab,geometry3k_test,0 1 2,equal_length,"[0.25, 0.5)",0.25,570,570,0.5737
+sq_finetune_colab,geometry3k_test,0 1 2,equal_length,"[0.5, 1)",0.5,1101,1101,0.5159
+sq_finetune_colab,geometry3k_test,0 1 2,equal_length,"[1, 1.5)",1.0,1173,0,0.6419
+sq_finetune_colab,geometry3k_test,0 1 2,equal_length,"[1.5, 2)",1.5,1068,0,0.7238
+sq_finetune_colab,geometry3k_test,0 1 2,equal_length,"[2, 4)",2.0,4866,0,0.8927
+sq_finetune_colab,geometry3k_test,0 1 2,equal_length,"[4, inf)",4.0,7902,0,0.9666
+sq_finetune_colab,geometry3k_test,0 1 2,on_circle,"[0, 0.25)",0.0,984,984,0.9848
+sq_finetune_colab,geometry3k_test,0 1 2,on_circle,"[0.25, 0.5)",0.25,21,21,1.0
+sq_finetune_colab,geometry3k_test,0 1 2,on_circle,"[0.5, 1)",0.5,0,0,
+sq_finetune_colab,geometry3k_test,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_finetune_colab,geometry3k_test,0 1 2,on_circle,"[1.5, 2)",1.5,0,0,
+sq_finetune_colab,geometry3k_test,0 1 2,on_circle,"[2, 4)",2.0,27,0,1.0
+sq_finetune_colab,geometry3k_test,0 1 2,on_circle,"[4, inf)",4.0,339,0,1.0
+sq_finetune_colab,geometry3k_test,0 1 2,tangent,"[0, 0.25)",0.0,234,219,0.8632
+sq_finetune_colab,geometry3k_test,0 1 2,tangent,"[0.25, 0.5)",0.25,60,51,0.7
+sq_finetune_colab,geometry3k_test,0 1 2,tangent,"[0.5, 1)",0.5,18,6,0.6667
+sq_finetune_colab,geometry3k_test,0 1 2,tangent,"[1, 1.5)",1.0,3,0,0.3333
+sq_finetune_colab,geometry3k_test,0 1 2,tangent,"[1.5, 2)",1.5,48,0,0.5
+sq_finetune_colab,geometry3k_test,0 1 2,tangent,"[2, 4)",2.0,165,0,0.9273
+sq_finetune_colab,geometry3k_test,0 1 2,tangent,"[4, inf)",4.0,1320,0,0.9864
+sq_finetune_colab,geometry3k_test,0 1 2,collinear,"[0, 0.25)",0.0,1143,1143,0.9571
+sq_finetune_colab,geometry3k_test,0 1 2,collinear,"[0.25, 0.5)",0.25,57,57,0.7544
+sq_finetune_colab,geometry3k_test,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.75
+sq_finetune_colab,geometry3k_test,0 1 2,collinear,"[1, 1.5)",1.0,21,0,0.619
+sq_finetune_colab,geometry3k_test,0 1 2,collinear,"[1.5, 2)",1.5,27,0,0.963
+sq_finetune_colab,geometry3k_test,0 1 2,collinear,"[2, 4)",2.0,84,0,0.9048
+sq_finetune_colab,geometry3k_test,0 1 2,collinear,"[4, inf)",4.0,10338,0,0.9972
+sq_finetune_colab,pgdp5k_heldout,0 1 2,parallel,"[0, 0.25)",0.0,3348,3324,0.9851
+sq_finetune_colab,pgdp5k_heldout,0 1 2,parallel,"[0.25, 0.5)",0.25,117,117,0.9316
+sq_finetune_colab,pgdp5k_heldout,0 1 2,parallel,"[0.5, 1)",0.5,87,87,0.7011
+sq_finetune_colab,pgdp5k_heldout,0 1 2,parallel,"[1, 1.5)",1.0,114,0,0.5614
+sq_finetune_colab,pgdp5k_heldout,0 1 2,parallel,"[1.5, 2)",1.5,111,0,0.8829
+sq_finetune_colab,pgdp5k_heldout,0 1 2,parallel,"[2, 4)",2.0,948,0,0.9937
+sq_finetune_colab,pgdp5k_heldout,0 1 2,parallel,"[4, inf)",4.0,37584,0,0.9999
+sq_finetune_colab,pgdp5k_heldout,0 1 2,perpendicular,"[0, 0.25)",0.0,5268,5268,0.9343
+sq_finetune_colab,pgdp5k_heldout,0 1 2,perpendicular,"[0.25, 0.5)",0.25,408,408,0.7696
+sq_finetune_colab,pgdp5k_heldout,0 1 2,perpendicular,"[0.5, 1)",0.5,582,582,0.4777
+sq_finetune_colab,pgdp5k_heldout,0 1 2,perpendicular,"[1, 1.5)",1.0,588,0,0.7789
+sq_finetune_colab,pgdp5k_heldout,0 1 2,perpendicular,"[1.5, 2)",1.5,699,0,0.8369
+sq_finetune_colab,pgdp5k_heldout,0 1 2,perpendicular,"[2, 4)",2.0,2331,0,0.9541
+sq_finetune_colab,pgdp5k_heldout,0 1 2,perpendicular,"[4, inf)",4.0,32433,0,0.9974
+sq_finetune_colab,pgdp5k_heldout,0 1 2,equal_length,"[0, 0.25)",0.0,6255,6255,0.8243
+sq_finetune_colab,pgdp5k_heldout,0 1 2,equal_length,"[0.25, 0.5)",0.25,1200,1200,0.665
+sq_finetune_colab,pgdp5k_heldout,0 1 2,equal_length,"[0.5, 1)",0.5,2175,2175,0.5986
+sq_finetune_colab,pgdp5k_heldout,0 1 2,equal_length,"[1, 1.5)",1.0,2469,0,0.4962
+sq_finetune_colab,pgdp5k_heldout,0 1 2,equal_length,"[1.5, 2)",1.5,2487,0,0.6144
+sq_finetune_colab,pgdp5k_heldout,0 1 2,equal_length,"[2, 4)",2.0,11052,0,0.8359
+sq_finetune_colab,pgdp5k_heldout,0 1 2,equal_length,"[4, inf)",4.0,20265,0,0.9663
+sq_finetune_colab,pgdp5k_heldout,0 1 2,on_circle,"[0, 0.25)",0.0,1356,1356,0.9794
+sq_finetune_colab,pgdp5k_heldout,0 1 2,on_circle,"[0.25, 0.5)",0.25,54,54,0.9815
+sq_finetune_colab,pgdp5k_heldout,0 1 2,on_circle,"[0.5, 1)",0.5,6,6,1.0
+sq_finetune_colab,pgdp5k_heldout,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_finetune_colab,pgdp5k_heldout,0 1 2,on_circle,"[1.5, 2)",1.5,12,0,0.75
+sq_finetune_colab,pgdp5k_heldout,0 1 2,on_circle,"[2, 4)",2.0,48,0,1.0
+sq_finetune_colab,pgdp5k_heldout,0 1 2,on_circle,"[4, inf)",4.0,693,0,0.9986
+sq_finetune_colab,pgdp5k_heldout,0 1 2,tangent,"[0, 0.25)",0.0,603,525,0.8408
+sq_finetune_colab,pgdp5k_heldout,0 1 2,tangent,"[0.25, 0.5)",0.25,108,84,0.9815
+sq_finetune_colab,pgdp5k_heldout,0 1 2,tangent,"[0.5, 1)",0.5,57,33,0.6667
+sq_finetune_colab,pgdp5k_heldout,0 1 2,tangent,"[1, 1.5)",1.0,21,0,0.9048
+sq_finetune_colab,pgdp5k_heldout,0 1 2,tangent,"[1.5, 2)",1.5,69,0,0.6812
+sq_finetune_colab,pgdp5k_heldout,0 1 2,tangent,"[2, 4)",2.0,189,0,0.8942
+sq_finetune_colab,pgdp5k_heldout,0 1 2,tangent,"[4, inf)",4.0,1950,0,0.9887
+sq_finetune_colab,pgdp5k_heldout,0 1 2,collinear,"[0, 0.25)",0.0,2388,2388,0.974
+sq_finetune_colab,pgdp5k_heldout,0 1 2,collinear,"[0.25, 0.5)",0.25,87,87,0.7586
+sq_finetune_colab,pgdp5k_heldout,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.2917
+sq_finetune_colab,pgdp5k_heldout,0 1 2,collinear,"[1, 1.5)",1.0,21,0,1.0
+sq_finetune_colab,pgdp5k_heldout,0 1 2,collinear,"[1.5, 2)",1.5,30,0,0.9333
+sq_finetune_colab,pgdp5k_heldout,0 1 2,collinear,"[2, 4)",2.0,141,0,0.9291
+sq_finetune_colab,pgdp5k_heldout,0 1 2,collinear,"[4, inf)",4.0,22056,0,0.9972
+sq_finetune_colab,synth_extrap,0 1 2,parallel,"[0, 0.25)",0.0,255,249,0.9373
+sq_finetune_colab,synth_extrap,0 1 2,parallel,"[0.25, 0.5)",0.25,141,126,0.9149
+sq_finetune_colab,synth_extrap,0 1 2,parallel,"[0.5, 1)",0.5,192,171,0.6927
+sq_finetune_colab,synth_extrap,0 1 2,parallel,"[1, 1.5)",1.0,234,0,0.6923
+sq_finetune_colab,synth_extrap,0 1 2,parallel,"[1.5, 2)",1.5,252,0,0.8294
+sq_finetune_colab,synth_extrap,0 1 2,parallel,"[2, 4)",2.0,1020,0,0.9618
+sq_finetune_colab,synth_extrap,0 1 2,parallel,"[4, inf)",4.0,8976,0,0.9994
+sq_finetune_colab,synth_extrap,0 1 2,perpendicular,"[0, 0.25)",0.0,288,288,0.7604
+sq_finetune_colab,synth_extrap,0 1 2,perpendicular,"[0.25, 0.5)",0.25,174,174,0.7126
+sq_finetune_colab,synth_extrap,0 1 2,perpendicular,"[0.5, 1)",0.5,240,240,0.6667
+sq_finetune_colab,synth_extrap,0 1 2,perpendicular,"[1, 1.5)",1.0,192,0,0.4531
+sq_finetune_colab,synth_extrap,0 1 2,perpendicular,"[1.5, 2)",1.5,201,0,0.7313
+sq_finetune_colab,synth_extrap,0 1 2,perpendicular,"[2, 4)",2.0,876,0,0.8345
+sq_finetune_colab,synth_extrap,0 1 2,perpendicular,"[4, inf)",4.0,9099,0,0.9981
+sq_finetune_colab,synth_extrap,0 1 2,equal_length,"[0, 0.25)",0.0,402,402,0.7413
+sq_finetune_colab,synth_extrap,0 1 2,equal_length,"[0.25, 0.5)",0.25,297,297,0.7205
+sq_finetune_colab,synth_extrap,0 1 2,equal_length,"[0.5, 1)",0.5,645,645,0.6961
+sq_finetune_colab,synth_extrap,0 1 2,equal_length,"[1, 1.5)",1.0,612,0,0.3954
+sq_finetune_colab,synth_extrap,0 1 2,equal_length,"[1.5, 2)",1.5,663,0,0.4646
+sq_finetune_colab,synth_extrap,0 1 2,equal_length,"[2, 4)",2.0,2952,0,0.769
+sq_finetune_colab,synth_extrap,0 1 2,equal_length,"[4, inf)",4.0,5697,0,0.9753
+sq_finetune_colab,synth_extrap,0 1 2,on_circle,"[0, 0.25)",0.0,111,111,1.0
+sq_finetune_colab,synth_extrap,0 1 2,on_circle,"[0.25, 0.5)",0.25,27,27,0.963
+sq_finetune_colab,synth_extrap,0 1 2,on_circle,"[0.5, 1)",0.5,69,69,0.5507
+sq_finetune_colab,synth_extrap,0 1 2,on_circle,"[1, 1.5)",1.0,42,0,0.9286
+sq_finetune_colab,synth_extrap,0 1 2,on_circle,"[1.5, 2)",1.5,48,0,0.9792
+sq_finetune_colab,synth_extrap,0 1 2,on_circle,"[2, 4)",2.0,129,0,1.0
+sq_finetune_colab,synth_extrap,0 1 2,on_circle,"[4, inf)",4.0,1134,0,1.0
+sq_finetune_colab,synth_extrap,0 1 2,tangent,"[0, 0.25)",0.0,120,108,0.6833
+sq_finetune_colab,synth_extrap,0 1 2,tangent,"[0.25, 0.5)",0.25,45,36,0.6222
+sq_finetune_colab,synth_extrap,0 1 2,tangent,"[0.5, 1)",0.5,45,27,0.6222
+sq_finetune_colab,synth_extrap,0 1 2,tangent,"[1, 1.5)",1.0,39,0,0.6923
+sq_finetune_colab,synth_extrap,0 1 2,tangent,"[1.5, 2)",1.5,27,0,0.7778
+sq_finetune_colab,synth_extrap,0 1 2,tangent,"[2, 4)",2.0,141,0,0.8865
+sq_finetune_colab,synth_extrap,0 1 2,tangent,"[4, inf)",4.0,996,0,0.9739
+sq_finetune_colab,synth_extrap,0 1 2,collinear,"[0, 0.25)",0.0,222,222,0.6937
+sq_finetune_colab,synth_extrap,0 1 2,collinear,"[0.25, 0.5)",0.25,75,75,0.44
+sq_finetune_colab,synth_extrap,0 1 2,collinear,"[0.5, 1)",0.5,126,126,0.1508
+sq_finetune_colab,synth_extrap,0 1 2,collinear,"[1, 1.5)",1.0,159,0,0.8176
+sq_finetune_colab,synth_extrap,0 1 2,collinear,"[1.5, 2)",1.5,219,0,0.8721
+sq_finetune_colab,synth_extrap,0 1 2,collinear,"[2, 4)",2.0,798,0,0.9787
+sq_finetune_colab,synth_extrap,0 1 2,collinear,"[4, inf)",4.0,14160,0,0.9937
+sq_finetune_synth10k,geometry3k_test,0 1 2,parallel,"[0, 0.25)",0.0,1380,1365,0.9804
+sq_finetune_synth10k,geometry3k_test,0 1 2,parallel,"[0.25, 0.5)",0.25,81,78,0.9753
+sq_finetune_synth10k,geometry3k_test,0 1 2,parallel,"[0.5, 1)",0.5,63,63,0.746
+sq_finetune_synth10k,geometry3k_test,0 1 2,parallel,"[1, 1.5)",1.0,54,0,0.7407
+sq_finetune_synth10k,geometry3k_test,0 1 2,parallel,"[1.5, 2)",1.5,87,0,0.9425
+sq_finetune_synth10k,geometry3k_test,0 1 2,parallel,"[2, 4)",2.0,204,0,0.9951
+sq_finetune_synth10k,geometry3k_test,0 1 2,parallel,"[4, inf)",4.0,15666,0,0.9993
+sq_finetune_synth10k,geometry3k_test,0 1 2,perpendicular,"[0, 0.25)",0.0,2556,2556,0.9538
+sq_finetune_synth10k,geometry3k_test,0 1 2,perpendicular,"[0.25, 0.5)",0.25,225,225,0.8667
+sq_finetune_synth10k,geometry3k_test,0 1 2,perpendicular,"[0.5, 1)",0.5,234,234,0.6154
+sq_finetune_synth10k,geometry3k_test,0 1 2,perpendicular,"[1, 1.5)",1.0,156,0,0.8333
+sq_finetune_synth10k,geometry3k_test,0 1 2,perpendicular,"[1.5, 2)",1.5,276,0,0.6848
+sq_finetune_synth10k,geometry3k_test,0 1 2,perpendicular,"[2, 4)",2.0,1035,0,0.9585
+sq_finetune_synth10k,geometry3k_test,0 1 2,perpendicular,"[4, inf)",4.0,13053,0,0.9994
+sq_finetune_synth10k,geometry3k_test,0 1 2,equal_length,"[0, 0.25)",0.0,2364,2364,0.8663
+sq_finetune_synth10k,geometry3k_test,0 1 2,equal_length,"[0.25, 0.5)",0.25,570,570,0.7632
+sq_finetune_synth10k,geometry3k_test,0 1 2,equal_length,"[0.5, 1)",0.5,1101,1101,0.6785
+sq_finetune_synth10k,geometry3k_test,0 1 2,equal_length,"[1, 1.5)",1.0,1173,0,0.5431
+sq_finetune_synth10k,geometry3k_test,0 1 2,equal_length,"[1.5, 2)",1.5,1068,0,0.6582
+sq_finetune_synth10k,geometry3k_test,0 1 2,equal_length,"[2, 4)",2.0,4866,0,0.8757
+sq_finetune_synth10k,geometry3k_test,0 1 2,equal_length,"[4, inf)",4.0,7902,0,0.9687
+sq_finetune_synth10k,geometry3k_test,0 1 2,on_circle,"[0, 0.25)",0.0,984,984,0.997
+sq_finetune_synth10k,geometry3k_test,0 1 2,on_circle,"[0.25, 0.5)",0.25,21,21,1.0
+sq_finetune_synth10k,geometry3k_test,0 1 2,on_circle,"[0.5, 1)",0.5,0,0,
+sq_finetune_synth10k,geometry3k_test,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_finetune_synth10k,geometry3k_test,0 1 2,on_circle,"[1.5, 2)",1.5,0,0,
+sq_finetune_synth10k,geometry3k_test,0 1 2,on_circle,"[2, 4)",2.0,27,0,1.0
+sq_finetune_synth10k,geometry3k_test,0 1 2,on_circle,"[4, inf)",4.0,339,0,1.0
+sq_finetune_synth10k,geometry3k_test,0 1 2,tangent,"[0, 0.25)",0.0,234,219,0.8803
+sq_finetune_synth10k,geometry3k_test,0 1 2,tangent,"[0.25, 0.5)",0.25,60,51,0.85
+sq_finetune_synth10k,geometry3k_test,0 1 2,tangent,"[0.5, 1)",0.5,18,6,0.5556
+sq_finetune_synth10k,geometry3k_test,0 1 2,tangent,"[1, 1.5)",1.0,3,0,0.3333
+sq_finetune_synth10k,geometry3k_test,0 1 2,tangent,"[1.5, 2)",1.5,48,0,0.6458
+sq_finetune_synth10k,geometry3k_test,0 1 2,tangent,"[2, 4)",2.0,165,0,0.903
+sq_finetune_synth10k,geometry3k_test,0 1 2,tangent,"[4, inf)",4.0,1320,0,0.9962
+sq_finetune_synth10k,geometry3k_test,0 1 2,collinear,"[0, 0.25)",0.0,1143,1143,0.944
+sq_finetune_synth10k,geometry3k_test,0 1 2,collinear,"[0.25, 0.5)",0.25,57,57,0.7193
+sq_finetune_synth10k,geometry3k_test,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.6667
+sq_finetune_synth10k,geometry3k_test,0 1 2,collinear,"[1, 1.5)",1.0,21,0,0.8095
+sq_finetune_synth10k,geometry3k_test,0 1 2,collinear,"[1.5, 2)",1.5,27,0,0.963
+sq_finetune_synth10k,geometry3k_test,0 1 2,collinear,"[2, 4)",2.0,84,0,0.9167
+sq_finetune_synth10k,geometry3k_test,0 1 2,collinear,"[4, inf)",4.0,10338,0,0.9997
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,parallel,"[0, 0.25)",0.0,3348,3324,0.9892
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,parallel,"[0.25, 0.5)",0.25,117,117,1.0
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,parallel,"[0.5, 1)",0.5,87,87,0.7356
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,parallel,"[1, 1.5)",1.0,114,0,0.6491
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,parallel,"[1.5, 2)",1.5,111,0,0.964
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,parallel,"[2, 4)",2.0,948,0,0.9968
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,parallel,"[4, inf)",4.0,37584,0,0.9999
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,perpendicular,"[0, 0.25)",0.0,5268,5268,0.9455
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,perpendicular,"[0.25, 0.5)",0.25,408,408,0.7696
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,perpendicular,"[0.5, 1)",0.5,582,582,0.4759
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,perpendicular,"[1, 1.5)",1.0,588,0,0.7636
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,perpendicular,"[1.5, 2)",1.5,699,0,0.8412
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,perpendicular,"[2, 4)",2.0,2331,0,0.9691
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,perpendicular,"[4, inf)",4.0,32433,0,0.9993
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,equal_length,"[0, 0.25)",0.0,6255,6255,0.8761
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,equal_length,"[0.25, 0.5)",0.25,1200,1200,0.7692
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,equal_length,"[0.5, 1)",0.5,2175,2175,0.7071
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,equal_length,"[1, 1.5)",1.0,2469,0,0.4188
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,equal_length,"[1.5, 2)",1.5,2487,0,0.5702
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,equal_length,"[2, 4)",2.0,11052,0,0.8564
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,equal_length,"[4, inf)",4.0,20265,0,0.9784
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,on_circle,"[0, 0.25)",0.0,1356,1356,0.9993
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,on_circle,"[0.25, 0.5)",0.25,54,54,0.9815
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,on_circle,"[0.5, 1)",0.5,6,6,1.0
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,on_circle,"[1.5, 2)",1.5,12,0,0.8333
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,on_circle,"[2, 4)",2.0,48,0,0.9583
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,on_circle,"[4, inf)",4.0,693,0,0.9986
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,tangent,"[0, 0.25)",0.0,603,525,0.8889
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,tangent,"[0.25, 0.5)",0.25,108,84,1.0
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,tangent,"[0.5, 1)",0.5,57,33,0.5965
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,tangent,"[1, 1.5)",1.0,21,0,0.7143
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,tangent,"[1.5, 2)",1.5,69,0,0.5652
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,tangent,"[2, 4)",2.0,189,0,0.9048
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,tangent,"[4, inf)",4.0,1950,0,0.9959
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,collinear,"[0, 0.25)",0.0,2388,2388,0.9698
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,collinear,"[0.25, 0.5)",0.25,87,87,0.7356
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.25
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,collinear,"[1, 1.5)",1.0,21,0,0.9524
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,collinear,"[1.5, 2)",1.5,30,0,0.9
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,collinear,"[2, 4)",2.0,141,0,0.9362
+sq_finetune_synth10k,pgdp5k_heldout,0 1 2,collinear,"[4, inf)",4.0,22056,0,0.9994
+sq_finetune_synth10k,synth_extrap,0 1 2,parallel,"[0, 0.25)",0.0,255,249,0.9569
+sq_finetune_synth10k,synth_extrap,0 1 2,parallel,"[0.25, 0.5)",0.25,141,126,0.9645
+sq_finetune_synth10k,synth_extrap,0 1 2,parallel,"[0.5, 1)",0.5,192,171,0.776
+sq_finetune_synth10k,synth_extrap,0 1 2,parallel,"[1, 1.5)",1.0,234,0,0.7179
+sq_finetune_synth10k,synth_extrap,0 1 2,parallel,"[1.5, 2)",1.5,252,0,0.877
+sq_finetune_synth10k,synth_extrap,0 1 2,parallel,"[2, 4)",2.0,1020,0,0.9961
+sq_finetune_synth10k,synth_extrap,0 1 2,parallel,"[4, inf)",4.0,8976,0,0.9999
+sq_finetune_synth10k,synth_extrap,0 1 2,perpendicular,"[0, 0.25)",0.0,288,288,0.684
+sq_finetune_synth10k,synth_extrap,0 1 2,perpendicular,"[0.25, 0.5)",0.25,174,174,0.5747
+sq_finetune_synth10k,synth_extrap,0 1 2,perpendicular,"[0.5, 1)",0.5,240,240,0.5167
+sq_finetune_synth10k,synth_extrap,0 1 2,perpendicular,"[1, 1.5)",1.0,192,0,0.6875
+sq_finetune_synth10k,synth_extrap,0 1 2,perpendicular,"[1.5, 2)",1.5,201,0,0.8507
+sq_finetune_synth10k,synth_extrap,0 1 2,perpendicular,"[2, 4)",2.0,876,0,0.968
+sq_finetune_synth10k,synth_extrap,0 1 2,perpendicular,"[4, inf)",4.0,9099,0,1.0
+sq_finetune_synth10k,synth_extrap,0 1 2,equal_length,"[0, 0.25)",0.0,402,402,0.8259
+sq_finetune_synth10k,synth_extrap,0 1 2,equal_length,"[0.25, 0.5)",0.25,297,297,0.798
+sq_finetune_synth10k,synth_extrap,0 1 2,equal_length,"[0.5, 1)",0.5,645,645,0.7116
+sq_finetune_synth10k,synth_extrap,0 1 2,equal_length,"[1, 1.5)",1.0,612,0,0.4297
+sq_finetune_synth10k,synth_extrap,0 1 2,equal_length,"[1.5, 2)",1.5,663,0,0.6425
+sq_finetune_synth10k,synth_extrap,0 1 2,equal_length,"[2, 4)",2.0,2952,0,0.8967
+sq_finetune_synth10k,synth_extrap,0 1 2,equal_length,"[4, inf)",4.0,5697,0,0.993
+sq_finetune_synth10k,synth_extrap,0 1 2,on_circle,"[0, 0.25)",0.0,111,111,1.0
+sq_finetune_synth10k,synth_extrap,0 1 2,on_circle,"[0.25, 0.5)",0.25,27,27,1.0
+sq_finetune_synth10k,synth_extrap,0 1 2,on_circle,"[0.5, 1)",0.5,69,69,0.913
+sq_finetune_synth10k,synth_extrap,0 1 2,on_circle,"[1, 1.5)",1.0,42,0,0.7619
+sq_finetune_synth10k,synth_extrap,0 1 2,on_circle,"[1.5, 2)",1.5,48,0,0.9583
+sq_finetune_synth10k,synth_extrap,0 1 2,on_circle,"[2, 4)",2.0,129,0,1.0
+sq_finetune_synth10k,synth_extrap,0 1 2,on_circle,"[4, inf)",4.0,1134,0,1.0
+sq_finetune_synth10k,synth_extrap,0 1 2,tangent,"[0, 0.25)",0.0,120,108,0.9417
+sq_finetune_synth10k,synth_extrap,0 1 2,tangent,"[0.25, 0.5)",0.25,45,36,0.9111
+sq_finetune_synth10k,synth_extrap,0 1 2,tangent,"[0.5, 1)",0.5,45,27,0.7111
+sq_finetune_synth10k,synth_extrap,0 1 2,tangent,"[1, 1.5)",1.0,39,0,0.6154
+sq_finetune_synth10k,synth_extrap,0 1 2,tangent,"[1.5, 2)",1.5,27,0,0.8519
+sq_finetune_synth10k,synth_extrap,0 1 2,tangent,"[2, 4)",2.0,141,0,0.9574
+sq_finetune_synth10k,synth_extrap,0 1 2,tangent,"[4, inf)",4.0,996,0,0.999
+sq_finetune_synth10k,synth_extrap,0 1 2,collinear,"[0, 0.25)",0.0,222,222,0.7613
+sq_finetune_synth10k,synth_extrap,0 1 2,collinear,"[0.25, 0.5)",0.25,75,75,0.5333
+sq_finetune_synth10k,synth_extrap,0 1 2,collinear,"[0.5, 1)",0.5,126,126,0.2143
+sq_finetune_synth10k,synth_extrap,0 1 2,collinear,"[1, 1.5)",1.0,159,0,0.8428
+sq_finetune_synth10k,synth_extrap,0 1 2,collinear,"[1.5, 2)",1.5,219,0,0.9087
+sq_finetune_synth10k,synth_extrap,0 1 2,collinear,"[2, 4)",2.0,798,0,0.9574
+sq_finetune_synth10k,synth_extrap,0 1 2,collinear,"[4, inf)",4.0,14160,0,0.9965
+sq_selftrain_control,geometry3k_test,0 1 2,parallel,"[0, 0.25)",0.0,1380,1365,0.9717
+sq_selftrain_control,geometry3k_test,0 1 2,parallel,"[0.25, 0.5)",0.25,81,78,0.9383
+sq_selftrain_control,geometry3k_test,0 1 2,parallel,"[0.5, 1)",0.5,63,63,0.6667
+sq_selftrain_control,geometry3k_test,0 1 2,parallel,"[1, 1.5)",1.0,54,0,0.7593
+sq_selftrain_control,geometry3k_test,0 1 2,parallel,"[1.5, 2)",1.5,87,0,0.977
+sq_selftrain_control,geometry3k_test,0 1 2,parallel,"[2, 4)",2.0,204,0,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,parallel,"[4, inf)",4.0,15666,0,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,perpendicular,"[0, 0.25)",0.0,2556,2556,0.9902
+sq_selftrain_control,geometry3k_test,0 1 2,perpendicular,"[0.25, 0.5)",0.25,225,225,0.9244
+sq_selftrain_control,geometry3k_test,0 1 2,perpendicular,"[0.5, 1)",0.5,234,234,0.735
+sq_selftrain_control,geometry3k_test,0 1 2,perpendicular,"[1, 1.5)",1.0,156,0,0.7372
+sq_selftrain_control,geometry3k_test,0 1 2,perpendicular,"[1.5, 2)",1.5,276,0,0.6268
+sq_selftrain_control,geometry3k_test,0 1 2,perpendicular,"[2, 4)",2.0,1035,0,0.944
+sq_selftrain_control,geometry3k_test,0 1 2,perpendicular,"[4, inf)",4.0,13053,0,0.9994
+sq_selftrain_control,geometry3k_test,0 1 2,equal_length,"[0, 0.25)",0.0,2364,2364,0.9162
+sq_selftrain_control,geometry3k_test,0 1 2,equal_length,"[0.25, 0.5)",0.25,570,570,0.8105
+sq_selftrain_control,geometry3k_test,0 1 2,equal_length,"[0.5, 1)",0.5,1101,1101,0.7157
+sq_selftrain_control,geometry3k_test,0 1 2,equal_length,"[1, 1.5)",1.0,1173,0,0.6053
+sq_selftrain_control,geometry3k_test,0 1 2,equal_length,"[1.5, 2)",1.5,1068,0,0.764
+sq_selftrain_control,geometry3k_test,0 1 2,equal_length,"[2, 4)",2.0,4866,0,0.9443
+sq_selftrain_control,geometry3k_test,0 1 2,equal_length,"[4, inf)",4.0,7902,0,0.9842
+sq_selftrain_control,geometry3k_test,0 1 2,on_circle,"[0, 0.25)",0.0,984,984,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,on_circle,"[0.25, 0.5)",0.25,21,21,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,on_circle,"[0.5, 1)",0.5,0,0,
+sq_selftrain_control,geometry3k_test,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_selftrain_control,geometry3k_test,0 1 2,on_circle,"[1.5, 2)",1.5,0,0,
+sq_selftrain_control,geometry3k_test,0 1 2,on_circle,"[2, 4)",2.0,27,0,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,on_circle,"[4, inf)",4.0,339,0,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,tangent,"[0, 0.25)",0.0,234,219,0.8889
+sq_selftrain_control,geometry3k_test,0 1 2,tangent,"[0.25, 0.5)",0.25,60,51,0.8333
+sq_selftrain_control,geometry3k_test,0 1 2,tangent,"[0.5, 1)",0.5,18,6,0.7778
+sq_selftrain_control,geometry3k_test,0 1 2,tangent,"[1, 1.5)",1.0,3,0,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,tangent,"[1.5, 2)",1.5,48,0,0.7292
+sq_selftrain_control,geometry3k_test,0 1 2,tangent,"[2, 4)",2.0,165,0,0.9515
+sq_selftrain_control,geometry3k_test,0 1 2,tangent,"[4, inf)",4.0,1320,0,0.9985
+sq_selftrain_control,geometry3k_test,0 1 2,collinear,"[0, 0.25)",0.0,1143,1143,0.9641
+sq_selftrain_control,geometry3k_test,0 1 2,collinear,"[0.25, 0.5)",0.25,57,57,0.7193
+sq_selftrain_control,geometry3k_test,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.75
+sq_selftrain_control,geometry3k_test,0 1 2,collinear,"[1, 1.5)",1.0,21,0,0.5238
+sq_selftrain_control,geometry3k_test,0 1 2,collinear,"[1.5, 2)",1.5,27,0,1.0
+sq_selftrain_control,geometry3k_test,0 1 2,collinear,"[2, 4)",2.0,84,0,0.869
+sq_selftrain_control,geometry3k_test,0 1 2,collinear,"[4, inf)",4.0,10338,0,0.9993
+sq_selftrain_control,pgdp5k_heldout,0 1 2,parallel,"[0, 0.25)",0.0,3348,3324,0.9824
+sq_selftrain_control,pgdp5k_heldout,0 1 2,parallel,"[0.25, 0.5)",0.25,117,117,0.9573
+sq_selftrain_control,pgdp5k_heldout,0 1 2,parallel,"[0.5, 1)",0.5,87,87,0.6552
+sq_selftrain_control,pgdp5k_heldout,0 1 2,parallel,"[1, 1.5)",1.0,114,0,0.7368
+sq_selftrain_control,pgdp5k_heldout,0 1 2,parallel,"[1.5, 2)",1.5,111,0,0.982
+sq_selftrain_control,pgdp5k_heldout,0 1 2,parallel,"[2, 4)",2.0,948,0,0.9989
+sq_selftrain_control,pgdp5k_heldout,0 1 2,parallel,"[4, inf)",4.0,37584,0,1.0
+sq_selftrain_control,pgdp5k_heldout,0 1 2,perpendicular,"[0, 0.25)",0.0,5268,5268,0.9839
+sq_selftrain_control,pgdp5k_heldout,0 1 2,perpendicular,"[0.25, 0.5)",0.25,408,408,0.8946
+sq_selftrain_control,pgdp5k_heldout,0 1 2,perpendicular,"[0.5, 1)",0.5,582,582,0.6392
+sq_selftrain_control,pgdp5k_heldout,0 1 2,perpendicular,"[1, 1.5)",1.0,588,0,0.6582
+sq_selftrain_control,pgdp5k_heldout,0 1 2,perpendicular,"[1.5, 2)",1.5,699,0,0.7783
+sq_selftrain_control,pgdp5k_heldout,0 1 2,perpendicular,"[2, 4)",2.0,2331,0,0.9597
+sq_selftrain_control,pgdp5k_heldout,0 1 2,perpendicular,"[4, inf)",4.0,32433,0,0.9993
+sq_selftrain_control,pgdp5k_heldout,0 1 2,equal_length,"[0, 0.25)",0.0,6255,6255,0.9175
+sq_selftrain_control,pgdp5k_heldout,0 1 2,equal_length,"[0.25, 0.5)",0.25,1200,1200,0.8225
+sq_selftrain_control,pgdp5k_heldout,0 1 2,equal_length,"[0.5, 1)",0.5,2175,2175,0.7191
+sq_selftrain_control,pgdp5k_heldout,0 1 2,equal_length,"[1, 1.5)",1.0,2469,0,0.497
+sq_selftrain_control,pgdp5k_heldout,0 1 2,equal_length,"[1.5, 2)",1.5,2487,0,0.686
+sq_selftrain_control,pgdp5k_heldout,0 1 2,equal_length,"[2, 4)",2.0,11052,0,0.9288
+sq_selftrain_control,pgdp5k_heldout,0 1 2,equal_length,"[4, inf)",4.0,20265,0,0.9854
+sq_selftrain_control,pgdp5k_heldout,0 1 2,on_circle,"[0, 0.25)",0.0,1356,1356,1.0
+sq_selftrain_control,pgdp5k_heldout,0 1 2,on_circle,"[0.25, 0.5)",0.25,54,54,1.0
+sq_selftrain_control,pgdp5k_heldout,0 1 2,on_circle,"[0.5, 1)",0.5,6,6,1.0
+sq_selftrain_control,pgdp5k_heldout,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_selftrain_control,pgdp5k_heldout,0 1 2,on_circle,"[1.5, 2)",1.5,12,0,0.75
+sq_selftrain_control,pgdp5k_heldout,0 1 2,on_circle,"[2, 4)",2.0,48,0,0.875
+sq_selftrain_control,pgdp5k_heldout,0 1 2,on_circle,"[4, inf)",4.0,693,0,1.0
+sq_selftrain_control,pgdp5k_heldout,0 1 2,tangent,"[0, 0.25)",0.0,603,525,0.9038
+sq_selftrain_control,pgdp5k_heldout,0 1 2,tangent,"[0.25, 0.5)",0.25,108,84,0.963
+sq_selftrain_control,pgdp5k_heldout,0 1 2,tangent,"[0.5, 1)",0.5,57,33,0.7193
+sq_selftrain_control,pgdp5k_heldout,0 1 2,tangent,"[1, 1.5)",1.0,21,0,0.8571
+sq_selftrain_control,pgdp5k_heldout,0 1 2,tangent,"[1.5, 2)",1.5,69,0,0.8261
+sq_selftrain_control,pgdp5k_heldout,0 1 2,tangent,"[2, 4)",2.0,189,0,0.9683
+sq_selftrain_control,pgdp5k_heldout,0 1 2,tangent,"[4, inf)",4.0,1950,0,0.9954
+sq_selftrain_control,pgdp5k_heldout,0 1 2,collinear,"[0, 0.25)",0.0,2388,2388,0.9799
+sq_selftrain_control,pgdp5k_heldout,0 1 2,collinear,"[0.25, 0.5)",0.25,87,87,0.8046
+sq_selftrain_control,pgdp5k_heldout,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.2917
+sq_selftrain_control,pgdp5k_heldout,0 1 2,collinear,"[1, 1.5)",1.0,21,0,0.9524
+sq_selftrain_control,pgdp5k_heldout,0 1 2,collinear,"[1.5, 2)",1.5,30,0,0.8
+sq_selftrain_control,pgdp5k_heldout,0 1 2,collinear,"[2, 4)",2.0,141,0,0.922
+sq_selftrain_control,pgdp5k_heldout,0 1 2,collinear,"[4, inf)",4.0,22056,0,0.9993
+sq_selftrain_control,synth_extrap,0 1 2,parallel,"[0, 0.25)",0.0,255,249,0.9373
+sq_selftrain_control,synth_extrap,0 1 2,parallel,"[0.25, 0.5)",0.25,141,126,0.922
+sq_selftrain_control,synth_extrap,0 1 2,parallel,"[0.5, 1)",0.5,192,171,0.7552
+sq_selftrain_control,synth_extrap,0 1 2,parallel,"[1, 1.5)",1.0,234,0,0.8034
+sq_selftrain_control,synth_extrap,0 1 2,parallel,"[1.5, 2)",1.5,252,0,0.9206
+sq_selftrain_control,synth_extrap,0 1 2,parallel,"[2, 4)",2.0,1020,0,0.9941
+sq_selftrain_control,synth_extrap,0 1 2,parallel,"[4, inf)",4.0,8976,0,1.0
+sq_selftrain_control,synth_extrap,0 1 2,perpendicular,"[0, 0.25)",0.0,288,288,0.8715
+sq_selftrain_control,synth_extrap,0 1 2,perpendicular,"[0.25, 0.5)",0.25,174,174,0.8563
+sq_selftrain_control,synth_extrap,0 1 2,perpendicular,"[0.5, 1)",0.5,240,240,0.825
+sq_selftrain_control,synth_extrap,0 1 2,perpendicular,"[1, 1.5)",1.0,192,0,0.4479
+sq_selftrain_control,synth_extrap,0 1 2,perpendicular,"[1.5, 2)",1.5,201,0,0.7463
+sq_selftrain_control,synth_extrap,0 1 2,perpendicular,"[2, 4)",2.0,876,0,0.9224
+sq_selftrain_control,synth_extrap,0 1 2,perpendicular,"[4, inf)",4.0,9099,0,0.9998
+sq_selftrain_control,synth_extrap,0 1 2,equal_length,"[0, 0.25)",0.0,402,402,0.8557
+sq_selftrain_control,synth_extrap,0 1 2,equal_length,"[0.25, 0.5)",0.25,297,297,0.8114
+sq_selftrain_control,synth_extrap,0 1 2,equal_length,"[0.5, 1)",0.5,645,645,0.7612
+sq_selftrain_control,synth_extrap,0 1 2,equal_length,"[1, 1.5)",1.0,612,0,0.4428
+sq_selftrain_control,synth_extrap,0 1 2,equal_length,"[1.5, 2)",1.5,663,0,0.6757
+sq_selftrain_control,synth_extrap,0 1 2,equal_length,"[2, 4)",2.0,2952,0,0.9431
+sq_selftrain_control,synth_extrap,0 1 2,equal_length,"[4, inf)",4.0,5697,0,0.9958
+sq_selftrain_control,synth_extrap,0 1 2,on_circle,"[0, 0.25)",0.0,111,111,1.0
+sq_selftrain_control,synth_extrap,0 1 2,on_circle,"[0.25, 0.5)",0.25,27,27,1.0
+sq_selftrain_control,synth_extrap,0 1 2,on_circle,"[0.5, 1)",0.5,69,69,0.9855
+sq_selftrain_control,synth_extrap,0 1 2,on_circle,"[1, 1.5)",1.0,42,0,0.5238
+sq_selftrain_control,synth_extrap,0 1 2,on_circle,"[1.5, 2)",1.5,48,0,0.6458
+sq_selftrain_control,synth_extrap,0 1 2,on_circle,"[2, 4)",2.0,129,0,0.9845
+sq_selftrain_control,synth_extrap,0 1 2,on_circle,"[4, inf)",4.0,1134,0,1.0
+sq_selftrain_control,synth_extrap,0 1 2,tangent,"[0, 0.25)",0.0,120,108,0.875
+sq_selftrain_control,synth_extrap,0 1 2,tangent,"[0.25, 0.5)",0.25,45,36,0.7333
+sq_selftrain_control,synth_extrap,0 1 2,tangent,"[0.5, 1)",0.5,45,27,0.7556
+sq_selftrain_control,synth_extrap,0 1 2,tangent,"[1, 1.5)",1.0,39,0,0.5385
+sq_selftrain_control,synth_extrap,0 1 2,tangent,"[1.5, 2)",1.5,27,0,0.7778
+sq_selftrain_control,synth_extrap,0 1 2,tangent,"[2, 4)",2.0,141,0,0.8652
+sq_selftrain_control,synth_extrap,0 1 2,tangent,"[4, inf)",4.0,996,0,0.991
+sq_selftrain_control,synth_extrap,0 1 2,collinear,"[0, 0.25)",0.0,222,222,0.7297
+sq_selftrain_control,synth_extrap,0 1 2,collinear,"[0.25, 0.5)",0.25,75,75,0.48
+sq_selftrain_control,synth_extrap,0 1 2,collinear,"[0.5, 1)",0.5,126,126,0.2302
+sq_selftrain_control,synth_extrap,0 1 2,collinear,"[1, 1.5)",1.0,159,0,0.9057
+sq_selftrain_control,synth_extrap,0 1 2,collinear,"[1.5, 2)",1.5,219,0,0.9954
+sq_selftrain_control,synth_extrap,0 1 2,collinear,"[2, 4)",2.0,798,0,0.9799
+sq_selftrain_control,synth_extrap,0 1 2,collinear,"[4, inf)",4.0,14160,0,0.9973
+sq_probe,geometry3k_test,0 1 2,parallel,"[0, 0.25)",0.0,1380,1365,0.529
+sq_probe,geometry3k_test,0 1 2,parallel,"[0.25, 0.5)",0.25,81,78,0.3457
+sq_probe,geometry3k_test,0 1 2,parallel,"[0.5, 1)",0.5,63,63,0.2063
+sq_probe,geometry3k_test,0 1 2,parallel,"[1, 1.5)",1.0,54,0,0.9074
+sq_probe,geometry3k_test,0 1 2,parallel,"[1.5, 2)",1.5,87,0,0.8506
+sq_probe,geometry3k_test,0 1 2,parallel,"[2, 4)",2.0,204,0,0.951
+sq_probe,geometry3k_test,0 1 2,parallel,"[4, inf)",4.0,15666,0,0.965
+sq_probe,geometry3k_test,0 1 2,perpendicular,"[0, 0.25)",0.0,2556,2556,0.6264
+sq_probe,geometry3k_test,0 1 2,perpendicular,"[0.25, 0.5)",0.25,225,225,0.4356
+sq_probe,geometry3k_test,0 1 2,perpendicular,"[0.5, 1)",0.5,234,234,0.2308
+sq_probe,geometry3k_test,0 1 2,perpendicular,"[1, 1.5)",1.0,156,0,0.9423
+sq_probe,geometry3k_test,0 1 2,perpendicular,"[1.5, 2)",1.5,276,0,0.9638
+sq_probe,geometry3k_test,0 1 2,perpendicular,"[2, 4)",2.0,1035,0,0.9565
+sq_probe,geometry3k_test,0 1 2,perpendicular,"[4, inf)",4.0,13053,0,0.9166
+sq_probe,geometry3k_test,0 1 2,equal_length,"[0, 0.25)",0.0,2364,2364,0.6125
+sq_probe,geometry3k_test,0 1 2,equal_length,"[0.25, 0.5)",0.25,570,570,0.3439
+sq_probe,geometry3k_test,0 1 2,equal_length,"[0.5, 1)",0.5,1101,1101,0.3588
+sq_probe,geometry3k_test,0 1 2,equal_length,"[1, 1.5)",1.0,1173,0,0.6436
+sq_probe,geometry3k_test,0 1 2,equal_length,"[1.5, 2)",1.5,1068,0,0.7069
+sq_probe,geometry3k_test,0 1 2,equal_length,"[2, 4)",2.0,4866,0,0.7339
+sq_probe,geometry3k_test,0 1 2,equal_length,"[4, inf)",4.0,7902,0,0.742
+sq_probe,geometry3k_test,0 1 2,on_circle,"[0, 0.25)",0.0,984,984,0.9715
+sq_probe,geometry3k_test,0 1 2,on_circle,"[0.25, 0.5)",0.25,21,21,0.9048
+sq_probe,geometry3k_test,0 1 2,on_circle,"[0.5, 1)",0.5,0,0,
+sq_probe,geometry3k_test,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_probe,geometry3k_test,0 1 2,on_circle,"[1.5, 2)",1.5,0,0,
+sq_probe,geometry3k_test,0 1 2,on_circle,"[2, 4)",2.0,27,0,0.3704
+sq_probe,geometry3k_test,0 1 2,on_circle,"[4, inf)",4.0,339,0,0.5959
+sq_probe,geometry3k_test,0 1 2,tangent,"[0, 0.25)",0.0,234,219,0.3462
+sq_probe,geometry3k_test,0 1 2,tangent,"[0.25, 0.5)",0.25,60,51,0.4
+sq_probe,geometry3k_test,0 1 2,tangent,"[0.5, 1)",0.5,18,6,0.5556
+sq_probe,geometry3k_test,0 1 2,tangent,"[1, 1.5)",1.0,3,0,0.0
+sq_probe,geometry3k_test,0 1 2,tangent,"[1.5, 2)",1.5,48,0,0.625
+sq_probe,geometry3k_test,0 1 2,tangent,"[2, 4)",2.0,165,0,0.9091
+sq_probe,geometry3k_test,0 1 2,tangent,"[4, inf)",4.0,1320,0,0.9727
+sq_probe,geometry3k_test,0 1 2,collinear,"[0, 0.25)",0.0,1143,1143,0.6387
+sq_probe,geometry3k_test,0 1 2,collinear,"[0.25, 0.5)",0.25,57,57,0.4912
+sq_probe,geometry3k_test,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.4167
+sq_probe,geometry3k_test,0 1 2,collinear,"[1, 1.5)",1.0,21,0,0.7143
+sq_probe,geometry3k_test,0 1 2,collinear,"[1.5, 2)",1.5,27,0,0.4444
+sq_probe,geometry3k_test,0 1 2,collinear,"[2, 4)",2.0,84,0,0.6905
+sq_probe,geometry3k_test,0 1 2,collinear,"[4, inf)",4.0,10338,0,0.944
+sq_probe,pgdp5k_heldout,0 1 2,parallel,"[0, 0.25)",0.0,3348,3324,0.5783
+sq_probe,pgdp5k_heldout,0 1 2,parallel,"[0.25, 0.5)",0.25,117,117,0.6239
+sq_probe,pgdp5k_heldout,0 1 2,parallel,"[0.5, 1)",0.5,87,87,0.3333
+sq_probe,pgdp5k_heldout,0 1 2,parallel,"[1, 1.5)",1.0,114,0,0.5
+sq_probe,pgdp5k_heldout,0 1 2,parallel,"[1.5, 2)",1.5,111,0,0.8288
+sq_probe,pgdp5k_heldout,0 1 2,parallel,"[2, 4)",2.0,948,0,0.865
+sq_probe,pgdp5k_heldout,0 1 2,parallel,"[4, inf)",4.0,37584,0,0.8891
+sq_probe,pgdp5k_heldout,0 1 2,perpendicular,"[0, 0.25)",0.0,5268,5268,0.6614
+sq_probe,pgdp5k_heldout,0 1 2,perpendicular,"[0.25, 0.5)",0.25,408,408,0.3137
+sq_probe,pgdp5k_heldout,0 1 2,perpendicular,"[0.5, 1)",0.5,582,582,0.1014
+sq_probe,pgdp5k_heldout,0 1 2,perpendicular,"[1, 1.5)",1.0,588,0,0.9116
+sq_probe,pgdp5k_heldout,0 1 2,perpendicular,"[1.5, 2)",1.5,699,0,0.9127
+sq_probe,pgdp5k_heldout,0 1 2,perpendicular,"[2, 4)",2.0,2331,0,0.9215
+sq_probe,pgdp5k_heldout,0 1 2,perpendicular,"[4, inf)",4.0,32433,0,0.886
+sq_probe,pgdp5k_heldout,0 1 2,equal_length,"[0, 0.25)",0.0,6255,6255,0.7675
+sq_probe,pgdp5k_heldout,0 1 2,equal_length,"[0.25, 0.5)",0.25,1200,1200,0.6167
+sq_probe,pgdp5k_heldout,0 1 2,equal_length,"[0.5, 1)",0.5,2175,2175,0.5683
+sq_probe,pgdp5k_heldout,0 1 2,equal_length,"[1, 1.5)",1.0,2469,0,0.4573
+sq_probe,pgdp5k_heldout,0 1 2,equal_length,"[1.5, 2)",1.5,2487,0,0.452
+sq_probe,pgdp5k_heldout,0 1 2,equal_length,"[2, 4)",2.0,11052,0,0.444
+sq_probe,pgdp5k_heldout,0 1 2,equal_length,"[4, inf)",4.0,20265,0,0.4692
+sq_probe,pgdp5k_heldout,0 1 2,on_circle,"[0, 0.25)",0.0,1356,1356,0.9388
+sq_probe,pgdp5k_heldout,0 1 2,on_circle,"[0.25, 0.5)",0.25,54,54,0.7778
+sq_probe,pgdp5k_heldout,0 1 2,on_circle,"[0.5, 1)",0.5,6,6,1.0
+sq_probe,pgdp5k_heldout,0 1 2,on_circle,"[1, 1.5)",1.0,0,0,
+sq_probe,pgdp5k_heldout,0 1 2,on_circle,"[1.5, 2)",1.5,12,0,0.25
+sq_probe,pgdp5k_heldout,0 1 2,on_circle,"[2, 4)",2.0,48,0,0.4375
+sq_probe,pgdp5k_heldout,0 1 2,on_circle,"[4, inf)",4.0,693,0,0.6436
+sq_probe,pgdp5k_heldout,0 1 2,tangent,"[0, 0.25)",0.0,603,525,0.4362
+sq_probe,pgdp5k_heldout,0 1 2,tangent,"[0.25, 0.5)",0.25,108,84,0.537
+sq_probe,pgdp5k_heldout,0 1 2,tangent,"[0.5, 1)",0.5,57,33,0.3684
+sq_probe,pgdp5k_heldout,0 1 2,tangent,"[1, 1.5)",1.0,21,0,1.0
+sq_probe,pgdp5k_heldout,0 1 2,tangent,"[1.5, 2)",1.5,69,0,0.8551
+sq_probe,pgdp5k_heldout,0 1 2,tangent,"[2, 4)",2.0,189,0,0.8942
+sq_probe,pgdp5k_heldout,0 1 2,tangent,"[4, inf)",4.0,1950,0,0.9769
+sq_probe,pgdp5k_heldout,0 1 2,collinear,"[0, 0.25)",0.0,2388,2388,0.6093
+sq_probe,pgdp5k_heldout,0 1 2,collinear,"[0.25, 0.5)",0.25,87,87,0.4138
+sq_probe,pgdp5k_heldout,0 1 2,collinear,"[0.5, 1)",0.5,24,24,0.25
+sq_probe,pgdp5k_heldout,0 1 2,collinear,"[1, 1.5)",1.0,21,0,1.0
+sq_probe,pgdp5k_heldout,0 1 2,collinear,"[1.5, 2)",1.5,30,0,0.9333
+sq_probe,pgdp5k_heldout,0 1 2,collinear,"[2, 4)",2.0,141,0,0.8085
+sq_probe,pgdp5k_heldout,0 1 2,collinear,"[4, inf)",4.0,22056,0,0.9385
+sq_probe,synth_extrap,0 1 2,parallel,"[0, 0.25)",0.0,255,249,0.5216
+sq_probe,synth_extrap,0 1 2,parallel,"[0.25, 0.5)",0.25,141,126,0.5035
+sq_probe,synth_extrap,0 1 2,parallel,"[0.5, 1)",0.5,192,171,0.4323
+sq_probe,synth_extrap,0 1 2,parallel,"[1, 1.5)",1.0,234,0,0.6966
+sq_probe,synth_extrap,0 1 2,parallel,"[1.5, 2)",1.5,252,0,0.75
+sq_probe,synth_extrap,0 1 2,parallel,"[2, 4)",2.0,1020,0,0.7902
+sq_probe,synth_extrap,0 1 2,parallel,"[4, inf)",4.0,8976,0,0.8654
+sq_probe,synth_extrap,0 1 2,perpendicular,"[0, 0.25)",0.0,288,288,0.0451
+sq_probe,synth_extrap,0 1 2,perpendicular,"[0.25, 0.5)",0.25,174,174,0.0575
+sq_probe,synth_extrap,0 1 2,perpendicular,"[0.5, 1)",0.5,240,240,0.05
+sq_probe,synth_extrap,0 1 2,perpendicular,"[1, 1.5)",1.0,192,0,0.9323
+sq_probe,synth_extrap,0 1 2,perpendicular,"[1.5, 2)",1.5,201,0,0.9801
+sq_probe,synth_extrap,0 1 2,perpendicular,"[2, 4)",2.0,876,0,0.96
+sq_probe,synth_extrap,0 1 2,perpendicular,"[4, inf)",4.0,9099,0,0.9811
+sq_probe,synth_extrap,0 1 2,equal_length,"[0, 0.25)",0.0,402,402,0.4478
+sq_probe,synth_extrap,0 1 2,equal_length,"[0.25, 0.5)",0.25,297,297,0.4478
+sq_probe,synth_extrap,0 1 2,equal_length,"[0.5, 1)",0.5,645,645,0.5023
+sq_probe,synth_extrap,0 1 2,equal_length,"[1, 1.5)",1.0,612,0,0.5784
+sq_probe,synth_extrap,0 1 2,equal_length,"[1.5, 2)",1.5,663,0,0.5264
+sq_probe,synth_extrap,0 1 2,equal_length,"[2, 4)",2.0,2952,0,0.5508
+sq_probe,synth_extrap,0 1 2,equal_length,"[4, inf)",4.0,5697,0,0.5782
+sq_probe,synth_extrap,0 1 2,on_circle,"[0, 0.25)",0.0,111,111,0.5586
+sq_probe,synth_extrap,0 1 2,on_circle,"[0.25, 0.5)",0.25,27,27,0.4444
+sq_probe,synth_extrap,0 1 2,on_circle,"[0.5, 1)",0.5,69,69,0.1884
+sq_probe,synth_extrap,0 1 2,on_circle,"[1, 1.5)",1.0,42,0,0.7857
+sq_probe,synth_extrap,0 1 2,on_circle,"[1.5, 2)",1.5,48,0,0.8542
+sq_probe,synth_extrap,0 1 2,on_circle,"[2, 4)",2.0,129,0,0.8682
+sq_probe,synth_extrap,0 1 2,on_circle,"[4, inf)",4.0,1134,0,0.9277
+sq_probe,synth_extrap,0 1 2,tangent,"[0, 0.25)",0.0,120,108,0.1
+sq_probe,synth_extrap,0 1 2,tangent,"[0.25, 0.5)",0.25,45,36,0.2
+sq_probe,synth_extrap,0 1 2,tangent,"[0.5, 1)",0.5,45,27,0.4
+sq_probe,synth_extrap,0 1 2,tangent,"[1, 1.5)",1.0,39,0,1.0
+sq_probe,synth_extrap,0 1 2,tangent,"[1.5, 2)",1.5,27,0,1.0
+sq_probe,synth_extrap,0 1 2,tangent,"[2, 4)",2.0,141,0,1.0
+sq_probe,synth_extrap,0 1 2,tangent,"[4, inf)",4.0,996,0,1.0
+sq_probe,synth_extrap,0 1 2,collinear,"[0, 0.25)",0.0,222,222,0.2883
+sq_probe,synth_extrap,0 1 2,collinear,"[0.25, 0.5)",0.25,75,75,0.1733
+sq_probe,synth_extrap,0 1 2,collinear,"[0.5, 1)",0.5,126,126,0.1111
+sq_probe,synth_extrap,0 1 2,collinear,"[1, 1.5)",1.0,159,0,0.9371
+sq_probe,synth_extrap,0 1 2,collinear,"[1.5, 2)",1.5,219,0,0.9041
+sq_probe,synth_extrap,0 1 2,collinear,"[2, 4)",2.0,798,0,0.9248
+sq_probe,synth_extrap,0 1 2,collinear,"[4, inf)",4.0,14160,0,0.9689
+sq_ablation_dinov2,geometry3k_test,0,parallel,"[0, 0.25)",0.0,460,455,0.9913
+sq_ablation_dinov2,geometry3k_test,0,parallel,"[0.25, 0.5)",0.25,27,26,1.0
+sq_ablation_dinov2,geometry3k_test,0,parallel,"[0.5, 1)",0.5,21,21,0.7619
+sq_ablation_dinov2,geometry3k_test,0,parallel,"[1, 1.5)",1.0,18,0,0.7222
+sq_ablation_dinov2,geometry3k_test,0,parallel,"[1.5, 2)",1.5,29,0,1.0
+sq_ablation_dinov2,geometry3k_test,0,parallel,"[2, 4)",2.0,68,0,1.0
+sq_ablation_dinov2,geometry3k_test,0,parallel,"[4, inf)",4.0,5222,0,1.0
+sq_ablation_dinov2,geometry3k_test,0,perpendicular,"[0, 0.25)",0.0,852,852,0.9977
+sq_ablation_dinov2,geometry3k_test,0,perpendicular,"[0.25, 0.5)",0.25,75,75,0.9733
+sq_ablation_dinov2,geometry3k_test,0,perpendicular,"[0.5, 1)",0.5,78,78,0.8205
+sq_ablation_dinov2,geometry3k_test,0,perpendicular,"[1, 1.5)",1.0,52,0,0.5
+sq_ablation_dinov2,geometry3k_test,0,perpendicular,"[1.5, 2)",1.5,92,0,0.5978
+sq_ablation_dinov2,geometry3k_test,0,perpendicular,"[2, 4)",2.0,345,0,0.9768
+sq_ablation_dinov2,geometry3k_test,0,perpendicular,"[4, inf)",4.0,4351,0,1.0
+sq_ablation_dinov2,geometry3k_test,0,equal_length,"[0, 0.25)",0.0,788,788,0.9404
+sq_ablation_dinov2,geometry3k_test,0,equal_length,"[0.25, 0.5)",0.25,190,190,0.8737
+sq_ablation_dinov2,geometry3k_test,0,equal_length,"[0.5, 1)",0.5,367,367,0.6512
+sq_ablation_dinov2,geometry3k_test,0,equal_length,"[1, 1.5)",1.0,391,0,0.7033
+sq_ablation_dinov2,geometry3k_test,0,equal_length,"[1.5, 2)",1.5,356,0,0.7893
+sq_ablation_dinov2,geometry3k_test,0,equal_length,"[2, 4)",2.0,1622,0,0.9784
+sq_ablation_dinov2,geometry3k_test,0,equal_length,"[4, inf)",4.0,2634,0,0.9954
+sq_ablation_dinov2,geometry3k_test,0,on_circle,"[0, 0.25)",0.0,328,328,1.0
+sq_ablation_dinov2,geometry3k_test,0,on_circle,"[0.25, 0.5)",0.25,7,7,1.0
+sq_ablation_dinov2,geometry3k_test,0,on_circle,"[0.5, 1)",0.5,0,0,
+sq_ablation_dinov2,geometry3k_test,0,on_circle,"[1, 1.5)",1.0,0,0,
+sq_ablation_dinov2,geometry3k_test,0,on_circle,"[1.5, 2)",1.5,0,0,
+sq_ablation_dinov2,geometry3k_test,0,on_circle,"[2, 4)",2.0,9,0,1.0
+sq_ablation_dinov2,geometry3k_test,0,on_circle,"[4, inf)",4.0,113,0,1.0
+sq_ablation_dinov2,geometry3k_test,0,tangent,"[0, 0.25)",0.0,78,73,0.9103
+sq_ablation_dinov2,geometry3k_test,0,tangent,"[0.25, 0.5)",0.25,20,17,0.85
+sq_ablation_dinov2,geometry3k_test,0,tangent,"[0.5, 1)",0.5,6,2,0.6667
+sq_ablation_dinov2,geometry3k_test,0,tangent,"[1, 1.5)",1.0,1,0,1.0
+sq_ablation_dinov2,geometry3k_test,0,tangent,"[1.5, 2)",1.5,16,0,0.75
+sq_ablation_dinov2,geometry3k_test,0,tangent,"[2, 4)",2.0,55,0,0.9818
+sq_ablation_dinov2,geometry3k_test,0,tangent,"[4, inf)",4.0,440,0,0.9977
+sq_ablation_dinov2,geometry3k_test,0,collinear,"[0, 0.25)",0.0,381,381,0.9816
+sq_ablation_dinov2,geometry3k_test,0,collinear,"[0.25, 0.5)",0.25,19,19,0.8421
+sq_ablation_dinov2,geometry3k_test,0,collinear,"[0.5, 1)",0.5,8,8,0.75
+sq_ablation_dinov2,geometry3k_test,0,collinear,"[1, 1.5)",1.0,7,0,0.8571
+sq_ablation_dinov2,geometry3k_test,0,collinear,"[1.5, 2)",1.5,9,0,0.5556
+sq_ablation_dinov2,geometry3k_test,0,collinear,"[2, 4)",2.0,28,0,0.6071
+sq_ablation_dinov2,geometry3k_test,0,collinear,"[4, inf)",4.0,3446,0,0.9956
+sq_ablation_dinov2,pgdp5k_heldout,0,parallel,"[0, 0.25)",0.0,1116,1108,0.9973
+sq_ablation_dinov2,pgdp5k_heldout,0,parallel,"[0.25, 0.5)",0.25,39,39,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,parallel,"[0.5, 1)",0.5,29,29,0.7586
+sq_ablation_dinov2,pgdp5k_heldout,0,parallel,"[1, 1.5)",1.0,38,0,0.7895
+sq_ablation_dinov2,pgdp5k_heldout,0,parallel,"[1.5, 2)",1.5,37,0,0.9459
+sq_ablation_dinov2,pgdp5k_heldout,0,parallel,"[2, 4)",2.0,316,0,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,parallel,"[4, inf)",4.0,12528,0,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,perpendicular,"[0, 0.25)",0.0,1756,1756,0.9932
+sq_ablation_dinov2,pgdp5k_heldout,0,perpendicular,"[0.25, 0.5)",0.25,136,136,0.9485
+sq_ablation_dinov2,pgdp5k_heldout,0,perpendicular,"[0.5, 1)",0.5,194,194,0.7577
+sq_ablation_dinov2,pgdp5k_heldout,0,perpendicular,"[1, 1.5)",1.0,196,0,0.6378
+sq_ablation_dinov2,pgdp5k_heldout,0,perpendicular,"[1.5, 2)",1.5,233,0,0.8584
+sq_ablation_dinov2,pgdp5k_heldout,0,perpendicular,"[2, 4)",2.0,777,0,0.9897
+sq_ablation_dinov2,pgdp5k_heldout,0,perpendicular,"[4, inf)",4.0,10811,0,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,equal_length,"[0, 0.25)",0.0,2085,2085,0.9266
+sq_ablation_dinov2,pgdp5k_heldout,0,equal_length,"[0.25, 0.5)",0.25,400,400,0.8475
+sq_ablation_dinov2,pgdp5k_heldout,0,equal_length,"[0.5, 1)",0.5,725,725,0.7159
+sq_ablation_dinov2,pgdp5k_heldout,0,equal_length,"[1, 1.5)",1.0,823,0,0.5905
+sq_ablation_dinov2,pgdp5k_heldout,0,equal_length,"[1.5, 2)",1.5,829,0,0.766
+sq_ablation_dinov2,pgdp5k_heldout,0,equal_length,"[2, 4)",2.0,3684,0,0.9517
+sq_ablation_dinov2,pgdp5k_heldout,0,equal_length,"[4, inf)",4.0,6755,0,0.9864
+sq_ablation_dinov2,pgdp5k_heldout,0,on_circle,"[0, 0.25)",0.0,452,452,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,on_circle,"[0.25, 0.5)",0.25,18,18,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,on_circle,"[0.5, 1)",0.5,2,2,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,on_circle,"[1, 1.5)",1.0,0,0,
+sq_ablation_dinov2,pgdp5k_heldout,0,on_circle,"[1.5, 2)",1.5,4,0,0.25
+sq_ablation_dinov2,pgdp5k_heldout,0,on_circle,"[2, 4)",2.0,16,0,0.9375
+sq_ablation_dinov2,pgdp5k_heldout,0,on_circle,"[4, inf)",4.0,231,0,1.0
+sq_ablation_dinov2,pgdp5k_heldout,0,tangent,"[0, 0.25)",0.0,201,175,0.9502
+sq_ablation_dinov2,pgdp5k_heldout,0,tangent,"[0.25, 0.5)",0.25,36,28,0.9722
+sq_ablation_dinov2,pgdp5k_heldout,0,tangent,"[0.5, 1)",0.5,19,11,0.7368
+sq_ablation_dinov2,pgdp5k_heldout,0,tangent,"[1, 1.5)",1.0,7,0,0.8571
+sq_ablation_dinov2,pgdp5k_heldout,0,tangent,"[1.5, 2)",1.5,23,0,0.8261
+sq_ablation_dinov2,pgdp5k_heldout,0,tangent,"[2, 4)",2.0,63,0,0.9841
+sq_ablation_dinov2,pgdp5k_heldout,0,tangent,"[4, inf)",4.0,650,0,0.9969
+sq_ablation_dinov2,pgdp5k_heldout,0,collinear,"[0, 0.25)",0.0,796,796,0.9912
+sq_ablation_dinov2,pgdp5k_heldout,0,collinear,"[0.25, 0.5)",0.25,29,29,0.8276
+sq_ablation_dinov2,pgdp5k_heldout,0,collinear,"[0.5, 1)",0.5,8,8,0.5
+sq_ablation_dinov2,pgdp5k_heldout,0,collinear,"[1, 1.5)",1.0,7,0,0.7143
+sq_ablation_dinov2,pgdp5k_heldout,0,collinear,"[1.5, 2)",1.5,10,0,0.8
+sq_ablation_dinov2,pgdp5k_heldout,0,collinear,"[2, 4)",2.0,47,0,0.7021
+sq_ablation_dinov2,pgdp5k_heldout,0,collinear,"[4, inf)",4.0,7352,0,0.9977
+sq_ablation_dinov2,synth_extrap,0,parallel,"[0, 0.25)",0.0,85,83,1.0
+sq_ablation_dinov2,synth_extrap,0,parallel,"[0.25, 0.5)",0.25,47,42,1.0
+sq_ablation_dinov2,synth_extrap,0,parallel,"[0.5, 1)",0.5,64,57,0.8125
+sq_ablation_dinov2,synth_extrap,0,parallel,"[1, 1.5)",1.0,78,0,0.6026
+sq_ablation_dinov2,synth_extrap,0,parallel,"[1.5, 2)",1.5,84,0,0.881
+sq_ablation_dinov2,synth_extrap,0,parallel,"[2, 4)",2.0,340,0,0.9853
+sq_ablation_dinov2,synth_extrap,0,parallel,"[4, inf)",4.0,2992,0,1.0
+sq_ablation_dinov2,synth_extrap,0,perpendicular,"[0, 0.25)",0.0,96,96,0.9792
+sq_ablation_dinov2,synth_extrap,0,perpendicular,"[0.25, 0.5)",0.25,58,58,0.9655
+sq_ablation_dinov2,synth_extrap,0,perpendicular,"[0.5, 1)",0.5,80,80,0.825
+sq_ablation_dinov2,synth_extrap,0,perpendicular,"[1, 1.5)",1.0,64,0,0.4844
+sq_ablation_dinov2,synth_extrap,0,perpendicular,"[1.5, 2)",1.5,67,0,0.6716
+sq_ablation_dinov2,synth_extrap,0,perpendicular,"[2, 4)",2.0,292,0,0.9452
+sq_ablation_dinov2,synth_extrap,0,perpendicular,"[4, inf)",4.0,3033,0,1.0
+sq_ablation_dinov2,synth_extrap,0,equal_length,"[0, 0.25)",0.0,134,134,0.9403
+sq_ablation_dinov2,synth_extrap,0,equal_length,"[0.25, 0.5)",0.25,99,99,0.9192
+sq_ablation_dinov2,synth_extrap,0,equal_length,"[0.5, 1)",0.5,215,215,0.8651
+sq_ablation_dinov2,synth_extrap,0,equal_length,"[1, 1.5)",1.0,204,0,0.3725
+sq_ablation_dinov2,synth_extrap,0,equal_length,"[1.5, 2)",1.5,221,0,0.6697
+sq_ablation_dinov2,synth_extrap,0,equal_length,"[2, 4)",2.0,984,0,0.9207
+sq_ablation_dinov2,synth_extrap,0,equal_length,"[4, inf)",4.0,1899,0,0.9874
+sq_ablation_dinov2,synth_extrap,0,on_circle,"[0, 0.25)",0.0,37,37,1.0
+sq_ablation_dinov2,synth_extrap,0,on_circle,"[0.25, 0.5)",0.25,9,9,1.0
+sq_ablation_dinov2,synth_extrap,0,on_circle,"[0.5, 1)",0.5,23,23,0.9565
+sq_ablation_dinov2,synth_extrap,0,on_circle,"[1, 1.5)",1.0,14,0,0.4286
+sq_ablation_dinov2,synth_extrap,0,on_circle,"[1.5, 2)",1.5,16,0,0.6875
+sq_ablation_dinov2,synth_extrap,0,on_circle,"[2, 4)",2.0,43,0,0.9535
+sq_ablation_dinov2,synth_extrap,0,on_circle,"[4, inf)",4.0,378,0,1.0
+sq_ablation_dinov2,synth_extrap,0,tangent,"[0, 0.25)",0.0,40,36,0.8
+sq_ablation_dinov2,synth_extrap,0,tangent,"[0.25, 0.5)",0.25,15,12,0.5333
+sq_ablation_dinov2,synth_extrap,0,tangent,"[0.5, 1)",0.5,15,9,0.7333
+sq_ablation_dinov2,synth_extrap,0,tangent,"[1, 1.5)",1.0,13,0,0.8462
+sq_ablation_dinov2,synth_extrap,0,tangent,"[1.5, 2)",1.5,9,0,0.8889
+sq_ablation_dinov2,synth_extrap,0,tangent,"[2, 4)",2.0,47,0,0.8723
+sq_ablation_dinov2,synth_extrap,0,tangent,"[4, inf)",4.0,332,0,0.997
+sq_ablation_dinov2,synth_extrap,0,collinear,"[0, 0.25)",0.0,74,74,0.7027
+sq_ablation_dinov2,synth_extrap,0,collinear,"[0.25, 0.5)",0.25,25,25,0.44
+sq_ablation_dinov2,synth_extrap,0,collinear,"[0.5, 1)",0.5,42,42,0.1667
+sq_ablation_dinov2,synth_extrap,0,collinear,"[1, 1.5)",1.0,53,0,0.8491
+sq_ablation_dinov2,synth_extrap,0,collinear,"[1.5, 2)",1.5,73,0,0.9589
+sq_ablation_dinov2,synth_extrap,0,collinear,"[2, 4)",2.0,266,0,0.985
+sq_ablation_dinov2,synth_extrap,0,collinear,"[4, inf)",4.0,4720,0,0.9987
