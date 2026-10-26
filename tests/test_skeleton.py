@@ -25,6 +25,7 @@ MODULES = [
     "experiments.selftrain",
     "analysis", "analysis.metrics", "analysis.headline_table", "analysis.attention_maps",
     "analysis.error_analysis", "analysis.phase7", "analysis.phase8", "analysis.asserted_vs_geometric", "analysis.figures",
+    "analysis.walkthrough",
     "web", "web.export", "web.figures", "web.precompute", "web.deploy", "web.server", "web.server.core", "web.server.app", "web.server.parity",
 ]
 PACKAGES = ["data", "verifier", "models", "experiments", "analysis", "web"]

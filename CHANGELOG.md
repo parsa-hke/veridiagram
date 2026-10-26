@@ -1306,3 +1306,45 @@ Found
   `numbers.tex` files are up to date. The fixes are not committed yet; a third clone run after that
   commit would confirm 0 failures in a clone.
 
+## 2026-10-26 — Phase 10.2 closed: third fresh-clone run clean
+
+Done
+- Committed and pushed `0b239ce` (the two fixes, their tests, docs). Fresh clone of `0b239ce` from
+  GitHub into an empty directory; same script as the second run.
+
+Found
+- pytest 250 passed, 2 skipped, 0 failed (93 s). The skips need things a clone cannot have: the
+  website parity test needs `WEB_PARITY=1` and the checkpoint, the site test needs `npm ci`.
+- `scripts.reproduce` 17 ok, 6 skipped (analysis: no runs/), 0 failed (2.0 min); both `numbers.tex`
+  are up to date; the only file the clone changes is `reproduce_timings.csv` (a measurement).
+- GATE 6.6 PASS with DINOv3 (probe 150 s, fine-tune 443 s). Setup 38 s, data build 413 s.
+
+## 2026-10-26 — Phase 10.3: walkthrough notebook
+
+Done
+- `analysis/walkthrough.py`: `best_checkpoint` (highest `val_macro_f1` among finished runs that kept
+  `checkpoints/best.pt`, smoke runs excluded, restricted to the config's backbone unless
+  `backbone=None`), `load` (eager-attention model via `analysis.attention_maps.load_model`, the run's
+  validation-tuned thresholds from its `sq_` evaluation), `pick_diagram` (small test diagrams with
+  lettered points, ranked by distinct verifier-true relations, then unmarked true relations, then
+  fewest queries), `verdict` (the verifier re-run live from the coordinates, margin over tolerance),
+  `read_diagram`, `decision_table`, `show_query` (diagram, model view, last-layer attention).
+  Registered in tests/test_skeleton.py; `tests/test_walkthrough.py` (run choice, live verdicts on a
+  constructed diagram, diagram choice, table, figure; no checkpoint, no data; 1 s).
+- `notebooks/walkthrough.ipynb` calls it and is committed with its outputs (executed with nbclient;
+  no local paths in the outputs). `pyproject.toml` optional extra `notebook` (nbformat 5.11.1,
+  nbclient 0.11.0, ipykernel 7.4.0); not added to requirements.txt, so the pinned install is
+  unchanged. README section; plan 10.3 ticked.
+
+Found
+- Best checkpoint: `finetune_synth10k_s2` among DINOv3 runs (val 0.8824). By validation alone the
+  DINOv2-L ablation would win, so the choice of the study's backbone is stated in the notebook.
+- Diagram `geometry3k:2658` (D, E, F, G; a secant and a tangent to a circle): 22 queries, 36
+  decisions, the model agrees with the verifier on 94% of them; the live verifier agrees with the
+  stored geometric labels on every decision, and the probabilities match the stored square-padded
+  evaluation to within 0.007 (MPS here, CUDA there). On a busier PGDP5K diagram the largest
+  difference was 0.083 on one query, near the 0.05 that `attention_maps` warns at.
+- Of the four relations true in the drawing but unmarked, the model says yes to two (ED perpendicular
+  to DG at 0.05x the tolerance, DE equal to EG at 0.78x) and no to two: the tangent ED (p 0.91 under its 0.95 threshold) and the
+  equal radii DG = FG (p 0.56 under 0.70), the equal-length weakness the report describes.
+

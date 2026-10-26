@@ -49,7 +49,10 @@ laptop: pip install 61 s, download 34 s, data build 393 s (synthetic pools 203 s
 checkout, so model download time is not included. A second run on 2026-10-26 on commit `5461add` also ran `python -m
 scripts.reproduce` inside the clone (17 steps ok, 6 analysis steps skipped because a clone has no
 `runs/`); it found two bugs, fixed since: a fresh clone dropped the size of the Part B pool's query
-index from the generated numbers, and the methodology figure PDFs embedded their creation date.
+index from the generated numbers, and the methodology figure PDFs embedded their creation date. A third run on commit `0b239ce` is clean: 250 tests
+passed, 2 skipped (the website parity and site tests, which need the checkpoint and `npm ci`), 0
+failed; the reproduction changes no committed file except its own timings table; the smoke gate
+passes.
 
 ### Expected runtime per step
 
@@ -72,6 +75,23 @@ The reproduction time is measured by the script itself on every run and written 
 `reports/tables/reproduce_timings.csv` (per step: the slowest are the source-overlap clustering,
 36 s, the synthetic verifier check, 38 s, attention maps, 30 s, and the bootstrap CIs, 28 s). The
 training rows are the means of the `duration_s` column of `runs/log.csv`.
+
+### Walkthrough notebook
+
+[notebooks/walkthrough.ipynb](notebooks/walkthrough.ipynb) (plan 10.3) takes one test diagram end to
+end: it picks the best checkpoint by validation macro-F1 (DINOv3; `backbone=None` allows the DINOv2-L
+ablation), highlights every query on the image as the evaluation did, shows the model's probability
+and decision, the verifier's verdict re-measured from the coordinates with its margin, whether the
+annotation marks the relation, and the last-layer attention map. The committed copy carries its
+outputs; it reproduces the stored evaluation's probabilities to within 0.007. All logic is in
+`analysis/walkthrough.py`. It needs the processed data and
+`runs/finetune_synth10k_s2/checkpoints/best.pt`, and runs in about 20 s on the M5 (MPS). To re-run it
+headless:
+
+```bash
+.venv/bin/python -m pip install nbformat==5.11.1 nbclient==0.11.0 ipykernel==7.4.0   # or: pip install -e .[notebook]
+.venv/bin/python -c "import nbformat; from nbclient import NotebookClient as C; nb = nbformat.read('notebooks/walkthrough.ipynb', 4); C(nb, timeout=600).execute(); nbformat.write(nb, 'notebooks/walkthrough.ipynb')"
+```
 
 ### What is not in the repository
 
