@@ -93,6 +93,14 @@ headless:
 .venv/bin/python -c "import nbformat; from nbclient import NotebookClient as C; nb = nbformat.read('notebooks/walkthrough.ipynb', 4); C(nb, timeout=600).execute(); nbformat.write(nb, 'notebooks/walkthrough.ipynb')"
 ```
 
+### The experiment record (archive/)
+
+`runs/` is not in the repository, so its citable part is: `archive/runs/log.csv` (every run),
+`archive/runs/<run>/` (config, effective config, metrics.json, per-epoch history of all 56 run
+directories, smoke runs included) and the lab benchmark, with `archive/MANIFEST.csv` giving the
+SHA-256 of every archived file, of the gold set in `verifier/gold/` and of the four kept checkpoints
+(digest only). Rebuild with `python -m scripts.archive_runs`; `--check` compares it with `runs/`.
+
 ### What is not in the repository
 
 `data/raw/`, `data/processed/`, `data/cache/` and `runs/` are gitignored (3.1 GB, 0.4 GB, 0.2 GB and

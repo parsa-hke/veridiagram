@@ -1348,3 +1348,23 @@ Found
   to DG at 0.05x the tolerance, DE equal to EG at 0.78x) and no to two: the tangent ED (p 0.91 under its 0.95 threshold) and the
   equal radii DG = FG (p 0.56 under 0.70), the equal-length weakness the report describes.
 
+## 2026-10-26 — Phase 10.4-10.5: archive, final build, release tag
+
+Done
+- 10.5: `scripts/archive_runs.py` -> `archive/` (run log, every run's config, effective config,
+  metrics and history, the lab benchmark; 56 run directories, 167 files, 0.9 MB) and
+  `archive/MANIFEST.csv` (SHA-256 of every archived file, of the five gold-set CSVs and of the four
+  kept checkpoints, which stay outside the repository at 0.6 GB each). Test
+  `tests/test_archive_runs.py`. README section.
+- Final build of the report from scratch: numbers up to date, figures re-copied, tectonic compile
+  (11 pages), 2,477 words, Overleaf zip rebuilt, `reports/Report_7744547.pdf` copied for submission
+  (ignored by git, like the other compiled PDFs and zips).
+- 10.4: release tag `v1.0` on the commit that adds this entry.
+
+Open (the author's)
+- Submit the PDF through Turnitin and the GitHub link as the outline requires.
+- The repository is private and the report's title page links to it: make it public, give the
+  marker access, or remove the link. The Hugging Face Space clones the private repository with a
+  token at build time and keeps working either way.
+- Adjust the GenAI acknowledgement to the subject outline's wording.
+

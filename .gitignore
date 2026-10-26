@@ -31,6 +31,7 @@ verifier/gold/label*.html
 # Machine-specific preview config
 .claude/launch.json
 
-# Overleaf zips of the LaTeX reports (python -m scripts.methodology_zip / report_zip)
+# Overleaf zips and the compiled submission PDF of the LaTeX reports (scripts.*_zip, tectonic)
 reports/*.zip
 reports/*/*.zip
+reports/*.pdf
