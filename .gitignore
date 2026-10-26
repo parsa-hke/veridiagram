@@ -35,3 +35,6 @@ verifier/gold/label*.html
 reports/*.zip
 reports/*/*.zip
 reports/*.pdf
+
+# the committed experiment record (python -m scripts.archive_runs) is not the gitignored runs/
+!archive/runs/

@@ -1,0 +1,338 @@
+{
+  "name": "selftrain_confidence_s2",
+  "mode": "selftrain",
+  "seed": 2,
+  "config_hash": "787340722b",
+  "status": "ok",
+  "duration_s": 2273.7,
+  "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+  "backbone_loaded": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+  "backbone_info": {
+    "loaded": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+    "tried": [],
+    "normalisation": {
+      "checked": true,
+      "matches": true,
+      "processor_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "processor_std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    }
+  },
+  "best_epoch": 2,
+  "val_macro_f1": 0.8976,
+  "n_train": 88132,
+  "steps_per_epoch": 2500,
+  "results": {
+    "val": {
+      "geometric": {
+        "macro_f1": 0.8976,
+        "f1": {
+          "parallel": 0.9525,
+          "perpendicular": 0.9497,
+          "equal_length": 0.7094,
+          "on_circle": 0.9971,
+          "tangent": 0.8462,
+          "collinear": 0.9308
+        },
+        "support": {
+          "parallel": 293,
+          "perpendicular": 565,
+          "equal_length": 725,
+          "on_circle": 173,
+          "tangent": 34,
+          "collinear": 223
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.6356,
+        "f1": {
+          "parallel": 0.5197,
+          "perpendicular": 0.7084,
+          "equal_length": 0.0477,
+          "on_circle": 0.9971,
+          "tangent": 0.0,
+          "collinear": 0.9052
+        },
+        "support": {
+          "parallel": 113,
+          "perpendicular": 335,
+          "equal_length": 34,
+          "on_circle": 173,
+          "tangent": 0,
+          "collinear": 210
+        }
+      },
+      "n": 6227
+    },
+    "geometry3k_test": {
+      "geometric": {
+        "macro_f1": 0.8885,
+        "f1": {
+          "parallel": 0.9699,
+          "perpendicular": 0.9249,
+          "equal_length": 0.6959,
+          "on_circle": 1.0,
+          "tangent": 0.8091,
+          "collinear": 0.9313
+        },
+        "support": {
+          "parallel": 502,
+          "perpendicular": 1005,
+          "equal_length": 1345,
+          "on_circle": 335,
+          "tangent": 92,
+          "collinear": 408
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.551,
+        "f1": {
+          "parallel": 0.16,
+          "perpendicular": 0.6099,
+          "equal_length": 0.0743,
+          "on_circle": 1.0,
+          "tangent": 0.0,
+          "collinear": 0.9111
+        },
+        "support": {
+          "parallel": 46,
+          "perpendicular": 495,
+          "equal_length": 71,
+          "on_circle": 335,
+          "tangent": 0,
+          "collinear": 381
+        }
+      },
+      "n": 11319
+    },
+    "pgdp5k_heldout": {
+      "geometric": {
+        "macro_f1": 0.8935,
+        "f1": {
+          "parallel": 0.9771,
+          "perpendicular": 0.908,
+          "equal_length": 0.6853,
+          "on_circle": 0.9968,
+          "tangent": 0.8724,
+          "collinear": 0.9214
+        },
+        "support": {
+          "parallel": 1176,
+          "perpendicular": 2086,
+          "equal_length": 3210,
+          "on_circle": 472,
+          "tangent": 214,
+          "collinear": 833
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.5511,
+        "f1": {
+          "parallel": 0.2136,
+          "perpendicular": 0.5109,
+          "equal_length": 0.1317,
+          "on_circle": 0.9968,
+          "tangent": 0.0,
+          "collinear": 0.9022
+        },
+        "support": {
+          "parallel": 146,
+          "perpendicular": 848,
+          "equal_length": 352,
+          "on_circle": 472,
+          "tangent": 0,
+          "collinear": 789
+        }
+      },
+      "n": 25272
+    },
+    "synth_extrap": {
+      "geometric": {
+        "macro_f1": 0.7449,
+        "f1": {
+          "parallel": 0.8353,
+          "perpendicular": 0.779,
+          "equal_length": 0.6439,
+          "on_circle": 0.9577,
+          "tangent": 0.7714,
+          "collinear": 0.4819
+        },
+        "support": {
+          "parallel": 182,
+          "perpendicular": 234,
+          "equal_length": 448,
+          "on_circle": 69,
+          "tangent": 57,
+          "collinear": 141
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.4289,
+        "f1": {
+          "parallel": 0.5141,
+          "perpendicular": 0.3673,
+          "equal_length": 0.0867,
+          "on_circle": 0.6606,
+          "tangent": 0.6308,
+          "collinear": 0.3138
+        },
+        "support": {
+          "parallel": 82,
+          "perpendicular": 74,
+          "equal_length": 38,
+          "on_circle": 36,
+          "tangent": 47,
+          "collinear": 51
+        }
+      },
+      "n": 10000
+    }
+  },
+  "wall_s": 2261.7,
+  "teacher": "/content/drive/MyDrive/geo-relations/runs/finetune_synth10k_s2/checkpoints/best.pt",
+  "filter": "confidence",
+  "pseudo_labels": {
+    "tau": 0.9,
+    "consistency_negatives": true,
+    "pool_queries": 66019,
+    "pool_diagrams": 2037,
+    "contradiction_diagrams": 162,
+    "contradiction_rate": 0.0795,
+    "truth_contradiction_rate": 0.1041,
+    "confidence": {
+      "entries": 120072,
+      "parallel": {
+        "pos": 2842,
+        "pos_precision": 0.9782,
+        "neg": 32425,
+        "neg_accuracy": 0.9998
+      },
+      "perpendicular": {
+        "pos": 4970,
+        "pos_precision": 0.9451,
+        "neg": 28790,
+        "neg_accuracy": 0.9989
+      },
+      "equal_length": {
+        "pos": 5806,
+        "pos_precision": 0.7087,
+        "neg": 19608,
+        "neg_accuracy": 0.9882
+      },
+      "on_circle": {
+        "pos": 1678,
+        "pos_precision": 0.9988,
+        "neg": 517,
+        "neg_accuracy": 1.0
+      },
+      "tangent": {
+        "pos": 370,
+        "pos_precision": 0.9405,
+        "neg": 2340,
+        "neg_accuracy": 0.9987
+      },
+      "collinear": {
+        "pos": 2586,
+        "pos_precision": 0.9617,
+        "neg": 18140,
+        "neg_accuracy": 0.9997
+      },
+      "pos": 18252,
+      "pos_precision": 0.8823,
+      "accuracy": 0.9798
+    },
+    "consistency": {
+      "entries": 103828,
+      "parallel": {
+        "pos": 2429,
+        "pos_precision": 0.9769,
+        "neg": 27756,
+        "neg_accuracy": 0.9998
+      },
+      "perpendicular": {
+        "pos": 4281,
+        "pos_precision": 0.9645,
+        "neg": 24857,
+        "neg_accuracy": 0.9994
+      },
+      "equal_length": {
+        "pos": 4642,
+        "pos_precision": 0.7271,
+        "neg": 16974,
+        "neg_accuracy": 0.9889
+      },
+      "on_circle": {
+        "pos": 1561,
+        "pos_precision": 0.9994,
+        "neg": 456,
+        "neg_accuracy": 1.0
+      },
+      "tangent": {
+        "pos": 283,
+        "pos_precision": 0.947,
+        "neg": 2189,
+        "neg_accuracy": 0.9986
+      },
+      "collinear": {
+        "pos": 2272,
+        "pos_precision": 0.9582,
+        "neg": 16128,
+        "neg_accuracy": 0.9997
+      },
+      "pos": 15468,
+      "pos_precision": 0.8975,
+      "accuracy": 0.9826
+    },
+    "removed_by_consistency": {
+      "entries": 16244,
+      "parallel": {
+        "pos": 413,
+        "pos_precision": 0.9855,
+        "neg": 4669,
+        "neg_accuracy": 1.0
+      },
+      "perpendicular": {
+        "pos": 689,
+        "pos_precision": 0.8244,
+        "neg": 3933,
+        "neg_accuracy": 0.9959
+      },
+      "equal_length": {
+        "pos": 1164,
+        "pos_precision": 0.6357,
+        "neg": 2634,
+        "neg_accuracy": 0.9841
+      },
+      "on_circle": {
+        "pos": 117,
+        "pos_precision": 0.9915,
+        "neg": 61,
+        "neg_accuracy": 1.0
+      },
+      "tangent": {
+        "pos": 87,
+        "pos_precision": 0.9195,
+        "neg": 151,
+        "neg_accuracy": 1.0
+      },
+      "collinear": {
+        "pos": 314,
+        "pos_precision": 0.9873,
+        "neg": 2012,
+        "neg_accuracy": 1.0
+      },
+      "pos": 2784,
+      "pos_precision": 0.7978,
+      "accuracy": 0.9618
+    },
+    "train_rows": 50286,
+    "train_diagrams": 2037
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "name": "finetune_colab_s0",
+  "mode": "finetune",
+  "seed": 0,
+  "config_hash": "9afe485e6a",
+  "status": "ok",
+  "duration_s": 2432.0,
+  "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+  "backbone_loaded": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+  "backbone_info": {
+    "loaded": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+    "tried": [],
+    "normalisation": {
+      "checked": true,
+      "matches": true,
+      "processor_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "processor_std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    }
+  },
+  "best_epoch": 2,
+  "val_macro_f1": 0.8707,
+  "n_train": 37846,
+  "steps_per_epoch": 2500,
+  "lp_queries": 20000,
+  "lp_final_loss": 0.6557,
+  "results": {
+    "val": {
+      "geometric": {
+        "macro_f1": 0.8703,
+        "f1": {
+          "parallel": 0.9685,
+          "perpendicular": 0.9485,
+          "equal_length": 0.6537,
+          "on_circle": 0.9886,
+          "tangent": 0.7765,
+          "collinear": 0.8862
+        },
+        "support": {
+          "parallel": 293,
+          "perpendicular": 565,
+          "equal_length": 725,
+          "on_circle": 173,
+          "tangent": 34,
+          "collinear": 223
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.6256,
+        "f1": {
+          "parallel": 0.5201,
+          "perpendicular": 0.7137,
+          "equal_length": 0.0452,
+          "on_circle": 0.9886,
+          "tangent": 0.0,
+          "collinear": 0.8607
+        },
+        "support": {
+          "parallel": 113,
+          "perpendicular": 335,
+          "equal_length": 34,
+          "on_circle": 173,
+          "tangent": 0,
+          "collinear": 210
+        }
+      },
+      "n": 6227
+    },
+    "geometry3k_test": {
+      "geometric": {
+        "macro_f1": 0.8594,
+        "f1": {
+          "parallel": 0.9648,
+          "perpendicular": 0.9201,
+          "equal_length": 0.6415,
+          "on_circle": 0.997,
+          "tangent": 0.7672,
+          "collinear": 0.8658
+        },
+        "support": {
+          "parallel": 502,
+          "perpendicular": 1005,
+          "equal_length": 1345,
+          "on_circle": 335,
+          "tangent": 92,
+          "collinear": 408
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.5355,
+        "f1": {
+          "parallel": 0.159,
+          "perpendicular": 0.6118,
+          "equal_length": 0.0648,
+          "on_circle": 0.997,
+          "tangent": 0.0,
+          "collinear": 0.845
+        },
+        "support": {
+          "parallel": 46,
+          "perpendicular": 495,
+          "equal_length": 71,
+          "on_circle": 335,
+          "tangent": 0,
+          "collinear": 381
+        }
+      },
+      "n": 11319
+    },
+    "pgdp5k_heldout": {
+      "geometric": {
+        "macro_f1": 0.8612,
+        "f1": {
+          "parallel": 0.9755,
+          "perpendicular": 0.893,
+          "equal_length": 0.642,
+          "on_circle": 0.9968,
+          "tangent": 0.8158,
+          "collinear": 0.8437
+        },
+        "support": {
+          "parallel": 1176,
+          "perpendicular": 2086,
+          "equal_length": 3210,
+          "on_circle": 472,
+          "tangent": 214,
+          "collinear": 833
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.5369,
+        "f1": {
+          "parallel": 0.2182,
+          "perpendicular": 0.5179,
+          "equal_length": 0.1187,
+          "on_circle": 0.9968,
+          "tangent": 0.0,
+          "collinear": 0.8327
+        },
+        "support": {
+          "parallel": 146,
+          "perpendicular": 848,
+          "equal_length": 352,
+          "on_circle": 472,
+          "tangent": 0,
+          "collinear": 789
+        }
+      },
+      "n": 25272
+    },
+    "synth_extrap": {
+      "geometric": {
+        "macro_f1": 0.6116,
+        "f1": {
+          "parallel": 0.7822,
+          "perpendicular": 0.6407,
+          "equal_length": 0.4957,
+          "on_circle": 0.9167,
+          "tangent": 0.5203,
+          "collinear": 0.3143
+        },
+        "support": {
+          "parallel": 182,
+          "perpendicular": 234,
+          "equal_length": 448,
+          "on_circle": 69,
+          "tangent": 57,
+          "collinear": 141
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.3681,
+        "f1": {
+          "parallel": 0.5197,
+          "perpendicular": 0.2816,
+          "equal_length": 0.0611,
+          "on_circle": 0.6486,
+          "tangent": 0.4425,
+          "collinear": 0.255
+        },
+        "support": {
+          "parallel": 82,
+          "perpendicular": 74,
+          "equal_length": 38,
+          "on_circle": 36,
+          "tangent": 47,
+          "collinear": 51
+        }
+      },
+      "n": 10000
+    }
+  },
+  "wall_s": 2431.7
+}

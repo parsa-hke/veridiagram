@@ -1,0 +1,1 @@
+{"epoch": 1, "train_loss": 1.0645925998687744, "val_macro_f1": 0.1650986861661019, "val_f1": {"parallel": 0.19444444444444445, "perpendicular": 0.0, "equal_length": 0.0, "on_circle": 0.5714285714285715, "tangent": 0.0, "collinear": 0.22471910112359544}, "lr": 0.001}

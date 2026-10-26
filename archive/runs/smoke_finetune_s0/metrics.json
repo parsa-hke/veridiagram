@@ -1,0 +1,204 @@
+{
+  "name": "smoke_finetune_s0",
+  "mode": "finetune",
+  "seed": 0,
+  "config_hash": "9478537ac0",
+  "status": "ok",
+  "duration_s": 724.02,
+  "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+  "backbone_loaded": "facebook/dinov2-large",
+  "backbone_info": {
+    "loaded": "facebook/dinov2-large",
+    "tried": [
+      [
+        "facebook/dinov3-vitl16-pretrain-lvd1689m",
+        "OSError: You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m.\n401 Client Error. (Request ID: Root=1-6acaa6c8-1e4246834d13b540634e53a3;191be5b5-8bcb-438c-9b90-87f6ea85155d)\n\nCannot access gated repo for url https://huggingfac"
+      ]
+    ],
+    "normalisation": {
+      "checked": true,
+      "matches": true,
+      "processor_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "processor_std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    }
+  },
+  "best_epoch": 1,
+  "val_macro_f1": 0.3396,
+  "n_train": 256,
+  "steps_per_epoch": 16,
+  "results": {
+    "val": {
+      "geometric": {
+        "macro_f1": 0.3396,
+        "f1": {
+          "parallel": 0.0,
+          "perpendicular": 0.3434,
+          "equal_length": 0.3881,
+          "on_circle": 0.9524,
+          "tangent": 0.2,
+          "collinear": 0.1538
+        },
+        "support": {
+          "parallel": 14,
+          "perpendicular": 23,
+          "equal_length": 27,
+          "on_circle": 10,
+          "tangent": 1,
+          "collinear": 11
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.2967,
+        "f1": {
+          "parallel": 0.0,
+          "perpendicular": 0.3299,
+          "equal_length": 0.0476,
+          "on_circle": 0.9524,
+          "tangent": 0.0,
+          "collinear": 0.1538
+        },
+        "support": {
+          "parallel": 9,
+          "perpendicular": 21,
+          "equal_length": 2,
+          "on_circle": 10,
+          "tangent": 0,
+          "collinear": 11
+        }
+      },
+      "n": 256
+    },
+    "geometry3k_test": {
+      "geometric": {
+        "macro_f1": 0.2783,
+        "f1": {
+          "parallel": 0.0,
+          "perpendicular": 0.2462,
+          "equal_length": 0.2222,
+          "on_circle": 0.9231,
+          "tangent": 0.0,
+          "collinear": 0.0
+        },
+        "support": {
+          "parallel": 2,
+          "perpendicular": 16,
+          "equal_length": 27,
+          "on_circle": 6,
+          "tangent": 0,
+          "collinear": 11
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.3406,
+        "f1": {
+          "parallel": 0.0,
+          "perpendicular": 0.1667,
+          "equal_length": 0.2727,
+          "on_circle": 0.9231,
+          "tangent": 0.0,
+          "collinear": 0.0
+        },
+        "support": {
+          "parallel": 0,
+          "perpendicular": 11,
+          "equal_length": 4,
+          "on_circle": 6,
+          "tangent": 0,
+          "collinear": 11
+        }
+      },
+      "n": 256
+    },
+    "pgdp5k_heldout": {
+      "geometric": {
+        "macro_f1": 0.34,
+        "f1": {
+          "parallel": 0.2,
+          "perpendicular": 0.176,
+          "equal_length": 0.3467,
+          "on_circle": 0.8889,
+          "tangent": 0.4286,
+          "collinear": 0.0
+        },
+        "support": {
+          "parallel": 18,
+          "perpendicular": 13,
+          "equal_length": 38,
+          "on_circle": 4,
+          "tangent": 3,
+          "collinear": 9
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.1813,
+        "f1": {
+          "parallel": 0.0,
+          "perpendicular": 0.0175,
+          "equal_length": 0.0,
+          "on_circle": 0.8889,
+          "tangent": 0.0,
+          "collinear": 0.0
+        },
+        "support": {
+          "parallel": 1,
+          "perpendicular": 2,
+          "equal_length": 5,
+          "on_circle": 4,
+          "tangent": 0,
+          "collinear": 8
+        }
+      },
+      "n": 256
+    },
+    "synth_extrap": {
+      "geometric": {
+        "macro_f1": 0.1025,
+        "f1": {
+          "parallel": 0.0,
+          "perpendicular": 0.0455,
+          "equal_length": 0.087,
+          "on_circle": 0.3158,
+          "tangent": 0.1667,
+          "collinear": 0.0
+        },
+        "support": {
+          "parallel": 4,
+          "perpendicular": 2,
+          "equal_length": 10,
+          "on_circle": 3,
+          "tangent": 1,
+          "collinear": 6
+        }
+      },
+      "asserted": {
+        "macro_f1": 0.0741,
+        "f1": {
+          "parallel": 0.0,
+          "perpendicular": 0.0,
+          "equal_length": 0.0,
+          "on_circle": 0.2222,
+          "tangent": 0.0,
+          "collinear": 0.0
+        },
+        "support": {
+          "parallel": 1,
+          "perpendicular": 0,
+          "equal_length": 0,
+          "on_circle": 2,
+          "tangent": 0,
+          "collinear": 1
+        }
+      },
+      "n": 256
+    }
+  },
+  "wall_s": 724.0
+}

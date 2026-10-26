@@ -1,0 +1,258 @@
+name: sq_finetune_synth10k
+mode: evaluate
+seed: 2
+seeds:
+- 0
+- 1
+- 2
+device: auto
+deterministic: true
+paths:
+  raw: /content/data/raw
+  processed: /content/data/processed
+  splits: /content/data/processed/splits
+  cache: /content/cache
+  runs: /content/drive/MyDrive/geo-relations/runs
+  log_csv: /content/drive/MyDrive/geo-relations/runs/log.csv
+  figures: reports/figures
+  tables: reports/tables
+  gold: verifier/gold/gold.csv
+data:
+  train_sources:
+  - geometry3k
+  val_sources:
+  - geometry3k
+  test_sets:
+  - geometry3k_test
+  - pgdp5k_heldout
+  - synth_extrap
+  unlabelled_source: pgps9k_pool
+  split_seed: 0
+  split_fractions:
+  - 0.7
+  - 0.1
+  - 0.2
+  synthetic_train_size: 0
+  max_diagrams: null
+  max_queries_per_diagram: 60
+  train_none_ratio: 3.0
+  index_seed: 0
+  max_queries_per_unit: null
+  num_workers: 8
+  cache_overlays: false
+relations:
+  tier1:
+  - parallel
+  - perpendicular
+  - equal_length
+  - on_circle
+  - tangent
+  - none
+  tier2:
+  - collinear
+  - midpoint
+  - equal_angle
+  - perp_bisector
+  use_tier2: true
+  tier2_included:
+  - collinear
+  tier2_min_positives: 200
+tolerances:
+  parallel_deg: 3.7
+  perpendicular_deg: 3.7
+  equal_length_rel: 0.1
+  on_circle_rel: 0.0794
+  tangent_rel: 0.0794
+  collinear_rel: 0.0119
+  midpoint_rel: null
+  equal_angle_deg: null
+not_to_scale:
+  angle_deg: 10.0
+  rel_length: 0.15
+overlay:
+  enabled: true
+  color:
+  - 0
+  - 200
+  - 0
+  width_px: 3
+  halo_alpha: 0.35
+  halo_width_px: 7
+  point_radius_px: 5
+input:
+  long_side: 448
+  pad_to_multiple: 16
+  pad_value: 255
+  mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  std:
+  - 0.229
+  - 0.224
+  - 0.225
+model:
+  backbone: facebook/dinov3-vitl16-pretrain-lvd1689m
+  backbone_fallback: facebook/dinov2-large
+  library: transformers
+  pooling: cls_mean
+  query_input: overlay
+  grad_checkpointing: false
+  head_dropout: 0.0
+loss:
+  type: bce
+  pos_weight: census
+augment:
+  enabled: true
+  rotation_deg: 180
+  hflip: true
+  vflip: true
+  scale:
+  - 0.8
+  - 1.2
+  line_thickness_jitter: true
+  line_thickness_prob: 0.3
+  gaussian_noise_std:
+  - 0.0
+  - 0.03
+  noise_prob: 0.5
+  jpeg_quality:
+  - 50
+  - 95
+  jpeg_prob: 0.5
+  contrast:
+  - 0.9
+  - 1.1
+probe:
+  lr: 0.001
+  weight_decay: 0.01
+  epochs: 50
+  batch_size: 256
+  early_stopping_patience: 10
+  extract_batch_size: 32
+  select_metric: val_macro_f1
+finetune:
+  batch_size: 16
+  grad_accum_steps: 1
+  head_lr: 0.001
+  backbone_lr: 2.0e-05
+  llrd: 0.8
+  weight_decay: 0.05
+  epochs: 2
+  epoch_images: 40000
+  real_fraction: 0.5
+  warmup_epochs: 0.2
+  lp_queries: 20000
+  lp_epochs: 30
+  schedule: cosine
+  amp: true
+  amp_dtype: bfloat16
+  ema_decay: 0.999
+  select_metric: val_macro_f1
+  init_checkpoint: null
+  save_last: true
+  keep_last: false
+  save_dtype: bfloat16
+  max_steps_per_epoch: null
+eval:
+  checkpoint: null
+  batch_size: 32
+  pad: square
+  source_config: configs/finetune_synth10k.yaml
+  source_run: null
+  max_queries:
+    synth_extrap: 10000
+  label_sets:
+  - geometric
+  - asserted
+  threshold: tune_on_val
+  ece_bins: 15
+  bootstrap_resamples: 1000
+  ci_level: 0.95
+synthetic:
+  seed: 0
+  canvas_px: 512
+  margin_px: 40
+  n_points:
+  - 4
+  - 10
+  n_segments:
+  - 3
+  - 8
+  n_circles:
+  - 0
+  - 2
+  radius_px:
+  - 45
+  - 130
+  center_label_prob: 0.7
+  min_separation_px: 30
+  inject_rate: 0.5
+  jitter_px: 1.0
+  construction_weights:
+    parallel: 1
+    perpendicular: 1
+    equal_length: 1
+    collinear: 1
+    on_circle: 1
+    tangent: 2
+  extrap_points:
+  - 12
+  - 20
+  extrap_segments:
+  - 8
+  - 16
+  pool_sizes:
+  - 1000
+  - 10000
+  - 50000
+  extrap_size: 1000
+  unlabelled_size: 2000
+  workers: 8
+  render:
+    line_width:
+    - 1.0
+    - 2.0
+    font_size:
+    - 9
+    - 13
+    label_offset_px:
+    - 4
+    - 10
+    rotation_deg: 5
+    dot_prob: 0.7
+    mark_size_px:
+    - 8
+    - 12
+    scan_noise: true
+    scan_noise_prob: 0.5
+    scan_noise_std:
+    - 0.01
+    - 0.04
+    jpeg_artifacts: true
+    jpeg_prob: 0.5
+    jpeg_quality:
+    - 40
+    - 90
+scaling:
+  sizes:
+  - 0
+  - 1000
+  - 10000
+  - 50000
+selftrain:
+  filter: confidence
+  tau: 0.9
+  consistency_negatives: true
+  teacher_run: finetune_synth10k_s2
+  teacher_checkpoint: null
+  rounds: 1
+server:
+  pad: square
+  batch_size: 8
+logging:
+  wandb: false
+  wandb_project: geo-relations
+  log_every_steps: 50
+run_dir: /content/drive/MyDrive/geo-relations/runs/sq_finetune_synth10k_s2
+device_resolved: cuda

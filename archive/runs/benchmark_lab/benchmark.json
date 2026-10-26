@@ -1,0 +1,171 @@
+{
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "n_gpus": 4,
+  "backbone": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+  "rates": {
+    "448": {
+      "train_img_per_s": 22.5,
+      "eval_img_per_s": 98.5,
+      "peak_mem_gb": 5.5
+    },
+    "224": {
+      "train_img_per_s": 64.9,
+      "eval_img_per_s": 491.5,
+      "peak_mem_gb": 4.7
+    }
+  },
+  "jobs": [
+    {
+      "run": "probe_s0",
+      "mode": "probe",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 50,
+      "hours": 0.4
+    },
+    {
+      "run": "probe_s1",
+      "mode": "probe",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 50,
+      "hours": 0.05
+    },
+    {
+      "run": "probe_s2",
+      "mode": "probe",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 50,
+      "hours": 0.05
+    },
+    {
+      "run": "finetune_s0",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 30,
+      "hours": 14.87
+    },
+    {
+      "run": "finetune_s1",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 30,
+      "hours": 14.87
+    },
+    {
+      "run": "finetune_s2",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 30,
+      "hours": 14.87
+    },
+    {
+      "run": "finetune_synth10k_s0",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 221546,
+      "train_queries_source": "estimate",
+      "epochs": 30,
+      "hours": 82.9
+    },
+    {
+      "run": "finetune_synth10k_s1",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 221546,
+      "train_queries_source": "estimate",
+      "epochs": 30,
+      "hours": 82.9
+    },
+    {
+      "run": "finetune_synth10k_s2",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 221546,
+      "train_queries_source": "estimate",
+      "epochs": 30,
+      "hours": 82.9
+    },
+    {
+      "run": "ablation_dinov2_s0",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 30,
+      "hours": 20.06
+    },
+    {
+      "run": "ablation_res224_s0",
+      "mode": "finetune",
+      "resolution": 224,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 30,
+      "hours": 5.06
+    },
+    {
+      "run": "ablation_noaug_s0",
+      "mode": "finetune",
+      "resolution": 448,
+      "train_queries": 37846,
+      "train_queries_source": "index",
+      "epochs": 30,
+      "hours": 14.87
+    },
+    {
+      "run": "scaling_1k_s0",
+      "mode": "scaling",
+      "resolution": 448,
+      "train_queries": 56216,
+      "train_queries_source": "estimate",
+      "epochs": 30,
+      "hours": 21.67
+    },
+    {
+      "run": "scaling_50k_s0",
+      "mode": "scaling",
+      "resolution": 448,
+      "train_queries": 956346,
+      "train_queries_source": "estimate",
+      "epochs": 30,
+      "hours": 355.05
+    },
+    {
+      "run": "scaling_50k_s1",
+      "mode": "scaling",
+      "resolution": 448,
+      "train_queries": 956346,
+      "train_queries_source": "estimate",
+      "epochs": 30,
+      "hours": 355.05
+    },
+    {
+      "run": "scaling_50k_s2",
+      "mode": "scaling",
+      "resolution": 448,
+      "train_queries": 956346,
+      "train_queries_source": "estimate",
+      "epochs": 30,
+      "hours": 355.05
+    }
+  ],
+  "total_gpu_hours": 1420.6,
+  "wall_hours": 452.8,
+  "wall_hours_by_epochs": {
+    "30": 452.8,
+    "20": 302.2,
+    "15": 226.9,
+    "10": 151.6
+  }
+}
