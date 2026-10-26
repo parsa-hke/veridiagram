@@ -46,7 +46,10 @@ every unit, checkpoint written). The 33 files the clone built under `data/proces
 splits, labels, query indexes) are byte-identical to the ones the experiments used. Times on the M5
 laptop: pip install 61 s, download 34 s, data build 393 s (synthetic pools 203 s, labels 91 s), tests
 91 s. The Hugging Face cache (DINOv3 weights) and the pip cache were shared with the existing
-checkout, so model download time is not included.
+checkout, so model download time is not included. A second run on 2026-10-26 on commit `5461add` also ran `python -m
+scripts.reproduce` inside the clone (17 steps ok, 6 analysis steps skipped because a clone has no
+`runs/`); it found two bugs, fixed since: a fresh clone dropped the size of the Part B pool's query
+index from the generated numbers, and the methodology figure PDFs embedded their creation date.
 
 ### Expected runtime per step
 

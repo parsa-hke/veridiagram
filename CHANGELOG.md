@@ -1279,3 +1279,30 @@ Found
   install, no DINOv3 download), and the clone is the last commit, so the uncommitted Phase 9/10.1
   work (report, reproduce script and their tests) is not in it. Re-run after the commit.
 
+## 2026-10-26 — Phase 10.2 re-run on the pushed commit: two fixes
+
+Done
+- Committed and pushed `7a8bb9b` (methodology report: its scripts are imported by the Phase 9
+  scripts) and `5461add` (Phase 9, 10.1, 10.2); report build products (PDFs, logs, zips) ignored.
+- Re-ran the fresh-clone test on `5461add`, now also running `python -m scripts.reproduce` inside the
+  clone, both `numbers.tex --check`s, and listing what the clone changes.
+
+Found
+- Setup 37 s, download 23 s (SHA-256 verified), data build 387 s, GATE 6.6 PASS (probe 135 s,
+  fine-tune 363 s, DINOv3). `scripts.reproduce` in the clone: 17 steps ok, 6 analysis steps skipped
+  with their reason (no runs/, no checkpoint), 0 failed, 1.8 min.
+- **Bug: two tests failed in the clone** (`test_numbers_tex_is_up_to_date` in test_methodology and
+  test_report). `methodology_numbers.refresh_inputs` replaced the committed `index_sizes` with the
+  indexes present on disk; the PGPS9K pool index is built only by the Part B experiment, so a fresh
+  clone dropped `pgps9k_pool` and the `\nQueriesPgpsPool` macro (used in neither report's text).
+  Fixed: the sizes on disk are merged into the committed ones, never replace them. Test
+  `test_refresh_inputs_keeps_committed_index_sizes`.
+- **The three methodology figure PDFs changed on every run** (matplotlib writes the creation date).
+  Fixed with `SOURCE_DATE_EPOCH=0` in `scripts/methodology_figures.py`; two runs are now
+  byte-identical (`test_figures_are_deterministic`). The committed PDFs change once to the fixed date.
+- Otherwise the clone regenerates every committed file unchanged, except
+  `reports/tables/reproduce_timings.csv`, which is a measurement and changes on every run by design.
+- With the fixes, the local suite passes (methodology, report, reproduce tests) and both
+  `numbers.tex` files are up to date. The fixes are not committed yet; a third clone run after that
+  commit would confirm 0 failures in a clone.
+

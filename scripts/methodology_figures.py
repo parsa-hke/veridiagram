@@ -11,9 +11,12 @@ calibration, synthetic examples) so the Overleaf project is self-contained.
 
 from __future__ import annotations
 
+import os
 import shutil
 import sys
 from pathlib import Path
+
+os.environ.setdefault("SOURCE_DATE_EPOCH", "0")   # fixed PDF creation date: the figures regenerate byte for byte
 
 import matplotlib
 

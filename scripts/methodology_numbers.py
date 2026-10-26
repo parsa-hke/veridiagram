@@ -76,7 +76,9 @@ def refresh_inputs() -> dict:
             if p.exists():
                 with open(p) as f:
                     sizes[unit] = sum(1 for _ in f)
-        data["index_sizes"] = sizes
+        # merge, never drop: some indexes (the Part B pool) are built only by an experiment, so a
+        # fresh clone lacks them and must keep the committed sizes (fresh-clone test, 2026-10-25)
+        data["index_sizes"] = {**data.get("index_sizes", {}), **sizes}
     clusters = ROOT / "data" / "processed" / "figure_clusters.csv"
     if clusters.exists():
         with open(clusters, newline="") as f:

@@ -88,5 +88,25 @@ def test_compiles(tmp_path):
     assert (tmp_path / "p" / "main.pdf").exists()
 
 
+def test_refresh_inputs_keeps_committed_index_sizes(tmp_path, monkeypatch):
+    """A fresh clone lacks the Part B pool index; its committed size must survive a refresh."""
+    import json
+    inputs = tmp_path / "inputs.json"
+    inputs.write_text(json.dumps({"index_sizes": {"pgps9k_pool": 66019, "geometry3k_test": 1}}))
+    idx = tmp_path / "data" / "processed" / "index"
+    idx.mkdir(parents=True)
+    (idx / "geometry3k_test.jsonl").write_text("a\nb\n")
+    monkeypatch.setattr(mn, "ROOT", tmp_path)
+    monkeypatch.setattr(mn, "INPUTS", inputs)
+    data = mn.refresh_inputs()
+    assert data["index_sizes"] == {"pgps9k_pool": 66019, "geometry3k_test": 2}
+
+
+def test_figures_are_deterministic(tmp_path, monkeypatch):
+    from scripts import methodology_figures as mf
+    mf.recap(tmp_path / "a.pdf"); mf.recap(tmp_path / "b.pdf")
+    assert (tmp_path / "a.pdf").read_bytes() == (tmp_path / "b.pdf").read_bytes()
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__]))
