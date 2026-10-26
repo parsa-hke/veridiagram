@@ -1359,7 +1359,10 @@ Done
 - Final build of the report from scratch: numbers up to date, figures re-copied, tectonic compile
   (11 pages), 2,477 words, Overleaf zip rebuilt, `reports/Report_7744547.pdf` copied for submission
   (ignored by git, like the other compiled PDFs and zips).
-- 10.4: release tag `v1.0` on the commit that adds this entry.
+- 10.4: release tag `v1.0` on e1294a5, the commit that adds this entry. Found after pushing it: the
+  root `.gitignore` rule `runs/` also matched `archive/runs/`, so that commit held only
+  `archive/MANIFEST.csv`. Fixed in 48775d9 (`!archive/runs/` exception, 167 run records added), tagged
+  `v1.0.1`; `v1.0` is left as it was. **The release is `v1.0.1`.**
 
 Open (the author's)
 - Submit the PDF through Turnitin and the GitHub link as the outline requires.
